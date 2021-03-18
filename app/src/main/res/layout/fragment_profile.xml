@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,11 +12,93 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="85dp"
-        android:text="@string/sign_out"
-        android:onClick="signOut"
+        android:layout_marginBottom="60dp"
         android:clickable="true"
+        android:focusable="true"
+        android:onClick="signOut"
+        android:text="@string/sign_out"
+        android:textSize="18sp"
         tools:ignore="OnClick" />
+
+    <LinearLayout
+        android:id="@+id/profileOptionsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/signOutButton"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="200dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="0dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/recipesText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5sp"
+            android:clickable="true"
+            android:onClick="toMyRecipes"
+            android:focusable="true"
+            android:text="My Recipes"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/allergiesText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5sp"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="Allergies"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/ratingText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5sp"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="My Rating"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/notificationText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5sp"
+            android:layout_marginTop="5sp"
+            android:layout_marginEnd="5sp"
+            android:layout_marginBottom="40sp"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="Notifications"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/detailsText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5sp"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="My Details"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/settingsText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5sp"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="Settings"
+            android:textSize="24sp" />
+
+
+    </LinearLayout>
 
 
 </RelativeLayout>

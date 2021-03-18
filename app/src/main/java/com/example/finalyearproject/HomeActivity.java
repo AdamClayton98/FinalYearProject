@@ -12,7 +12,8 @@ import android.widget.TextView;
 
 import com.example.finalyearproject.fragments.FavouritesFragment;
 import com.example.finalyearproject.fragments.HomeFragment;
-import com.example.finalyearproject.fragments.PantrtyFragment;
+import com.example.finalyearproject.fragments.MyRecipesFragment;
+import com.example.finalyearproject.fragments.PantryFragment;
 import com.example.finalyearproject.fragments.PlanningFragment;
 import com.example.finalyearproject.fragments.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -50,7 +51,7 @@ public class HomeActivity extends AppCompatActivity {
                             selectedFragment = new FavouritesFragment();
                             break;
                         case R.id.ic_pantry:
-                            selectedFragment = new PantrtyFragment();
+                            selectedFragment = new PantryFragment();
                             break;
                         case R.id.ic_profile:
                             selectedFragment = new ProfileFragment();
@@ -67,6 +68,10 @@ public class HomeActivity extends AppCompatActivity {
         FirebaseAuth.getInstance().signOut();
         startActivity(new Intent(HomeActivity.this,LoginActivity.class));
         finish();
+    }
+
+    public void toMyRecipes(View view){
+        getSupportFragmentManager().beginTransaction().replace(R.id.fl_wrapper,new MyRecipesFragment()).commit();
     }
 
 
