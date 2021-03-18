@@ -45,8 +45,8 @@ public class LoginActivity extends AppCompatActivity {
                 login(v);
             }
         });
-
     }
+
 
     protected void onStart() {
         super.onStart();
