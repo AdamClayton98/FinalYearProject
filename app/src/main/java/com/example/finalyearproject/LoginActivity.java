@@ -16,8 +16,8 @@ public class LoginActivity extends AppCompatActivity {
 
     public void login(View view){
         //   Intent intent = new Intent(this, LoginActivity.class);
-        EditText email_field = (EditText) findViewById(R.id.input_email);
-        EditText password_field = (EditText) findViewById(R.id.input_password);
+        EditText email_field = (EditText) findViewById(R.id.loginEmail);
+        EditText password_field = (EditText) findViewById(R.id.loginPassword);
         String email = email_field.getText().toString();
         String password = password_field.getText().toString();
 
