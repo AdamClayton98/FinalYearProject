@@ -4,8 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.example.finalyearproject.fragments.FavouritesFragment;
 import com.example.finalyearproject.fragments.HomeFragment;
@@ -13,9 +16,11 @@ import com.example.finalyearproject.fragments.PantrtyFragment;
 import com.example.finalyearproject.fragments.PlanningFragment;
 import com.example.finalyearproject.fragments.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class HomeActivity extends AppCompatActivity {
 
+    TextView signoutText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,4 +62,12 @@ public class HomeActivity extends AppCompatActivity {
                     return true;
                 }
             };
+
+    public void signOut(View view){
+        FirebaseAuth.getInstance().signOut();
+        startActivity(new Intent(HomeActivity.this,LoginActivity.class));
+        finish();
+    }
+
+
 }
