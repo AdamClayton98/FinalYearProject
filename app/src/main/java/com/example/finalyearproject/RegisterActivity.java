@@ -37,6 +37,16 @@ public class RegisterActivity extends AppCompatActivity {
         registerConfirmPass=findViewById(R.id.registerConfirmPassword);
         registerButton=findViewById(R.id.buttonRegister);
 
+        Button backButton = findViewById(R.id.registerBackButton);
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(RegisterActivity.this,LoginActivity.class));
+                finish();
+            }
+        });
+
         firebaseAuth=FirebaseAuth.getInstance();
 
         validateAndCreateUser();
@@ -55,28 +65,34 @@ public class RegisterActivity extends AppCompatActivity {
 
                 if(name.isEmpty()){
                     registerName.setError("Name is required");
+                    return;
                 }
 
                 if(username.isEmpty()){
                     registerUsername.setError("Username is required");
+                    return;
                 }
 
                 if(email.isEmpty()){
                     registerName.setError("Email is required");
+                    return;
                 }
 
                 if(password.isEmpty()){
                     registerPassword.setError("Password is required");
+                    return;
                 }
 
                 if(confirmPassword.isEmpty()){
                     registerConfirmPass.setError("Password confirmation is required");
+                    return;
                 }
 
                 //TODO Implement validation at some point
 
                 if(!password.equals(confirmPassword)){
                     registerConfirmPass.setError("Confirmation password does not match password");
+                    return;
                 }
 
                 firebaseAuth.createUserWithEmailAndPassword(email,password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
