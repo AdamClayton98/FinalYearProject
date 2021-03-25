@@ -10,17 +10,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.finalyearproject.Models.UserModel;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -38,95 +31,85 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         registerName = findViewById(R.id.registerName);
-        registerUsername = findViewById(R.id.registerUsername);
-        registerEmail = findViewById(R.id.registerEmail);
-        registerPassword = findViewById(R.id.registerPassword);
-        registerConfirmPass = findViewById(R.id.registerConfirmPassword);
-        registerButton = findViewById(R.id.buttonRegister);
+        registerUsername=findViewById(R.id.registerUsername);
+        registerEmail=findViewById(R.id.registerEmail);
+        registerPassword=findViewById(R.id.registerPassword);
+        registerConfirmPass=findViewById(R.id.registerConfirmPassword);
+        registerButton=findViewById(R.id.buttonRegister);
 
         Button backButton = findViewById(R.id.registerBackButton);
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                startActivity(new Intent(RegisterActivity.this,LoginActivity.class));
                 finish();
             }
         });
 
-        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseAuth=FirebaseAuth.getInstance();
 
         validateAndCreateUser();
 
     }
 
-    public void validateAndCreateUser() {
+    public void validateAndCreateUser(){
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name = registerName.getText().toString();
-                String username = registerUsername.getText().toString();
-                String email = registerEmail.getText().toString();
-                String password = registerPassword.getText().toString();
-                String confirmPassword = registerConfirmPass.getText().toString();
+                String name=registerName.getText().toString();
+                String username=registerUsername.getText().toString();
+                String email=registerEmail.getText().toString();
+                String password=registerPassword.getText().toString();
+                String confirmPassword=registerConfirmPass.getText().toString();
 
-                if (name.isEmpty()) {
+                if(name.isEmpty()){
                     registerName.setError("Name is required");
                     return;
                 }
 
-                if (username.isEmpty()) {
+                if(username.isEmpty()){
                     registerUsername.setError("Username is required");
                     return;
                 }
 
-                if (email.isEmpty()) {
+                if(email.isEmpty()){
                     registerName.setError("Email is required");
                     return;
                 }
 
-                if (password.isEmpty()) {
+                if(password.isEmpty()){
                     registerPassword.setError("Password is required");
                     return;
                 }
 
-                if (confirmPassword.isEmpty()) {
+                if(confirmPassword.isEmpty()){
                     registerConfirmPass.setError("Password confirmation is required");
                     return;
                 }
 
                 //TODO Implement validation at some point
 
-                if (!password.equals(confirmPassword)) {
+                if(!password.equals(confirmPassword)){
                     registerConfirmPass.setError("Confirmation password does not match password");
                     return;
                 }
 
-                firebaseAuth.createUserWithEmailAndPassword(email, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                firebaseAuth.createUserWithEmailAndPassword(email,password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
-                        UserModel userModel = new UserModel(name,username,email,HomeActivity.uid);
-
-                        DatabaseMethods databaseMethods = new DatabaseMethods(RegisterActivity.this);
-
-                        databaseMethods.addUser(userModel);
-
-                        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-
+                        startActivity(new Intent(getApplicationContext(),LoginActivity.class));
                         finish();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(RegisterActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterActivity.this,e.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 });
-
-
-
-
             }
         });
     }
-}
 
+
+}
