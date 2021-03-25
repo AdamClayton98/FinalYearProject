@@ -3,25 +3,25 @@ package com.example.finalyearproject;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.Button;
+import android.widget.EditText;
 
-import com.example.finalyearproject.fragments.FavouritesFragment;
-import com.example.finalyearproject.fragments.HomeFragment;
-import com.example.finalyearproject.fragments.MyRecipesFragment;
-import com.example.finalyearproject.fragments.PantryFragment;
-import com.example.finalyearproject.fragments.PlanningFragment;
-import com.example.finalyearproject.fragments.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class HomeActivity extends AppCompatActivity {
 
-    TextView signoutText;
+
+    public static String uid;
+
+    EditText allergyInput;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +31,19 @@ public class HomeActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.fl_wrapper,new HomeFragment()).commit();
+        uid= FirebaseAuth.getInstance().getUid();
+
+        allergyInput = findViewById(R.id.inputAllergy);
+
+        Button addAllergyButton = findViewById(R.id.buttonAdd);
+
+        addAllergyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addAllergy(v);
+            }
+        });
+
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
@@ -42,37 +54,39 @@ public class HomeActivity extends AppCompatActivity {
 
                     switch (item.getItemId()) {
                         case R.id.ic_home:
-                            selectedFragment = new HomeFragment();
+                            selectedFragment=new HomeFragment();
                             break;
                         case R.id.ic_plan:
-                            selectedFragment = new PlanningFragment();
+                            selectedFragment=new PlanningFragment();
                             break;
                         case R.id.ic_fave:
-                            selectedFragment = new FavouritesFragment();
+                            selectedFragment=new FavouritesFragment();
                             break;
                         case R.id.ic_pantry:
-                            selectedFragment = new PantryFragment();
+                            selectedFragment=new PantryFragment();
                             break;
                         case R.id.ic_profile:
-                            selectedFragment = new ProfileFragment();
+                            selectedFragment=new ProfileFragment();
                             break;
                     }
 
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fl_wrapper, selectedFragment).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fl_wrapper,selectedFragment);
 
                     return true;
                 }
             };
 
-    public void signOut(View view){
-        FirebaseAuth.getInstance().signOut();
-        startActivity(new Intent(HomeActivity.this,LoginActivity.class));
-        finish();
+
+    public void addAllergy(View view){
+        String allergy = allergyInput.getText().toString();
+
+        DatabaseMethods databaseMethods=new DatabaseMethods(HomeActivity.this);
+        databaseMethods.addAllergyToDb(allergy);
     }
 
-    public void toMyRecipes(View view){
-        getSupportFragmentManager().beginTransaction().replace(R.id.fl_wrapper,new MyRecipesFragment()).commit();
+    public void toAllergies(View view){
+
+
+
     }
-
-
 }
