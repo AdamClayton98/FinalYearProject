@@ -8,8 +8,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.finalyearproject.fragments.AllergiesFragment;
 import com.example.finalyearproject.fragments.FavouritesFragment;
 import com.example.finalyearproject.fragments.HomeFragment;
 import com.example.finalyearproject.fragments.MyRecipesFragment;
@@ -23,6 +25,10 @@ public class HomeActivity extends AppCompatActivity {
 
     TextView signoutText;
 
+    EditText allergyInput;
+
+    public static String uid = FirebaseAuth.getInstance().getUid();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +38,7 @@ public class HomeActivity extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fl_wrapper,new HomeFragment()).commit();
+
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
@@ -70,9 +77,20 @@ public class HomeActivity extends AppCompatActivity {
         finish();
     }
 
+
+    public void addAllergy(View view){
+        String allergy = allergyInput.getText().toString();
+
+        DatabaseMethods databaseMethods=new DatabaseMethods(HomeActivity.this);
+        databaseMethods.addAllergyToDb(allergy);
+    }
+
+    public void toAllergies(View view){
+        getSupportFragmentManager().beginTransaction().replace(R.id.fl_wrapper, new AllergiesFragment());
+    }
+
     public void toMyRecipes(View view){
         getSupportFragmentManager().beginTransaction().replace(R.id.fl_wrapper,new MyRecipesFragment()).commit();
     }
-
 
 }

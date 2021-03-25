@@ -41,7 +41,7 @@
             android:clickable="true"
             android:onClick="toMyRecipes"
             android:focusable="true"
-            android:text="My Recipes"
+            android:text="@string/my_recipes"
             android:textSize="24sp" />
 
         <TextView

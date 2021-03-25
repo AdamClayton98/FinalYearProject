@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.finalyearproject.Models.UserModel;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
@@ -98,6 +99,12 @@ public class RegisterActivity extends AppCompatActivity {
                 firebaseAuth.createUserWithEmailAndPassword(email,password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
+                        UserModel userModel = new UserModel(name,username,email,HomeActivity.uid);
+
+                        DatabaseMethods databaseMethods = new DatabaseMethods(RegisterActivity.this);
+
+                        databaseMethods.addUser(userModel);
+
                         startActivity(new Intent(getApplicationContext(),LoginActivity.class));
                         finish();
                     }

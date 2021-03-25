@@ -15,4 +15,7 @@
     <string name="home">Home</string>
     <string name="sign_out">Sign Out</string>
     <string name="profile_picture">Profile Picture</string>
+    <string name="allergy">Allergy</string>
+    <string name="add">ADD</string>
+    <string name="my_recipes">My Recipes</string>
 </resources>
