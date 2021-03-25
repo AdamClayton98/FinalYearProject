@@ -51,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         if(FirebaseAuth.getInstance().getCurrentUser()!=null){
-            startActivity(new Intent(LoginActivity.this,HomeActivity.class));
+            startActivity(new Intent(LoginActivity.this,MainActivity.class));
         }
     }
 
@@ -76,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
         firebaseAuth.signInWithEmailAndPassword(email,password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
-                startActivity(new Intent(LoginActivity.this,HomeActivity.class));
+                startActivity(new Intent(LoginActivity.this,MainActivity.class));
                 finish();
             }
         }).addOnFailureListener(new OnFailureListener() {

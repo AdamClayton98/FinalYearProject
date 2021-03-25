@@ -30,13 +30,13 @@ public class DatabaseMethods extends SQLiteOpenHelper {
     }
 
     private void createUserTable(SQLiteDatabase db){
-        String createTableStatement = "CREATE TABLE " + USERS_TABLE + " (" + COLUMN_ID + " TEXT PRIMARY KEY, " + COLUMN_NAME + " TEXT, " + COLUMN_USERNAME + " TEXT)";
+        String createTableStatement = "CREATE TABLE IF NOT EXISTS " + USERS_TABLE + " (" + COLUMN_ID + " TEXT PRIMARY KEY, " + COLUMN_NAME + " TEXT, " + COLUMN_USERNAME + " TEXT)";
 
         db.execSQL(createTableStatement);
     }
 
     private void createAllergiesTable(SQLiteDatabase db){
-        String createTableStatement = "CREATE TABLE " + TABLE_ALLERGIES + " (ID INT PRIMARY KEY AUTOINCREMENT, " + COLUMN_ALLERGY_NAME + " TEXT, " + COLUMN_USERID + " TEXT)";
+        String createTableStatement = "CREATE TABLE IF NOT EXISTS " + TABLE_ALLERGIES + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_ALLERGY_NAME + " TEXT, " + COLUMN_USERID + " TEXT)";
 
         db.execSQL(createTableStatement);
     }
@@ -46,7 +46,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
 
         contentValues.put(COLUMN_ALLERGY_NAME, allergyName);
-        contentValues.put(COLUMN_USERID, HomeActivity.uid);
+        contentValues.put(COLUMN_USERID, MainActivity.uid);
 
         db.insert(TABLE_ALLERGIES, null, contentValues);
     }

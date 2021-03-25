@@ -39,8 +39,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="5sp"
             android:clickable="true"
-            android:onClick="toMyRecipes"
             android:focusable="true"
+            android:onClick="toMyRecipes"
             android:text="@string/my_recipes"
             android:textSize="24sp" />
 
@@ -51,7 +51,8 @@
             android:layout_margin="5sp"
             android:clickable="true"
             android:focusable="true"
-            android:text="Allergies"
+            android:onClick="toAllergies"
+            android:text="@string/allergies"
             android:textSize="24sp" />
 
         <TextView
@@ -61,7 +62,7 @@
             android:layout_margin="5sp"
             android:clickable="true"
             android:focusable="true"
-            android:text="My Rating"
+            android:text="@string/my_rating"
             android:textSize="24sp" />
 
         <TextView
@@ -74,7 +75,7 @@
             android:layout_marginBottom="40sp"
             android:clickable="true"
             android:focusable="true"
-            android:text="Notifications"
+            android:text="@string/notifications"
             android:textSize="24sp" />
 
         <TextView
@@ -84,7 +85,7 @@
             android:layout_margin="5sp"
             android:clickable="true"
             android:focusable="true"
-            android:text="My Details"
+            android:text="@string/my_details"
             android:textSize="24sp" />
 
         <TextView
@@ -94,7 +95,7 @@
             android:layout_margin="5sp"
             android:clickable="true"
             android:focusable="true"
-            android:text="Settings"
+            android:text="@string/settings"
             android:textSize="24sp" />
 
 
