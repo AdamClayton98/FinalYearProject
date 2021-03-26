@@ -8,7 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.finalyearproject.DatabaseMethods;
+import com.example.finalyearproject.MainActivity;
 import com.example.finalyearproject.R;
+import com.google.android.gms.common.api.internal.DataHolderNotifier;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -55,6 +58,9 @@ public class AllergiesFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
+
     }
 
     @Override
@@ -63,4 +69,6 @@ public class AllergiesFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_allergies, container, false);
     }
+
+
 }

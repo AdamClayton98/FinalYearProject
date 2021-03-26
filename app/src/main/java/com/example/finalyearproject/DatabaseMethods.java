@@ -2,12 +2,19 @@ package com.example.finalyearproject;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import com.example.finalyearproject.Models.AllergyModel;
 import com.example.finalyearproject.Models.UserModel;
+import com.example.finalyearproject.fragments.AllergiesFragment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class DatabaseMethods extends SQLiteOpenHelper {
@@ -49,6 +56,28 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         contentValues.put(COLUMN_USERID, MainActivity.uid);
 
         db.insert(TABLE_ALLERGIES, null, contentValues);
+    }
+
+    public List<AllergyModel> getAllergiesForUser(){
+        List<AllergyModel> allergies = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "SELECT " + COLUMN_ALLERGY_NAME + " FROM " + TABLE_ALLERGIES + " WHERE " + COLUMN_USERID + " = " + MainActivity.uid;
+
+        Cursor cursor = db.rawQuery(query,null);
+
+        if(cursor.moveToFirst()){
+            do{
+                int id = cursor.getInt(0);
+                String allergyName=cursor.getString(1);
+                AllergyModel allergy = new AllergyModel(id,allergyName);
+                allergies.add(allergy);
+            }while(cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        return allergies;
     }
 
 
