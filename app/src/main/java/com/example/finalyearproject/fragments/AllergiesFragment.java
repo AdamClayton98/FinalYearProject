@@ -7,11 +7,16 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.example.finalyearproject.DatabaseMethods;
 import com.example.finalyearproject.MainActivity;
+import com.example.finalyearproject.Models.AllergyModel;
 import com.example.finalyearproject.R;
-import com.google.android.gms.common.api.internal.DataHolderNotifier;
+
+import java.util.List;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,6 +24,7 @@ import com.google.android.gms.common.api.internal.DataHolderNotifier;
  * create an instance of this fragment.
  */
 public class AllergiesFragment extends Fragment {
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -51,23 +57,28 @@ public class AllergiesFragment extends Fragment {
         return fragment;
     }
 
+    public void getAllergyToListView(View view){
+        DatabaseMethods databaseMethods = new DatabaseMethods(getContext());
+        List<AllergyModel> allergies = databaseMethods.getAllergiesForUser();
+        ListView listView= view.findViewById(R.id.allergyListView);
+        listView.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_selectable_list_item, allergies));
+
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-
-
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.fragment_allergies, container,false);
+
+        getAllergyToListView(view);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_allergies, container, false);
+        return view;
     }
 
 

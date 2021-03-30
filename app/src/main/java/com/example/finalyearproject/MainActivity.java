@@ -6,11 +6,12 @@ import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.finalyearproject.Models.AllergyModel;
@@ -24,7 +25,6 @@ import com.example.finalyearproject.fragments.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -94,22 +94,16 @@ public class MainActivity extends AppCompatActivity {
 
         DatabaseMethods databaseMethods=new DatabaseMethods(MainActivity.this);
         databaseMethods.addAllergyToDb(allergy);
+
     }
 
     public void toAllergies(View view){
         getSupportFragmentManager().beginTransaction().replace(R.id.fl_wrapper, new AllergiesFragment()).commit();
+
     }
 
     public void toMyRecipes(View view){
         getSupportFragmentManager().beginTransaction().replace(R.id.fl_wrapper,new MyRecipesFragment()).commit();
-    }
-
-    public void getListOfAllergies(){
-        DatabaseMethods databaseMethods=new DatabaseMethods(MainActivity.this);
-        List<AllergyModel> allergies =databaseMethods.getAllergiesForUser();
-
-
-
     }
 
 }

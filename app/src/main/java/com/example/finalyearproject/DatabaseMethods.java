@@ -62,7 +62,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         List<AllergyModel> allergies = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String query = "SELECT " + COLUMN_ALLERGY_NAME + " FROM " + TABLE_ALLERGIES + " WHERE " + COLUMN_USERID + " = " + MainActivity.uid;
+        String query = "SELECT * FROM " + TABLE_ALLERGIES + " WHERE " + COLUMN_USERID + " = '" + MainActivity.uid + "'";
 
         Cursor cursor = db.rawQuery(query,null);
 
