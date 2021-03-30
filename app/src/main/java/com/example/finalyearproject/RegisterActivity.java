@@ -99,7 +99,7 @@ public class RegisterActivity extends AppCompatActivity {
                 firebaseAuth.createUserWithEmailAndPassword(email,password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
-                        UserModel userModel = new UserModel(name,username,email,FirebaseAuth.getInstance().getUid());
+                        UserModel userModel = new UserModel(FirebaseAuth.getInstance().getUid(),name,username);
 
                         DatabaseMethods databaseMethods = new DatabaseMethods(RegisterActivity.this);
 

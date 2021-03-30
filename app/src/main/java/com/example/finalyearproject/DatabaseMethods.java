@@ -101,7 +101,6 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         return allergies;
     }
 
-
     public void addUser(UserModel userModel) {
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -112,6 +111,13 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         contentValues.put(COLUMN_USERNAME, userModel.getUsername());
 
         db.insert(USERS_TABLE, null, contentValues);
+    }
+
+    public void updateUserInfo(String updateInfo, String updateColumn){
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "UPDATE " + USERS_TABLE + " SET " + updateColumn + " = '" + updateInfo + "' WHERE " + COLUMN_ID + " = '" + MainActivity.uid + "'";
+        db.execSQL(query);
+        db.close();
     }
 
     @Override

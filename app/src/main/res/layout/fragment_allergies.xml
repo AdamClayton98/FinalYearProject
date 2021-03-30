@@ -42,4 +42,16 @@
         android:layout_below="@+id/allergyInput"
         android:layout_marginTop="40dp" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/allergyInput"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="118dp"
+        android:layout_marginTop="13dp"
+        android:layout_marginEnd="124dp"
+        android:text="@string/tap_an_allergy_to_remove_it" />
+
 </RelativeLayout>

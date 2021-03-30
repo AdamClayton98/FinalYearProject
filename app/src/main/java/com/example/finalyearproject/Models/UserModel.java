@@ -5,14 +5,12 @@ public class UserModel {
     String id;
     String name;
     String username;
-    String email;
 
 
-    public UserModel(String id, String name, String username, String email) {
+    public UserModel(String id, String name, String username) {
         this.id = id;
         this.name = name;
         this.username = username;
-        this.email = email;
     }
 
     public String getId() {
@@ -39,13 +37,6 @@ public class UserModel {
         this.username = username;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
 
 }

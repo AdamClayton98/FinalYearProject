@@ -86,6 +86,7 @@
             android:clickable="true"
             android:focusable="true"
             android:text="@string/my_details"
+            android:onClick="toMyDetails"
             android:textSize="24sp" />
 
         <TextView
