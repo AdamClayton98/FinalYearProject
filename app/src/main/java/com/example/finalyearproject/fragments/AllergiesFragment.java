@@ -9,8 +9,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.finalyearproject.DatabaseMethods;
 import com.example.finalyearproject.MainActivity;
@@ -33,6 +35,8 @@ public class AllergiesFragment extends Fragment {
 
     ArrayAdapter<String> allergyModelArrayAdapter;
     View view;
+    ListView allergyList;
+    DatabaseMethods databaseMethods;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -68,6 +72,8 @@ public class AllergiesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
     }
 
     @Override
@@ -76,6 +82,16 @@ public class AllergiesFragment extends Fragment {
 
         view = inflater.inflate(R.layout.fragment_allergies, container,false);
         refreshFragmentListView();
+        databaseMethods=new DatabaseMethods(getContext());
+        allergyList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String clickedAllergy = parent.getItemAtPosition(position).toString();
+                databaseMethods.deleteAllergy(clickedAllergy);
+                refreshFragmentListView();
+                Toast.makeText(getContext(), "Deleted Allergy: " + clickedAllergy, Toast.LENGTH_SHORT).show();
+            }
+        });
         // Inflate the layout for this fragment
         return view;
     }
@@ -87,17 +103,8 @@ public class AllergiesFragment extends Fragment {
 
     public void refreshFragmentListView(){
         allergyModelArrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, getAllergiesInFragment());
-        ListView listView= view.findViewById(R.id.allergyListView);
-        listView.setAdapter(allergyModelArrayAdapter);
+        allergyList= view.findViewById(R.id.allergyListView);
+        allergyList.setAdapter(allergyModelArrayAdapter);
     }
 
-    public boolean checkAllergyExists(String allergyName, SQLiteDatabase readDb) { ;
-        String query = "SELECT " + COLUMN_ALLERGY_NAME + " FROM " + TABLE_ALLERGIES + " WHERE " + COLUMN_ALLERGY_NAME + " = '" + allergyName + "' AND " + COLUMN_USERID + " = '" + MainActivity.uid + "'";
-        Cursor cursor = readDb.rawQuery(query, null);
-        boolean exists;
-        exists = cursor.moveToFirst();
-        cursor.close();
-        readDb.close();
-        return exists;
-    }
 }

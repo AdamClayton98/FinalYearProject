@@ -62,10 +62,12 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         }
     }
 
-    public void deleteAllergy(){
+    public boolean deleteAllergy(String allergy){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DELETE FROM " + TABLE_ALLERGIES + " WHERE " + COLUMN_USERID + " = '" + MainActivity.uid + "' AND " + COLUMN_ALLERGY_NAME  + " = '" + allergy + "'";
 
-
-
+        Cursor cursor = db.rawQuery(query, null);
+        return cursor.moveToFirst();
     }
 
     public boolean checkAllergyExists(String allergyName) {
