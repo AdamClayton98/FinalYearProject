@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import com.example.finalyearproject.Models.AllergyModel;
 import com.example.finalyearproject.Models.UserModel;
 import com.example.finalyearproject.fragments.AllergiesFragment;
+import com.google.android.gms.common.internal.Objects;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,43 +37,61 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         createAllergiesTable(db);
     }
 
-    private void createUserTable(SQLiteDatabase db){
+    private void createUserTable(SQLiteDatabase db) {
         String createTableStatement = "CREATE TABLE IF NOT EXISTS " + USERS_TABLE + " (" + COLUMN_ID + " TEXT PRIMARY KEY, " + COLUMN_NAME + " TEXT, " + COLUMN_USERNAME + " TEXT)";
 
         db.execSQL(createTableStatement);
     }
 
-    private void createAllergiesTable(SQLiteDatabase db){
+    private void createAllergiesTable(SQLiteDatabase db) {
         String createTableStatement = "CREATE TABLE IF NOT EXISTS " + TABLE_ALLERGIES + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_ALLERGY_NAME + " TEXT, " + COLUMN_USERID + " TEXT)";
 
         db.execSQL(createTableStatement);
     }
 
-    public void addAllergyToDb(String allergyName){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
+    public void addAllergyToDb(String allergyName) {
+        if(!checkAllergyExists(allergyName)){
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
 
-        contentValues.put(COLUMN_ALLERGY_NAME, allergyName);
-        contentValues.put(COLUMN_USERID, MainActivity.uid);
+            contentValues.put(COLUMN_ALLERGY_NAME, allergyName);
+            contentValues.put(COLUMN_USERID, MainActivity.uid);
 
-        db.insert(TABLE_ALLERGIES, null, contentValues);
+            db.insert(TABLE_ALLERGIES, null, contentValues);
+            db.close();
+        }
     }
 
-    public List<AllergyModel> getAllergiesForUser(){
-        List<AllergyModel> allergies = new ArrayList<>();
+    public void deleteAllergy(){
+
+
+
+    }
+
+    public boolean checkAllergyExists(String allergyName) {
+        SQLiteDatabase readDb = this.getReadableDatabase();
+        String query = "SELECT " + COLUMN_ALLERGY_NAME + " FROM " + TABLE_ALLERGIES + " WHERE " + COLUMN_ALLERGY_NAME + " = '" + allergyName + "' AND " + COLUMN_USERID + " = '" + MainActivity.uid + "'";
+        Cursor cursor = readDb.rawQuery(query, null);
+        boolean exists;
+        exists = cursor.moveToFirst();
+        cursor.close();
+        readDb.close();
+        return exists;
+    }
+
+    public List<String> getAllergiesForUser() {
+        List<String> allergies = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
         String query = "SELECT * FROM " + TABLE_ALLERGIES + " WHERE " + COLUMN_USERID + " = '" + MainActivity.uid + "'";
 
-        Cursor cursor = db.rawQuery(query,null);
+        Cursor cursor = db.rawQuery(query, null);
 
-        if(cursor.moveToFirst()){
-            do{
-                int id = cursor.getInt(0);
-                String allergyName=cursor.getString(1);
-                AllergyModel allergy = new AllergyModel(id,allergyName);
-                allergies.add(allergy);
-            }while(cursor.moveToNext());
+        if (cursor.moveToFirst()) {
+            do {
+                String allergyName = cursor.getString(1);
+                allergies.add(allergyName);
+            } while (cursor.moveToNext());
         }
 
         cursor.close();
@@ -81,7 +100,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
     }
 
 
-    public void addUser(UserModel userModel){
+    public void addUser(UserModel userModel) {
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();

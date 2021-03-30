@@ -1,5 +1,7 @@
 package com.example.finalyearproject.fragments;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -18,6 +20,10 @@ import com.example.finalyearproject.R;
 import java.util.List;
 import java.util.Objects;
 
+import static com.example.finalyearproject.DatabaseMethods.COLUMN_ALLERGY_NAME;
+import static com.example.finalyearproject.DatabaseMethods.COLUMN_USERID;
+import static com.example.finalyearproject.DatabaseMethods.TABLE_ALLERGIES;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link AllergiesFragment#newInstance} factory method to
@@ -25,6 +31,8 @@ import java.util.Objects;
  */
 public class AllergiesFragment extends Fragment {
 
+    ArrayAdapter<String> allergyModelArrayAdapter;
+    View view;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -57,14 +65,6 @@ public class AllergiesFragment extends Fragment {
         return fragment;
     }
 
-    public void getAllergyToListView(View view){
-        DatabaseMethods databaseMethods = new DatabaseMethods(getContext());
-        List<AllergyModel> allergies = databaseMethods.getAllergiesForUser();
-        ListView listView= view.findViewById(R.id.allergyListView);
-        listView.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_selectable_list_item, allergies));
-
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,12 +74,30 @@ public class AllergiesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_allergies, container,false);
-
-        getAllergyToListView(view);
+        view = inflater.inflate(R.layout.fragment_allergies, container,false);
+        refreshFragmentListView();
         // Inflate the layout for this fragment
         return view;
     }
 
+    public List<String> getAllergiesInFragment(){
+        DatabaseMethods databaseMethods = new DatabaseMethods(getContext());
+        return databaseMethods.getAllergiesForUser();
+    }
 
+    public void refreshFragmentListView(){
+        allergyModelArrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, getAllergiesInFragment());
+        ListView listView= view.findViewById(R.id.allergyListView);
+        listView.setAdapter(allergyModelArrayAdapter);
+    }
+
+    public boolean checkAllergyExists(String allergyName, SQLiteDatabase readDb) { ;
+        String query = "SELECT " + COLUMN_ALLERGY_NAME + " FROM " + TABLE_ALLERGIES + " WHERE " + COLUMN_ALLERGY_NAME + " = '" + allergyName + "' AND " + COLUMN_USERID + " = '" + MainActivity.uid + "'";
+        Cursor cursor = readDb.rawQuery(query, null);
+        boolean exists;
+        exists = cursor.moveToFirst();
+        cursor.close();
+        readDb.close();
+        return exists;
+    }
 }

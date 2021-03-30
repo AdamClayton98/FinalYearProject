@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.AllergiesFragment">
+    tools:context=".fragments.AllergiesFragment"
+    android:tag="allergies_fragment">
 
 
     <EditText
