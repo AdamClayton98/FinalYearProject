@@ -6,6 +6,7 @@ public class PantryIngredientModel {
     String amount;
     String measurementType;
     String expiryDate;
+    boolean isSelected;
 
     public PantryIngredientModel(String ingredientName, String amount, String measurementType, String expiryDate) {
         this.ingredientName = ingredientName;
@@ -44,5 +45,14 @@ public class PantryIngredientModel {
 
     public void setExpiryDate(String expiryDate) {
         this.expiryDate = expiryDate;
+    }
+
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 }

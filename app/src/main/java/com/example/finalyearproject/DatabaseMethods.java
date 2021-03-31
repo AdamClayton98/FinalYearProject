@@ -5,9 +5,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Build;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 import com.example.finalyearproject.Models.AllergyModel;
 import com.example.finalyearproject.Models.PantryIngredientModel;
@@ -15,7 +17,13 @@ import com.example.finalyearproject.Models.UserModel;
 import com.example.finalyearproject.fragments.AllergiesFragment;
 import com.google.android.gms.common.internal.Objects;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+
+import java.util.Date;
 import java.util.List;
 
 
@@ -79,6 +87,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         String query = "DELETE FROM " + TABLE_ALLERGIES + " WHERE " + COLUMN_USERID + " = '" + MainActivity.uid + "' AND " + COLUMN_ALLERGY_NAME  + " = '" + allergy + "'";
 
         Cursor cursor = db.rawQuery(query, null);
+        cursor.close();
         return cursor.moveToFirst();
     }
 
@@ -146,7 +155,8 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         db.close();
     }
 
-    public ArrayList<PantryIngredientModel> getPantryForUser(){
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public ArrayList<PantryIngredientModel> getPantryForUser() {
         SQLiteDatabase db = getReadableDatabase();
         ArrayList<PantryIngredientModel> ingredients = new ArrayList<>();
 
@@ -162,6 +172,16 @@ public class DatabaseMethods extends SQLiteOpenHelper {
                 String measurementType = cursor.getString(4);
                 String expiryDate = cursor.getString(5);
 
+                try{
+                    if(checkDateIs2DaysAfterToday(expiryDate)){
+                        removeIngredient(ingredientName);
+                        continue;
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    ingredientName="Failed to move this expired ingredient";
+                }
+
                 PantryIngredientModel ingredient = new PantryIngredientModel(ingredientName,amount,measurementType,expiryDate);
 
                 ingredients.add(ingredient);
@@ -173,6 +193,28 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         cursor.close();
 
         return ingredients;
+    }
+
+    public boolean removeIngredient(String ingredient){
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "DELETE FROM " + TABLE_PANTRIES + " WHERE " + COLUMN_USERID + " = '" + MainActivity.uid + "' AND " + COLUMN_INGREDIENT_NAME  + " = '" + ingredient + "'";
+
+        Cursor cursor = db.rawQuery(query, null);
+        return cursor.moveToFirst();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public boolean checkDateIs2DaysAfterToday(String date) throws ParseException {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        LocalDate now = LocalDate.now();
+        now = now.plusDays(2);
+        LocalDate expiryDate = simpleDateFormat.parse(date).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        if(expiryDate.isBefore(now)){
+            return true;
+        }else {
+            return false;
+        }
     }
 
     @Override

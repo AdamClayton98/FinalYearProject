@@ -1,12 +1,15 @@
 package com.example.finalyearproject.fragments;
 
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.finalyearproject.CustomAdapters.PantryCustomAdapter;
@@ -27,6 +30,7 @@ public class PantryFragment extends Fragment {
     View view;
     ListView pantryList;
     DatabaseMethods databaseMethods;
+    Button removeButton;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -80,10 +84,23 @@ public class PantryFragment extends Fragment {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void createPantryListView(){
         ArrayList<PantryIngredientModel> ingredientModelList = databaseMethods.getPantryForUser();
         pantryList = view.findViewById(R.id.pantryList);
         pantryList.setAdapter(new PantryCustomAdapter(getContext(),ingredientModelList));
+    }
+
+
+    private void createRemoveListener(){
+        removeButton = view.findViewById(R.id.removeFromPantryButton);
+        //TODO Methods to remove ingredient from pantry via checkbox.
+        removeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
 

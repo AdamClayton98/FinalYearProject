@@ -32,4 +32,5 @@
     <string name="measurement_type">Measurement Type</string>
     <string name="expiry_date">Expiry Date</string>
     <string name="items_will_be_removed_from_your_pantry_2_days_after_expiry_date">Items will be removed from your pantry 2 days after expiry date.</string>
+    <string name="remove">REMOVE</string>
 </resources>
