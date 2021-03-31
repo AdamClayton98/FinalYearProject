@@ -3,11 +3,11 @@ package com.example.finalyearproject.Models;
 public class PantryIngredientModel {
 
     String ingredientName;
-    int amount;
+    String amount;
     String measurementType;
     String expiryDate;
 
-    public PantryIngredientModel(String ingredientName, int amount, String measurementType, String expiryDate) {
+    public PantryIngredientModel(String ingredientName, String amount, String measurementType, String expiryDate) {
         this.ingredientName = ingredientName;
         this.amount = amount;
         this.measurementType = measurementType;
@@ -22,11 +22,11 @@ public class PantryIngredientModel {
         this.ingredientName = ingredientName;
     }
 
-    public int getAmount() {
-        return amount;
+    public String getAmount() {
+        return amount + " " + measurementType;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(String amount) {
         this.amount = amount;
     }
 

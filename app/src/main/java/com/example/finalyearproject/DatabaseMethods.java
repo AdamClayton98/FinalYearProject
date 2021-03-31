@@ -146,9 +146,9 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         db.close();
     }
 
-    public List<PantryIngredientModel> getPantryForUser(){
+    public ArrayList<PantryIngredientModel> getPantryForUser(){
         SQLiteDatabase db = getReadableDatabase();
-        List<PantryIngredientModel> ingredients = new ArrayList<>();
+        ArrayList<PantryIngredientModel> ingredients = new ArrayList<>();
 
         String query = "SELECT * FROM " + TABLE_PANTRIES + " WHERE " + COLUMN_USERID + " = '" + MainActivity.uid + "'";
 
@@ -158,7 +158,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
             do{
 
                 String ingredientName = cursor.getString(2);
-                int amount = cursor.getInt(3);
+                String amount = String.valueOf(cursor.getInt(3));
                 String measurementType = cursor.getString(4);
                 String expiryDate = cursor.getString(5);
 

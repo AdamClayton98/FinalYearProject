@@ -6,6 +6,8 @@
     tools:context=".fragments.PantryFragment">
 
 
+
+
     <Button
         android:id="@+id/pantryAddButton"
         android:layout_width="wrap_content"
@@ -18,4 +20,11 @@
         android:layout_marginBottom="10dp"
         android:text="@string/string_add"
         android:onClick="toAddToPantry"/>
+
+    <ListView
+        android:id="@+id/pantryList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/pantryAddButton"
+        android:layout_marginBottom="0dp" />
 </RelativeLayout>

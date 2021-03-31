@@ -7,8 +7,15 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
+import com.example.finalyearproject.CustomAdapters.PantryCustomAdapter;
+import com.example.finalyearproject.DatabaseMethods;
+import com.example.finalyearproject.Models.PantryIngredientModel;
 import com.example.finalyearproject.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,6 +23,10 @@ import com.example.finalyearproject.R;
  * create an instance of this fragment.
  */
 public class PantryFragment extends Fragment {
+
+    View view;
+    ListView pantryList;
+    DatabaseMethods databaseMethods;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -51,16 +62,30 @@ public class PantryFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_pantrty, container, false);
+        view = inflater.inflate(R.layout.fragment_pantry, container, false);
+
+        databaseMethods=new DatabaseMethods(getContext());
+
+        createPantryListView();
+
+
+
+
+        return view;
     }
+
+
+    private void createPantryListView(){
+        ArrayList<PantryIngredientModel> ingredientModelList = databaseMethods.getPantryForUser();
+        pantryList = view.findViewById(R.id.pantryList);
+        pantryList.setAdapter(new PantryCustomAdapter(getContext(),ingredientModelList));
+    }
+
+
+
 }
