@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import com.example.finalyearproject.Models.AllergyModel;
+import com.example.finalyearproject.Models.PantryIngredientModel;
 import com.example.finalyearproject.Models.UserModel;
 import com.example.finalyearproject.fragments.AllergiesFragment;
 import com.google.android.gms.common.internal.Objects;
@@ -143,6 +144,35 @@ public class DatabaseMethods extends SQLiteOpenHelper {
 
         db.insert(TABLE_PANTRIES,null,contentValues);
         db.close();
+    }
+
+    public List<PantryIngredientModel> getPantryForUser(){
+        SQLiteDatabase db = getReadableDatabase();
+        List<PantryIngredientModel> ingredients = new ArrayList<>();
+
+        String query = "SELECT * FROM " + TABLE_PANTRIES + " WHERE " + COLUMN_USERID + " = '" + MainActivity.uid + "'";
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        if(cursor.moveToFirst()){
+            do{
+
+                String ingredientName = cursor.getString(2);
+                int amount = cursor.getInt(3);
+                String measurementType = cursor.getString(4);
+                String expiryDate = cursor.getString(5);
+
+                PantryIngredientModel ingredient = new PantryIngredientModel(ingredientName,amount,measurementType,expiryDate);
+
+                ingredients.add(ingredient);
+
+            }while(cursor.moveToNext());
+        }
+
+        db.close();
+        cursor.close();
+
+        return ingredients;
     }
 
     @Override

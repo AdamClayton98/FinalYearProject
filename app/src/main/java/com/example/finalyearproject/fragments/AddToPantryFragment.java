@@ -13,8 +13,10 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.finalyearproject.DatabaseMethods;
+import com.example.finalyearproject.MainActivity;
 import com.example.finalyearproject.R;
 
 import java.util.Calendar;
@@ -87,7 +89,7 @@ public class AddToPantryFragment extends Fragment {
         expiryInput = view.findViewById(R.id.expiryDateInput);
         databaseMethods=new DatabaseMethods(getContext());
         measurementDropdown = view.findViewById(R.id.measurementTypeDropdown);
-        String[] measurementTypes = new String[]{"ML", "Grams", "Tbsp", "oz", "lb"};
+        String[] measurementTypes = new String[]{"ML", "Grams", "Tbsp", "oz", "lb", "Unit(s)"};
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getContext(), R.layout.support_simple_spinner_dropdown_item, measurementTypes);
         measurementDropdown.setAdapter(arrayAdapter);
         addButton = view.findViewById(R.id.addToPantryAddButton);
@@ -131,6 +133,10 @@ public class AddToPantryFragment extends Fragment {
                 String measurementType = measurementDropdown.getSelectedItem().toString();
 
                 databaseMethods.addIngredientToPantry(ingredient,amount,measurementType,expiryDate);
+
+                Toast.makeText(getContext(), "Added " + ingredient + " to pantry.", Toast.LENGTH_SHORT).show();
+
+                getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, new PantryFragment()).commit();
             }
         });
 
