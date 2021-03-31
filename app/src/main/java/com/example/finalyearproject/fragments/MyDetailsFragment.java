@@ -107,6 +107,11 @@ public class MyDetailsFragment extends Fragment {
                 String password=updatePassword.getText().toString();
                 String confirmPassword=updateConfirmPass.getText().toString();
 
+                if(name.isEmpty() && username.isEmpty() && email.isEmpty() && password.isEmpty()){
+                    Toast.makeText(getContext(), "You must enter at least one detail to update", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 if(!confirmPassword.isEmpty() && !password.equals(confirmPassword)){
                     updateConfirmPass.setError("Confirmation password does not match password");
                     return;
@@ -128,7 +133,6 @@ public class MyDetailsFragment extends Fragment {
                 if(!username.isEmpty()){
                     databaseMethods.updateUserInfo(username, "USERNAME");
                 }
-
             }
         });
     }

@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.finalyearproject.Models.AllergyModel;
+import com.example.finalyearproject.fragments.AddToPantryFragment;
 import com.example.finalyearproject.fragments.AllergiesFragment;
 import com.example.finalyearproject.fragments.FavouritesFragment;
 import com.example.finalyearproject.fragments.HomeFragment;
@@ -113,6 +114,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void toMyRecipes(View view){
         getSupportFragmentManager().beginTransaction().replace(R.id.fl_wrapper,new MyRecipesFragment()).commit();
+    }
+
+    public void toAddToPantry(View view){
+        getSupportFragmentManager().beginTransaction().replace(R.id.fl_wrapper, new AddToPantryFragment()).commit();
     }
 
 }

@@ -25,7 +25,12 @@ public class DatabaseMethods extends SQLiteOpenHelper {
     public static final String COLUMN_ID = "ID";
     public static final String TABLE_ALLERGIES = "ALLERGIES";
     public static final String COLUMN_ALLERGY_NAME = "ALLERGY_NAME";
-    public static final String COLUMN_USERID = "USERID";
+    public static final String COLUMN_USERID = "USER" + COLUMN_ID;
+    public static final String COLUMN_INGREDIENT_NAME = "INGREDIENT_NAME";
+    public static final String COLUMN_AMOUNT = "AMOUNT";
+    public static final String COLUMN_MEASUREMENT_TYPE = "MEASUREMENT_TYPE";
+    public static final String COLUMN_EXPIRY_DATE = "EXPIRY_DATE";
+    public static final String TABLE_PANTRIES = "PANTRIES";
 
     public DatabaseMethods(@Nullable Context context) {
         super(context, "project.db", null, 1);
@@ -35,6 +40,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         createUserTable(db);
         createAllergiesTable(db);
+        createPantriesTable(db);
     }
 
     private void createUserTable(SQLiteDatabase db) {
@@ -44,8 +50,13 @@ public class DatabaseMethods extends SQLiteOpenHelper {
     }
 
     private void createAllergiesTable(SQLiteDatabase db) {
-        String createTableStatement = "CREATE TABLE IF NOT EXISTS " + TABLE_ALLERGIES + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_ALLERGY_NAME + " TEXT, " + COLUMN_USERID + " TEXT)";
+        String createTableStatement = "CREATE TABLE IF NOT EXISTS " + TABLE_ALLERGIES + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_ALLERGY_NAME + " TEXT, " + COLUMN_USERID + " TEXT)";
 
+        db.execSQL(createTableStatement);
+    }
+
+    private void createPantriesTable(SQLiteDatabase db){
+        String createTableStatement = "CREATE TABLE IF NOT EXISTS " + TABLE_PANTRIES + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_USERID + " TEXT, " + COLUMN_INGREDIENT_NAME + " TEXT, " + COLUMN_AMOUNT + " INTEGER, " + COLUMN_MEASUREMENT_TYPE + " TEXT, " + COLUMN_EXPIRY_DATE + " TEXT)";
         db.execSQL(createTableStatement);
     }
 
@@ -117,6 +128,20 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         String query = "UPDATE " + USERS_TABLE + " SET " + updateColumn + " = '" + updateInfo + "' WHERE " + COLUMN_ID + " = '" + MainActivity.uid + "'";
         db.execSQL(query);
+        db.close();
+    }
+
+    public void addIngredientToPantry(String ingredient, int amount, String measurementType, String expiryDate){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(COLUMN_USERID, MainActivity.uid);
+        contentValues.put(COLUMN_INGREDIENT_NAME, ingredient);
+        contentValues.put(COLUMN_AMOUNT, amount);
+        contentValues.put(COLUMN_MEASUREMENT_TYPE, measurementType);
+        contentValues.put(COLUMN_EXPIRY_DATE,expiryDate);
+
+        db.insert(TABLE_PANTRIES,null,contentValues);
         db.close();
     }
 

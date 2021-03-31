@@ -26,4 +26,10 @@
     <string name="temporary_text_replace_with_image">Temporary Text, replace with image</string>
     <string name="tap_an_allergy_to_remove_it">Tap an allergy to remove it.</string>
     <string name="update_details">Update Details</string>
+    <string name="ingredient_name">Ingredient Name</string>
+    <string name="amount_of_ingredient">Amount Of Ingredient</string>
+    <string name="string_add">Add</string>
+    <string name="measurement_type">Measurement Type</string>
+    <string name="expiry_date">Expiry Date</string>
+    <string name="items_will_be_removed_from_your_pantry_2_days_after_expiry_date">Items will be removed from your pantry 2 days after expiry date.</string>
 </resources>
