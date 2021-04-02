@@ -74,7 +74,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues contentValues = new ContentValues();
 
-            contentValues.put(COLUMN_ALLERGY_NAME, allergyName);
+            contentValues.put(COLUMN_ALLERGY_NAME, allergyName.toUpperCase());
             contentValues.put(COLUMN_USERID, MainActivity.uid);
 
             db.insert(TABLE_ALLERGIES, null, contentValues);
@@ -145,6 +145,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
+        ingredient=ingredient.toUpperCase();
         contentValues.put(COLUMN_USERID, MainActivity.uid);
         contentValues.put(COLUMN_INGREDIENT_NAME, ingredient);
         contentValues.put(COLUMN_AMOUNT, amount);

@@ -16,7 +16,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.finalyearproject.DatabaseMethods;
-import com.example.finalyearproject.MainActivity;
 import com.example.finalyearproject.R;
 
 import java.util.Calendar;
@@ -88,7 +87,7 @@ public class AddToPantryFragment extends Fragment {
         amountInput=view.findViewById(R.id.amountInput);
         expiryInput = view.findViewById(R.id.expiryDateInput);
         databaseMethods=new DatabaseMethods(getContext());
-        measurementDropdown = view.findViewById(R.id.measurementTypeDropdown);
+        measurementDropdown = view.findViewById(R.id.measurementTypeDropdownPantry);
         String[] measurementTypes = new String[]{"ML", "Grams", "Tbsp", "oz", "lb", "Unit(s)"};
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getContext(), R.layout.support_simple_spinner_dropdown_item, measurementTypes);
         measurementDropdown.setAdapter(arrayAdapter);

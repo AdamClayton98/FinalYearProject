@@ -33,4 +33,14 @@
     <string name="expiry_date">Expiry Date</string>
     <string name="items_will_be_removed_from_your_pantry_2_days_after_expiry_date">Items will be removed from your pantry 2 days after expiry date.</string>
     <string name="remove">REMOVE</string>
+    <string name="go_to_add_new_recipe">Go to add new recipe</string>
+    <string name="recipe_name">Recipe Name</string>
+    <string name="cooking_time">Cooking Time</string>
+    <string name="add_ingredient">Add Ingredient</string>
+    <string name="remove_ingredient">Remove Ingredient</string>
+    <string name="type_your_step_here">Type your step here</string>
+    <string name="add_step">add step</string>
+    <string name="serves">Serves</string>
+    <string name="upload_recipe">Upload Recipe</string>
+
 </resources>
