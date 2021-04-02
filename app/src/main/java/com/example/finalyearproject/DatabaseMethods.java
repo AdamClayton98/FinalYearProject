@@ -64,13 +64,13 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         db.execSQL(createTableStatement);
     }
 
-    private void createPantriesTable(SQLiteDatabase db){
+    private void createPantriesTable(SQLiteDatabase db) {
         String createTableStatement = "CREATE TABLE IF NOT EXISTS " + TABLE_PANTRIES + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_USERID + " TEXT, " + COLUMN_INGREDIENT_NAME + " TEXT, " + COLUMN_AMOUNT + " INTEGER, " + COLUMN_MEASUREMENT_TYPE + " TEXT, " + COLUMN_EXPIRY_DATE + " TEXT)";
         db.execSQL(createTableStatement);
     }
 
     public void addAllergyToDb(String allergyName) {
-        if(!checkAllergyExists(allergyName)){
+        if (!checkAllergyExists(allergyName)) {
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues contentValues = new ContentValues();
 
@@ -82,9 +82,9 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         }
     }
 
-    public boolean deleteAllergy(String allergy){
+    public boolean deleteAllergy(String allergy) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "DELETE FROM " + TABLE_ALLERGIES + " WHERE " + COLUMN_USERID + " = '" + MainActivity.uid + "' AND " + COLUMN_ALLERGY_NAME  + " = '" + allergy + "'";
+        String query = "DELETE FROM " + TABLE_ALLERGIES + " WHERE " + COLUMN_USERID + " = '" + MainActivity.uid + "' AND " + COLUMN_ALLERGY_NAME + " = '" + allergy + "'";
 
         Cursor cursor = db.rawQuery(query, null);
         cursor.close();
@@ -134,14 +134,14 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         db.insert(USERS_TABLE, null, contentValues);
     }
 
-    public void updateUserInfo(String updateInfo, String updateColumn){
+    public void updateUserInfo(String updateInfo, String updateColumn) {
         SQLiteDatabase db = getWritableDatabase();
         String query = "UPDATE " + USERS_TABLE + " SET " + updateColumn + " = '" + updateInfo + "' WHERE " + COLUMN_ID + " = '" + MainActivity.uid + "'";
         db.execSQL(query);
         db.close();
     }
 
-    public void addIngredientToPantry(String ingredient, int amount, String measurementType, String expiryDate){
+    public void addIngredientToPantry(String ingredient, int amount, String measurementType, String expiryDate) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
@@ -149,9 +149,16 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         contentValues.put(COLUMN_INGREDIENT_NAME, ingredient);
         contentValues.put(COLUMN_AMOUNT, amount);
         contentValues.put(COLUMN_MEASUREMENT_TYPE, measurementType);
-        contentValues.put(COLUMN_EXPIRY_DATE,expiryDate);
+        contentValues.put(COLUMN_EXPIRY_DATE, expiryDate);
 
-        db.insert(TABLE_PANTRIES,null,contentValues);
+        if (ingredientAndMeasurementTypeExists(ingredient, measurementType)) {
+            int existingAmount = getExistingAmountOfIngredient(ingredient, measurementType, expiryDate);
+            amount = amount + existingAmount;
+            String query = "UPDATE " + TABLE_PANTRIES + " SET " + COLUMN_AMOUNT + " = " + amount + " WHERE " + COLUMN_INGREDIENT_NAME + " = '" + ingredient + "' AND " + COLUMN_USERID + " = '" + MainActivity.uid + "' AND " + COLUMN_MEASUREMENT_TYPE + " = '" + measurementType + "'";
+            db.execSQL(query);
+        }else{
+            db.insert(TABLE_PANTRIES, null, contentValues);
+        }
         db.close();
     }
 
@@ -164,29 +171,29 @@ public class DatabaseMethods extends SQLiteOpenHelper {
 
         Cursor cursor = db.rawQuery(query, null);
 
-        if(cursor.moveToFirst()){
-            do{
+        if (cursor.moveToFirst()) {
+            do {
 
                 String ingredientName = cursor.getString(2);
                 String amount = String.valueOf(cursor.getInt(3));
                 String measurementType = cursor.getString(4);
                 String expiryDate = cursor.getString(5);
 
-                try{
-                    if(checkDateIs2DaysAfterToday(expiryDate)){
+                try {
+                    if (checkDateIs2DaysAfterToday(expiryDate)) {
                         removeIngredient(ingredientName);
                         continue;
                     }
                 } catch (ParseException e) {
                     e.printStackTrace();
-                    ingredientName="Failed to move this expired ingredient";
+                    ingredientName = "Failed to move this expired ingredient";
                 }
 
-                PantryIngredientModel ingredient = new PantryIngredientModel(ingredientName,amount,measurementType,expiryDate);
+                PantryIngredientModel ingredient = new PantryIngredientModel(ingredientName, amount, measurementType, expiryDate);
 
                 ingredients.add(ingredient);
 
-            }while(cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
 
         db.close();
@@ -195,12 +202,39 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         return ingredients;
     }
 
-    public boolean removeIngredient(String ingredient){
+    public boolean removeIngredient(String ingredient) {
         SQLiteDatabase db = getWritableDatabase();
-        String query = "DELETE FROM " + TABLE_PANTRIES + " WHERE " + COLUMN_USERID + " = '" + MainActivity.uid + "' AND " + COLUMN_INGREDIENT_NAME  + " = '" + ingredient + "'";
+        String query = "DELETE FROM " + TABLE_PANTRIES + " WHERE " + COLUMN_USERID + " = '" + MainActivity.uid + "' AND " + COLUMN_INGREDIENT_NAME + " = '" + ingredient + "'";
 
         Cursor cursor = db.rawQuery(query, null);
         return cursor.moveToFirst();
+    }
+
+    public boolean ingredientAndMeasurementTypeExists(String ingredient, String measurementType) {
+        SQLiteDatabase readDb = this.getReadableDatabase();
+        String query = "SELECT " + COLUMN_MEASUREMENT_TYPE + " FROM " + TABLE_PANTRIES + " WHERE " + COLUMN_INGREDIENT_NAME + " = '" + ingredient + "' AND " + COLUMN_USERID + " = '" + MainActivity.uid + "'";
+        Cursor cursor = readDb.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            do {
+                if (cursor.getString(0).equals(measurementType)) {
+                    return true;
+                }
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return false;
+    }
+
+    public int getExistingAmountOfIngredient(String ingredient, String measurementType, String expiryDate) {
+        SQLiteDatabase readDb = this.getReadableDatabase();
+        String query = "SELECT " + COLUMN_AMOUNT + " FROM " + TABLE_PANTRIES + " WHERE " + COLUMN_INGREDIENT_NAME + " = '" + ingredient + "' AND " + COLUMN_USERID + " = '" + MainActivity.uid + "' AND " + COLUMN_MEASUREMENT_TYPE + " = '" + measurementType + "' AND " + COLUMN_EXPIRY_DATE + " = '" + expiryDate + "'";
+        Cursor cursor = readDb.rawQuery(query, null);
+        int existingAmount = 0;
+        if (cursor.moveToNext()) {
+            existingAmount = cursor.getInt(0);
+        }
+        cursor.close();
+        return existingAmount;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -210,9 +244,9 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         now = now.plusDays(2);
         LocalDate expiryDate = simpleDateFormat.parse(date).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-        if(expiryDate.isBefore(now)){
+        if (expiryDate.isBefore(now)) {
             return true;
-        }else {
+        } else {
             return false;
         }
     }
