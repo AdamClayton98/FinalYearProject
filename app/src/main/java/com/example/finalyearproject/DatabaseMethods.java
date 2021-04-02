@@ -181,7 +181,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
 
                 try {
                     if (checkDateIs2DaysAfterToday(expiryDate)) {
-                        removeIngredient(ingredientName);
+                        removeIngredient(ingredientName,expiryDate);
                         continue;
                     }
                 } catch (ParseException e) {
@@ -202,9 +202,9 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         return ingredients;
     }
 
-    public boolean removeIngredient(String ingredient) {
+    public boolean removeIngredient(String ingredient, String expiryDate) {
         SQLiteDatabase db = getWritableDatabase();
-        String query = "DELETE FROM " + TABLE_PANTRIES + " WHERE " + COLUMN_USERID + " = '" + MainActivity.uid + "' AND " + COLUMN_INGREDIENT_NAME + " = '" + ingredient + "'";
+        String query = "DELETE FROM " + TABLE_PANTRIES + " WHERE " + COLUMN_USERID + " = '" + MainActivity.uid + "' AND " + COLUMN_INGREDIENT_NAME + " = '" + ingredient + "' AND " + COLUMN_EXPIRY_DATE + " = '" + expiryDate + "'";
 
         Cursor cursor = db.rawQuery(query, null);
         return cursor.moveToFirst();

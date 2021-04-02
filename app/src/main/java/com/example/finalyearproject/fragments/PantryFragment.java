@@ -31,6 +31,7 @@ public class PantryFragment extends Fragment {
     ListView pantryList;
     DatabaseMethods databaseMethods;
     Button removeButton;
+    PantryCustomAdapter pantryCustomAdapter;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -77,9 +78,7 @@ public class PantryFragment extends Fragment {
         databaseMethods=new DatabaseMethods(getContext());
 
         createPantryListView();
-
-
-
+        createRemoveListener();
 
         return view;
     }
@@ -89,21 +88,28 @@ public class PantryFragment extends Fragment {
     private void createPantryListView(){
         ArrayList<PantryIngredientModel> ingredientModelList = databaseMethods.getPantryForUser();
         pantryList = view.findViewById(R.id.pantryList);
-        pantryList.setAdapter(new PantryCustomAdapter(getContext(),ingredientModelList));
+        pantryCustomAdapter = new PantryCustomAdapter(getContext(), ingredientModelList);
+        pantryList.setAdapter(pantryCustomAdapter);
     }
 
 
     private void createRemoveListener(){
         removeButton = view.findViewById(R.id.removeFromPantryButton);
-        //TODO Methods to remove ingredient from pantry via checkbox.
         removeButton.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
-
+                for(int i=0;i<pantryCustomAdapter.getCount();i++){
+                    if(pantryCustomAdapter.isChecked(i)){
+                        String ingredientName = pantryCustomAdapter.getItem(i).getIngredientName();
+                        String expiryDate = pantryCustomAdapter.getItem(i).getExpiryDate();
+                        databaseMethods.removeIngredient(ingredientName,expiryDate);
+                    }
+                }
+                createPantryListView();
             }
         });
     }
-
 
 
 }
