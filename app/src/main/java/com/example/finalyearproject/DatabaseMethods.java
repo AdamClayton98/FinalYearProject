@@ -40,6 +40,14 @@ public class DatabaseMethods extends SQLiteOpenHelper {
     public static final String COLUMN_MEASUREMENT_TYPE = "MEASUREMENT_TYPE";
     public static final String COLUMN_EXPIRY_DATE = "EXPIRY_DATE";
     public static final String TABLE_PANTRIES = "PANTRIES";
+    public static final String TABLE_RECIPES = "RECIPES";
+    public static final String COLUMN_RECIPE_NAME = "RECIPE_NAME";
+    public static final String COLUMN_INGREDIENTS = "INGREDIENTS";
+    public static final String COLUMN_STEPS = "STEPS";
+    public static final String COLUMN_COOKING_TIME = "COOKING_TIME";
+    public static final String COLUMN_SERVES = "SERVES";
+    public static final String COLUMN_NUM_OF_VIEWS = "NUM_OF_VIEWS";
+    public static final String COLUMN_NUM_OF_FAVOURITES = "NUM_OF_FAVOURITES";
 
     public DatabaseMethods(@Nullable Context context) {
         super(context, "project.db", null, 1);
@@ -50,6 +58,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         createUserTable(db);
         createAllergiesTable(db);
         createPantriesTable(db);
+        createRecipesTable(db);
     }
 
     private void createUserTable(SQLiteDatabase db) {
@@ -66,6 +75,11 @@ public class DatabaseMethods extends SQLiteOpenHelper {
 
     private void createPantriesTable(SQLiteDatabase db) {
         String createTableStatement = "CREATE TABLE IF NOT EXISTS " + TABLE_PANTRIES + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_USERID + " TEXT, " + COLUMN_INGREDIENT_NAME + " TEXT, " + COLUMN_AMOUNT + " INTEGER, " + COLUMN_MEASUREMENT_TYPE + " TEXT, " + COLUMN_EXPIRY_DATE + " TEXT)";
+        db.execSQL(createTableStatement);
+    }
+
+    private void createRecipesTable(SQLiteDatabase db){
+        String createTableStatement = "CREATE TABLE IF NOT EXISTS " + TABLE_RECIPES + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_USERID + " TEXT, " + COLUMN_RECIPE_NAME + " TEXT, " + COLUMN_INGREDIENTS + " TEXT, " + COLUMN_STEPS + " TEXT, " + COLUMN_COOKING_TIME + " TEXT, " + COLUMN_SERVES + " TEXT, " + COLUMN_NUM_OF_VIEWS + " INTEGER, " + COLUMN_NUM_OF_FAVOURITES + " INTEGER)";
         db.execSQL(createTableStatement);
     }
 
@@ -87,7 +101,6 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         String query = "DELETE FROM " + TABLE_ALLERGIES + " WHERE " + COLUMN_USERID + " = '" + MainActivity.uid + "' AND " + COLUMN_ALLERGY_NAME + " = '" + allergy + "'";
 
         Cursor cursor = db.rawQuery(query, null);
-        cursor.close();
         return cursor.moveToFirst();
     }
 
@@ -250,6 +263,24 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         } else {
             return false;
         }
+    }
+
+
+    public void addRecipe(String recipeName, String cookingTime, String serves, String ingredients, String steps){
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        recipeName = recipeName.toUpperCase();
+        ingredients = ingredients.toUpperCase();
+        steps = steps.toUpperCase();
+        contentValues.put(COLUMN_USERID, MainActivity.uid);
+        contentValues.put(COLUMN_RECIPE_NAME, recipeName);
+        contentValues.put(COLUMN_COOKING_TIME, cookingTime);
+        contentValues.put(COLUMN_SERVES, serves);
+        contentValues.put(COLUMN_INGREDIENTS, ingredients);
+        contentValues.put(COLUMN_STEPS, steps);
+
+        db.insert(TABLE_RECIPES, null, contentValues);
+        db.close();
     }
 
     @Override

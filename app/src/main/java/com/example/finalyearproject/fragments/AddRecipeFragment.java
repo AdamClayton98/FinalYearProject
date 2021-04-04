@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.finalyearproject.DatabaseMethods;
 import com.example.finalyearproject.R;
 import com.google.android.gms.common.SignInButton;
 
@@ -41,6 +43,7 @@ public class AddRecipeFragment extends Fragment {
     Button addStepButton;
     LinearLayout stepListLayout;
     Button uploadRecipeButton;
+    DatabaseMethods databaseMethods;
 
 
     public AddRecipeFragment() {
@@ -75,6 +78,8 @@ public class AddRecipeFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_add_recipe, container, false);
+
+        databaseMethods = new DatabaseMethods(getContext());
 
         recipeNameInput = view.findViewById(R.id.addRecipeNameInput);
 
@@ -244,8 +249,8 @@ public class AddRecipeFragment extends Fragment {
             }
         }
 
-        System.out.println(ingredientsForDb);
-        System.out.println(stepsForDb);
+        databaseMethods.addRecipe(recipeName, cookingTime, serves, ingredientsForDb, stepsForDb);
+
     }
 
 }
