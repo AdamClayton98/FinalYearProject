@@ -9,8 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.finalyearproject.DatabaseMethods;
+import com.example.finalyearproject.Models.RecipeModel;
 import com.example.finalyearproject.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,10 +25,8 @@ public class MyRecipesFragment extends Fragment {
 
     View view;
     FloatingActionButton toAddRecipeButton;
+    DatabaseMethods databaseMethods;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public MyRecipesFragment() {
         // Required empty public constructor
@@ -56,6 +58,8 @@ public class MyRecipesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view= inflater.inflate(R.layout.fragment_my_recipes, container, false);
+        databaseMethods = new DatabaseMethods(getContext());
+
         setListenerToAddRecipeButton();
 
 
@@ -70,5 +74,13 @@ public class MyRecipesFragment extends Fragment {
                 getFragmentManager().beginTransaction().replace(R.id.fl_wrapper,new AddRecipeFragment()).commit();
             }
         });
+    }
+
+    public void getAndDisplayRecipes(){
+        ArrayList<RecipeModel> recipes = databaseMethods.getMyRecipes();
+
+        
+
+
     }
 }

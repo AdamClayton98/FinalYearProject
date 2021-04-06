@@ -42,5 +42,6 @@
     <string name="add_step">add step</string>
     <string name="serves">Serves</string>
     <string name="upload_recipe">Upload Recipe</string>
+    <string name="recipe_image">Recipe Image</string>
 
 </resources>

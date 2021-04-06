@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".fragments.MyRecipesFragment">
 
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/toAddRecipeButton"
         android:layout_width="wrap_content"
@@ -18,6 +17,17 @@
         android:clickable="true"
         android:contentDescription="@string/go_to_add_new_recipe"
         android:src="@drawable/ic_baseline_upload_24"
-        android:focusable="true" />
+        android:focusable="true"
+        tools:ignore="RelativeOverlap" />
+
+
+    <GridView
+        android:id="@+id/gv_myrecipes"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:horizontalSpacing="10dp"
+        android:verticalSpacing="10dp"/>
+
+
 
 </RelativeLayout>

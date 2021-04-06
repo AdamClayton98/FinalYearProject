@@ -234,7 +234,7 @@ public class AddRecipeFragment extends Fragment {
 
         for(int i=0;i<ingredients.size();i++){
             if(i!=ingredients.size()-1){
-                ingredientsForDb = ingredientsForDb + (ingredients.get(i)) + "$";
+                ingredientsForDb = ingredientsForDb + (ingredients.get(i)) + "|";
             }else{
                 ingredientsForDb = ingredientsForDb + (ingredients.get(i));
             }
@@ -243,14 +243,14 @@ public class AddRecipeFragment extends Fragment {
 
         for(int i=0;i<steps.size();i++){
             if(i!=steps.size()-1){
-                stepsForDb = stepsForDb + (steps.get(i)) + "$";
+                stepsForDb = stepsForDb + (steps.get(i)) + "|";
             }else{
                 stepsForDb = stepsForDb + (steps.get(i));
             }
         }
 
         databaseMethods.addRecipe(recipeName, cookingTime, serves, ingredientsForDb, stepsForDb);
-
+        getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, new MyRecipesFragment()).commit();
     }
 
 }

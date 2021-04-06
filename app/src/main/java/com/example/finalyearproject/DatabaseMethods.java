@@ -13,6 +13,7 @@ import androidx.annotation.RequiresApi;
 
 import com.example.finalyearproject.Models.AllergyModel;
 import com.example.finalyearproject.Models.PantryIngredientModel;
+import com.example.finalyearproject.Models.RecipeModel;
 import com.example.finalyearproject.Models.UserModel;
 import com.example.finalyearproject.fragments.AllergiesFragment;
 import com.google.android.gms.common.internal.Objects;
@@ -23,6 +24,8 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -281,6 +284,40 @@ public class DatabaseMethods extends SQLiteOpenHelper {
 
         db.insert(TABLE_RECIPES, null, contentValues);
         db.close();
+    }
+
+    public ArrayList<RecipeModel> getMyRecipes(){
+        SQLiteDatabase db = getReadableDatabase();
+        ArrayList<RecipeModel> recipes = new ArrayList<>();
+
+        String query = "SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_USERID + " = '" + MainActivity.uid + "'";
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                int id = cursor.getInt(0);
+                String recipeName = cursor.getString(2);
+                ArrayList<String> ingredients = stringToArrayFromDb(cursor.getString(3));
+                ArrayList<String> steps = stringToArrayFromDb(cursor.getString(4));
+                String cookingTime = cursor.getString(5);
+                String serves = cursor.getString(6);
+
+                RecipeModel recipe = new RecipeModel(id, recipeName, ingredients, steps, cookingTime, serves);
+
+                recipes.add(recipe);
+
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+        cursor.close();
+
+        return recipes;
+    }
+
+    private ArrayList<String> stringToArrayFromDb(String textToSplit){
+        return (ArrayList<String>) Arrays.asList(textToSplit.split("\\|"));
     }
 
     @Override
