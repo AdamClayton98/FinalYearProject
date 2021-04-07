@@ -51,6 +51,9 @@ public class DatabaseMethods extends SQLiteOpenHelper {
     public static final String COLUMN_SERVES = "SERVES";
     public static final String COLUMN_NUM_OF_VIEWS = "NUM_OF_VIEWS";
     public static final String COLUMN_NUM_OF_FAVOURITES = "NUM_OF_FAVOURITES";
+    public static final String COLUMN_RECIPE_ID = "RECIPE_ID";
+    public static final String COLUMN_RATING = "RATING";
+    public static final String TABLE_RATINGS = "RATINGS";
 
     public DatabaseMethods(@Nullable Context context) {
         super(context, "project.db", null, 1);
@@ -62,6 +65,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         createAllergiesTable(db);
         createPantriesTable(db);
         createRecipesTable(db);
+        createRatingsTable(db);
     }
 
     private void createUserTable(SQLiteDatabase db) {
@@ -83,6 +87,11 @@ public class DatabaseMethods extends SQLiteOpenHelper {
 
     private void createRecipesTable(SQLiteDatabase db){
         String createTableStatement = "CREATE TABLE IF NOT EXISTS " + TABLE_RECIPES + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_USERID + " TEXT, " + COLUMN_RECIPE_NAME + " TEXT, " + COLUMN_INGREDIENTS + " TEXT, " + COLUMN_STEPS + " TEXT, " + COLUMN_COOKING_TIME + " TEXT, " + COLUMN_SERVES + " TEXT, " + COLUMN_NUM_OF_VIEWS + " INTEGER, " + COLUMN_NUM_OF_FAVOURITES + " INTEGER)";
+        db.execSQL(createTableStatement);
+    }
+
+    private void createRatingsTable(SQLiteDatabase db){
+        String createTableStatement = "CREATE TABLE IF NOT EXISTS " + TABLE_RATINGS + " (" + COLUMN_USERID + " TEXT, " + COLUMN_RECIPE_ID + " INTEGER, " + COLUMN_RATING + " REAL)";
         db.execSQL(createTableStatement);
     }
 
@@ -198,12 +207,12 @@ public class DatabaseMethods extends SQLiteOpenHelper {
 
                 try {
                     if (checkDateIs2DaysAfterToday(expiryDate)) {
-                        removeIngredient(ingredientName,expiryDate);
+                        removeIngredient(ingredientName);
                         continue;
                     }
                 } catch (ParseException e) {
                     e.printStackTrace();
-                    ingredientName = "Failed to move this expired ingredient";
+                    ingredientName = "Failed to remove this expired ingredient";
                 }
 
                 PantryIngredientModel ingredient = new PantryIngredientModel(ingredientName, amount, measurementType, expiryDate);
@@ -219,9 +228,9 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         return ingredients;
     }
 
-    public boolean removeIngredient(String ingredient, String expiryDate) {
+    public boolean removeIngredient(String ingredient) {
         SQLiteDatabase db = getWritableDatabase();
-        String query = "DELETE FROM " + TABLE_PANTRIES + " WHERE " + COLUMN_USERID + " = '" + MainActivity.uid + "' AND " + COLUMN_INGREDIENT_NAME + " = '" + ingredient + "' AND " + COLUMN_EXPIRY_DATE + " = '" + expiryDate + "'";
+        String query = "DELETE FROM " + TABLE_PANTRIES + " WHERE " + COLUMN_USERID + " = '" + MainActivity.uid + "' AND " + COLUMN_INGREDIENT_NAME + " = '" + ingredient + "'";
 
         Cursor cursor = db.rawQuery(query, null);
         return cursor.moveToFirst();
@@ -298,12 +307,13 @@ public class DatabaseMethods extends SQLiteOpenHelper {
             do {
                 int id = cursor.getInt(0);
                 String recipeName = cursor.getString(2);
-                ArrayList<String> ingredients = stringToArrayFromDb(cursor.getString(3));
-                ArrayList<String> steps = stringToArrayFromDb(cursor.getString(4));
+                List<String> ingredients = stringToArrayFromDb(cursor.getString(3));
+                List<String> steps = stringToArrayFromDb(cursor.getString(4));
                 String cookingTime = cursor.getString(5);
                 String serves = cursor.getString(6);
+                int rating = getRatingForRecipe(id);
 
-                RecipeModel recipe = new RecipeModel(id, recipeName, ingredients, steps, cookingTime, serves);
+                RecipeModel recipe = new RecipeModel(id, recipeName, ingredients, steps, cookingTime, serves, rating);
 
                 recipes.add(recipe);
 
@@ -316,8 +326,30 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         return recipes;
     }
 
-    private ArrayList<String> stringToArrayFromDb(String textToSplit){
-        return (ArrayList<String>) Arrays.asList(textToSplit.split("\\|"));
+    private List<String> stringToArrayFromDb(String textToSplit){
+        List<String> stringsArrayList = new ArrayList<>();
+        String[] stringsArray = textToSplit.split("\\|");
+        stringsArrayList = Arrays.asList(stringsArray);
+        return stringsArrayList;
+    }
+
+    private int getRatingForRecipe(int recipeId){
+        int overallRating = 0;
+        int numberOfRatings = 0;
+        SQLiteDatabase db = getReadableDatabase();
+        String query = "SELECT RATING FROM " + TABLE_RATINGS + " WHERE " + COLUMN_RECIPE_ID + " = '" + recipeId + "'";
+        Cursor cursor = db.rawQuery(query, null);
+        if(cursor.moveToFirst()){
+            do {
+                overallRating = overallRating + cursor.getInt(0);
+                numberOfRatings = numberOfRatings + 1;
+            }while(cursor.moveToNext());
+        }
+        if(overallRating!=0){
+            overallRating = overallRating / numberOfRatings;
+        }
+        cursor.close();
+        return overallRating;
     }
 
     @Override

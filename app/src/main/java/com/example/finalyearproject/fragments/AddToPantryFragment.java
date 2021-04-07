@@ -34,6 +34,7 @@ public class AddToPantryFragment extends Fragment {
     EditText amountInput;
     EditText expiryInput;
     DatePickerDialog datePickerDialog;
+    String dateRegex = "^(?:(?:31(\\/|-|\\.)(?:0?[13578]|1[02]))\\1|(?:(?:29|30)(\\/|-|\\.)(?:0?[13-9]|1[0-2])\\2))(?:(?:1[6-9]|[2-9]\\d)?\\d{2})$|^(?:29(\\/|-|\\.)0?2\\3(?:(?:(?:1[6-9]|[2-9]\\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\\d|2[0-8])(\\/|-|\\.)(?:(?:0?[1-9])|(?:1[0-2]))\\4(?:(?:1[6-9]|[2-9]\\d)?\\d{2})$";
 
 
     View view;
@@ -127,9 +128,37 @@ public class AddToPantryFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String ingredient = ingredientInput.getText().toString();
+                if(ingredient.isEmpty()){
+                    Toast.makeText(getContext(), "Ingredient name cannot be empty", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if(amountInput.getText().toString().isEmpty()){
+                    Toast.makeText(getContext(), "Amount cannot be empty", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 int amount = Integer.parseInt(amountInput.getText().toString());
+
                 String expiryDate = expiryInput.getText().toString();
+
                 String measurementType = measurementDropdown.getSelectedItem().toString();
+
+
+                if(expiryDate.isEmpty()){
+                    Toast.makeText(getContext(), "Expiry date cannot be empty", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if(!expiryDate.matches(dateRegex)){
+                    Toast.makeText(getContext(), "Date must be in dd/mm/yyyy format", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if(measurementType.isEmpty()){
+                    Toast.makeText(getContext(), "Measurement type cannot be empty", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 databaseMethods.addIngredientToPantry(ingredient,amount,measurementType,expiryDate);
 

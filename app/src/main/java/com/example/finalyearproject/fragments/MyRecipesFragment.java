@@ -8,7 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.GridView;
 
+import com.example.finalyearproject.CustomAdapters.RecipeGVAdapter;
 import com.example.finalyearproject.DatabaseMethods;
 import com.example.finalyearproject.Models.RecipeModel;
 import com.example.finalyearproject.R;
@@ -26,6 +28,7 @@ public class MyRecipesFragment extends Fragment {
     View view;
     FloatingActionButton toAddRecipeButton;
     DatabaseMethods databaseMethods;
+    GridView recipesGV;
 
 
     public MyRecipesFragment() {
@@ -61,6 +64,7 @@ public class MyRecipesFragment extends Fragment {
         databaseMethods = new DatabaseMethods(getContext());
 
         setListenerToAddRecipeButton();
+        getAndDisplayRecipes();
 
 
         return view;
@@ -79,8 +83,11 @@ public class MyRecipesFragment extends Fragment {
     public void getAndDisplayRecipes(){
         ArrayList<RecipeModel> recipes = databaseMethods.getMyRecipes();
 
-        
+        RecipeGVAdapter adapter = new RecipeGVAdapter(getContext(), recipes);
 
+        recipesGV = view.findViewById(R.id.gv_myrecipes);
+
+        recipesGV.setAdapter(adapter);
 
     }
 }

@@ -1,24 +1,25 @@
 package com.example.finalyearproject.Models;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RecipeModel {
 
     int id;
     String recipeName;
-    ArrayList<String> ingredients;
-    ArrayList<String> steps;
+    List<String> ingredients;
+    List<String> steps;
     String cookingTime;
     String serves;
+    int rating;
 
-    public RecipeModel(int id,String recipeName, ArrayList<String> ingredients, ArrayList<String> steps, String cookingTime, String serves) {
+    public RecipeModel(int id,String recipeName, List<String> ingredients, List<String> steps, String cookingTime, String serves, int rating) {
         this.id = id;
         this.recipeName = recipeName;
         this.ingredients = ingredients;
         this.steps = steps;
         this.cookingTime = cookingTime;
         this.serves = serves;
+        this.rating = rating;
     }
 
     public String getRecipeName() {
@@ -29,19 +30,19 @@ public class RecipeModel {
         this.recipeName = recipeName;
     }
 
-    public ArrayList<String> getIngredients() {
+    public List<String> getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(ArrayList<String> ingredients) {
+    public void setIngredients(List<String> ingredients) {
         this.ingredients = ingredients;
     }
 
-    public ArrayList<String> getSteps() {
+    public List<String> getSteps() {
         return steps;
     }
 
-    public void setSteps(ArrayList<String> steps) {
+    public void setSteps(List<String> steps) {
         this.steps = steps;
     }
 
@@ -67,5 +68,13 @@ public class RecipeModel {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
     }
 }
