@@ -394,6 +394,26 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         return imageUid;
     }
 
+    public RecipeModel getIndividualRecipe(int recipeId){
+        RecipeModel recipeModel=null;
+        String query = "SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_ID + " = '" + recipeId + "'";
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if(cursor.moveToFirst()){
+            int id = cursor.getInt(0);
+            String recipeName = cursor.getString(2);
+            List<String> ingredients = stringToArrayFromDb(cursor.getString(3));
+            List<String> steps = stringToArrayFromDb(cursor.getString(4));
+            String cookingTime = cursor.getString(5);
+            String serves = cursor.getString(6);
+            int rating = getRatingForRecipe(recipeId);
+            String uuid = getRecipeImageUid(recipeId);
+
+            recipeModel = new RecipeModel(id,recipeName,ingredients,steps,cookingTime,serves,rating,uuid);
+        }
+        return recipeModel;
+    }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 

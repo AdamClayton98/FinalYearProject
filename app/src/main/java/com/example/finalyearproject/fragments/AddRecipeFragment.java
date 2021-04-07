@@ -289,6 +289,11 @@ public class AddRecipeFragment extends Fragment {
             return;
         }
 
+        if(recipeImagePlaceholder.getDrawable()==null){
+            Toast.makeText(getContext(), "You must upload a recipe image", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         String ingredientsForDb = "";
         String stepsForDb = "";
 

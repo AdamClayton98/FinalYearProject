@@ -77,8 +77,4 @@ public class RecipeGVAdapter extends BaseAdapter {
 
         return convertView;
     }
-
-
-
-
 }

@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 
@@ -93,5 +94,17 @@ public class MyRecipesFragment extends Fragment {
 
         recipesGV.setAdapter(adapter);
 
+        recipesGV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Bundle b = new Bundle();
+                b.putString("recipeId", String.valueOf(adapter.getItem(position).getId()));
+                Fragment viewRecipeFragment = new ViewRecipeFragment();
+                viewRecipeFragment.setArguments(b);
+                getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, viewRecipeFragment).commit();
+            }
+        });
+
     }
+
 }
