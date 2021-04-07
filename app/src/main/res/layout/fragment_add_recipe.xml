@@ -106,6 +106,31 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/serving_label" />
 
+        <RelativeLayout
+            android:id="@+id/uploadImageLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/servingDropdown">
+
+            <ImageView
+                android:id="@+id/recipeImagePlaceholder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/uploadimageplaceholder" />
+
+
+            <Button
+                android:id="@+id/addImageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="0dp"
+                android:text="@string/add_image" />
+        </RelativeLayout>
+
+
         <Button
             android:id="@+id/uploadRecipeButton"
             android:layout_width="wrap_content"
@@ -114,7 +139,7 @@
             android:layout_marginEnd="10dp"
             android:text="@string/upload_recipe"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/servingDropdown" />
+            app:layout_constraintTop_toBottomOf="@+id/uploadImageLayout" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

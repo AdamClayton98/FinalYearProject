@@ -1,10 +1,16 @@
 package com.example.finalyearproject.fragments;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.provider.ContactsContract;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,10 +25,20 @@ import android.widget.Toast;
 import com.example.finalyearproject.DatabaseMethods;
 import com.example.finalyearproject.R;
 import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -44,6 +60,15 @@ public class AddRecipeFragment extends Fragment {
     LinearLayout stepListLayout;
     Button uploadRecipeButton;
     DatabaseMethods databaseMethods;
+    Button addImageButton;
+    ImageView recipeImagePlaceholder;
+    String imageuuid;
+
+    private Uri filePath;
+    private final int PICK_IMAGE_REQUEST=71;
+
+    FirebaseStorage firebaseStorage;
+    StorageReference storageReference;
 
 
     public AddRecipeFragment() {
@@ -79,6 +104,9 @@ public class AddRecipeFragment extends Fragment {
 
         view = inflater.inflate(R.layout.fragment_add_recipe, container, false);
 
+        firebaseStorage = FirebaseStorage.getInstance();
+        storageReference = firebaseStorage.getReference();
+
         databaseMethods = new DatabaseMethods(getContext());
 
         recipeNameInput = view.findViewById(R.id.addRecipeNameInput);
@@ -88,6 +116,8 @@ public class AddRecipeFragment extends Fragment {
 
         stepListLayout = view.findViewById(R.id.layout_step_list);
         addStepButton = view.findViewById(R.id.addStepToFormButton);
+
+        addImageButton = view.findViewById(R.id.addImageButton);
 
         uploadRecipeButton = view.findViewById(R.id.uploadRecipeButton);
 
@@ -99,6 +129,9 @@ public class AddRecipeFragment extends Fragment {
         ArrayAdapter cookingTimeAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item, cookingTimes);
         cookingTimeDropdown.setAdapter(cookingTimeAdapter);
 
+        recipeImagePlaceholder = view.findViewById(R.id.recipeImagePlaceholder);
+
+        setAddImageButtonListener();
 
         addIngredientButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -198,6 +231,33 @@ public class AddRecipeFragment extends Fragment {
         return steps;
     }
 
+    public void setAddImageButtonListener(){
+        addImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+            }
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode,resultCode,data);
+        if(requestCode==PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null){
+            filePath=data.getData();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), filePath);
+                recipeImagePlaceholder.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+                Toast.makeText(getContext(), "Unable to upload this image", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
 
     private void uploadRecipe() {
         if (ingredientListLayout.getChildCount() == 0) {
@@ -213,7 +273,7 @@ public class AddRecipeFragment extends Fragment {
         ArrayList<String> ingredients = getAllIngredients();
         ArrayList<String> steps = getAllSteps();
 
-        String recipeName = recipeNameInput.getText().toString();
+        String recipeName = recipeNameInput.getText().toString().toUpperCase();
         String cookingTime = cookingTimeDropdown.getSelectedItem().toString();
         String serves = servingDropdown.getSelectedItem().toString();
 
@@ -250,7 +310,32 @@ public class AddRecipeFragment extends Fragment {
         }
 
         databaseMethods.addRecipe(recipeName, cookingTime, serves, ingredientsForDb, stepsForDb);
+        uploadImage();
+        databaseMethods.uploadRecipeImageUrl(recipeName, imageuuid);
+
         getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, new MyRecipesFragment()).commit();
+    }
+
+    public void uploadImage(){
+        imageuuid = UUID.randomUUID().toString();
+        if(filePath!=null){
+            final ProgressDialog progressDialog = new ProgressDialog(getContext());
+            progressDialog.setTitle("Uploading Image...");
+            progressDialog.show();
+
+            StorageReference ref = storageReference.child("images/" + imageuuid);
+            ref.putFile(filePath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    progressDialog.dismiss();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    progressDialog.dismiss();
+                }
+            });
+        }
     }
 
 }

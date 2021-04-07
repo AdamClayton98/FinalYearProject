@@ -43,5 +43,7 @@
     <string name="serves">Serves</string>
     <string name="upload_recipe">Upload Recipe</string>
     <string name="recipe_image">Recipe Image</string>
+    <string name="add_image">ADD IMAGE</string>
+    <string name="uploadimageplaceholder">uploadImagePlaceholder</string>
 
 </resources>

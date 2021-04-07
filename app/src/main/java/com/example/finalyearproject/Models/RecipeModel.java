@@ -11,8 +11,9 @@ public class RecipeModel {
     String cookingTime;
     String serves;
     int rating;
+    String uuid;
 
-    public RecipeModel(int id,String recipeName, List<String> ingredients, List<String> steps, String cookingTime, String serves, int rating) {
+    public RecipeModel(int id,String recipeName, List<String> ingredients, List<String> steps, String cookingTime, String serves, int rating, String uuid) {
         this.id = id;
         this.recipeName = recipeName;
         this.ingredients = ingredients;
@@ -20,6 +21,7 @@ public class RecipeModel {
         this.cookingTime = cookingTime;
         this.serves = serves;
         this.rating = rating;
+        this.uuid=uuid;
     }
 
     public String getRecipeName() {
@@ -76,5 +78,13 @@ public class RecipeModel {
 
     public void setRating(int rating) {
         this.rating = rating;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 }

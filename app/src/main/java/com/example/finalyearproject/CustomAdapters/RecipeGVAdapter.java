@@ -1,6 +1,8 @@
 package com.example.finalyearproject.CustomAdapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
@@ -15,9 +17,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.finalyearproject.DatabaseMethods;
 import com.example.finalyearproject.Models.PantryIngredientModel;
 import com.example.finalyearproject.Models.RecipeModel;
 import com.example.finalyearproject.R;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
@@ -53,10 +59,20 @@ public class RecipeGVAdapter extends BaseAdapter {
             TextView recipeName = convertView.findViewById(R.id.cardRecipeName);
             TextView rating = convertView.findViewById(R.id.cardRecipeRating);
             ImageView recipeImage = convertView.findViewById(R.id.cardRecipeImage);
+            FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+            StorageReference storageReference = firebaseStorage.getReference();
+            final long MB=1024*1024;
+            storageReference.child("images/" + recipeModel.getUuid()).getBytes(MB).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                @Override
+                public void onSuccess(byte[] bytes) {
+                    Bitmap imageBitmap=BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+                    recipeImage.setImageBitmap(imageBitmap);
+                }
+            });
 
             recipeName.setText(recipeModel.getRecipeName());
             rating.setText(String.valueOf(recipeModel.getRating()));
-            recipeImage.setImageResource(R.drawable.ic_disabled_24);
+
         }
 
         return convertView;

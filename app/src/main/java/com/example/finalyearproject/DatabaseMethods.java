@@ -54,6 +54,8 @@ public class DatabaseMethods extends SQLiteOpenHelper {
     public static final String COLUMN_RECIPE_ID = "RECIPE_ID";
     public static final String COLUMN_RATING = "RATING";
     public static final String TABLE_RATINGS = "RATINGS";
+    public static final String COLUMN_IMAGE_URL = "IMAGE_URL";
+    public static final String TABLE_IMAGES = "IMAGES";
 
     public DatabaseMethods(@Nullable Context context) {
         super(context, "project.db", null, 1);
@@ -66,6 +68,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         createPantriesTable(db);
         createRecipesTable(db);
         createRatingsTable(db);
+        createImagesTable(db);
     }
 
     private void createUserTable(SQLiteDatabase db) {
@@ -92,6 +95,11 @@ public class DatabaseMethods extends SQLiteOpenHelper {
 
     private void createRatingsTable(SQLiteDatabase db){
         String createTableStatement = "CREATE TABLE IF NOT EXISTS " + TABLE_RATINGS + " (" + COLUMN_USERID + " TEXT, " + COLUMN_RECIPE_ID + " INTEGER, " + COLUMN_RATING + " REAL)";
+        db.execSQL(createTableStatement);
+    }
+
+    private void createImagesTable(SQLiteDatabase db){
+        String createTableStatement = "CREATE TABLE IF NOT EXISTS " + TABLE_IMAGES + " (" + COLUMN_RECIPE_ID + " INTEGER, " + COLUMN_IMAGE_URL + " TEXT)";
         db.execSQL(createTableStatement);
     }
 
@@ -312,8 +320,9 @@ public class DatabaseMethods extends SQLiteOpenHelper {
                 String cookingTime = cursor.getString(5);
                 String serves = cursor.getString(6);
                 int rating = getRatingForRecipe(id);
+                String uuid = getRecipeImageUid(id);
 
-                RecipeModel recipe = new RecipeModel(id, recipeName, ingredients, steps, cookingTime, serves, rating);
+                RecipeModel recipe = new RecipeModel(id, recipeName, ingredients, steps, cookingTime, serves, rating, uuid);
 
                 recipes.add(recipe);
 
@@ -350,6 +359,39 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         }
         cursor.close();
         return overallRating;
+    }
+
+    public void uploadRecipeImageUrl(String recipeName, String imageuuid){
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        String recipeId = getRecipeIdForUser(recipeName);
+
+        contentValues.put(COLUMN_RECIPE_ID, recipeId);
+        contentValues.put(COLUMN_IMAGE_URL, imageuuid);
+
+        db.insert(TABLE_IMAGES, null, contentValues);
+    }
+
+    public String getRecipeIdForUser(String recipeName){
+        String recipeId=null;
+        SQLiteDatabase db = getReadableDatabase();
+        String query = "SELECT " + COLUMN_ID + " FROM " + TABLE_RECIPES + " WHERE " + COLUMN_RECIPE_NAME + " = '" + recipeName + "' AND " + COLUMN_USERID + " = '" + MainActivity.uid + "'";
+        Cursor cursor = db.rawQuery(query,null);
+        if(cursor.moveToFirst()) {
+            recipeId = cursor.getString(0);
+        }
+        return recipeId;
+    }
+
+    public String getRecipeImageUid(int recipeId){
+        String imageUid=null;
+        String query="SELECT " + COLUMN_IMAGE_URL + " FROM " + TABLE_IMAGES + " WHERE " + COLUMN_RECIPE_ID + " = '" + recipeId + "'";
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if(cursor.moveToFirst()){
+            imageUid=cursor.getString(0);
+        }
+        return imageUid;
     }
 
     @Override
