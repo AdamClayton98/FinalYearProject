@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.finalyearproject.Models.AllergyModel;
 import com.example.finalyearproject.Models.PantryIngredientModel;
@@ -431,6 +432,30 @@ public class DatabaseMethods extends SQLiteOpenHelper {
                 imageView.setImageBitmap(imageBitmap);
             }
         });
+    }
+
+    public void addRating(String recipeId, int rating){
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues contentValues=new ContentValues();
+
+        if(checkRatingExists(recipeId)){
+            String query = "UPDATE " + TABLE_RATINGS + " SET " + COLUMN_RATING + " = " + rating + " WHERE " + COLUMN_USERID + " = '" + MainActivity.uid + "' AND " + COLUMN_RECIPE_ID + " = '" + recipeId +"'";
+            db.execSQL(query);
+        }else{
+            contentValues.put(COLUMN_USERID, MainActivity.uid);
+            contentValues.put(COLUMN_RECIPE_ID, recipeId);
+            contentValues.put(COLUMN_RATING, rating);
+            db.insert(TABLE_RATINGS, null,contentValues);
+        }
+    }
+
+    public boolean checkRatingExists(String recipeId){
+        SQLiteDatabase db = getReadableDatabase();
+        String query="SELECT " + COLUMN_RATING + " FROM " + TABLE_RATINGS + " WHERE " + COLUMN_RECIPE_ID + " = '" + recipeId + "' AND " + COLUMN_USERID + " = '" + MainActivity.uid + "'";
+
+        Cursor cursor=db.rawQuery(query,null);
+        return cursor.moveToFirst();
+
     }
 
 

@@ -2,12 +2,14 @@ package com.example.finalyearproject.fragments;
 
 import android.os.Bundle;
 
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -35,6 +37,8 @@ public class ViewRecipeFragment extends Fragment {
     TextView recipeCookingTime;
     TextView recipeServing;
     TextView recipeRating;
+    Button rateButton;
+    Button commentButton;
 
 
     public ViewRecipeFragment() {
@@ -79,6 +83,8 @@ public class ViewRecipeFragment extends Fragment {
         recipeCookingTime = view.findViewById(R.id.viewRecipeCookingTime);
         recipeServing = view.findViewById(R.id.viewRecipeServing);
         recipeRating = view.findViewById(R.id.viewRecipeRating);
+        rateButton = view.findViewById(R.id.rateRecipeButton);
+        commentButton = view.findViewById(R.id.commentRecipeButton);
 
         databaseMethods.setRecipeImage(recipeImage, recipeModel);
         recipeName.setText(recipeModel.getRecipeName());
@@ -103,7 +109,33 @@ public class ViewRecipeFragment extends Fragment {
             stepsLayout.addView(view);
         }
 
+        setButtonOnClickListeners();
+
 
         return view;
+    }
+
+    public void setButtonOnClickListeners(){
+        rateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment dialogFragment = new RateRecipeDialogFragment();
+                Bundle b = new Bundle();
+                b.putString("recipeId", recipeId);
+                dialogFragment.setArguments(b);
+                dialogFragment.show(getFragmentManager(), "viewRecipeFragment");
+            }
+        });
+
+        commentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle b = new Bundle();
+                b.putString("recipeId", String.valueOf(recipeId));
+                Fragment commentsFragment = new CommentsFragment();
+                commentsFragment.setArguments(b);
+                getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, commentsFragment).addToBackStack(null).commit();
+            }
+        });
     }
 }

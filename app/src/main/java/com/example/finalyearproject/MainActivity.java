@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.fl_wrapper,new HomeFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fl_wrapper,new HomeFragment()).addToBackStack(null).commit();
 
     }
 
@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
                             break;
                     }
 
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fl_wrapper, selectedFragment).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fl_wrapper, selectedFragment).addToBackStack(null).commit();
 
                     return true;
                 }
@@ -104,20 +104,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void toAllergies(View view){
-        getSupportFragmentManager().beginTransaction().replace(R.id.fl_wrapper, new AllergiesFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fl_wrapper, new AllergiesFragment()).addToBackStack(null).commit();
 
     }
 
     public void toMyDetails(View view){
-        getSupportFragmentManager().beginTransaction().replace(R.id.fl_wrapper, new MyDetailsFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fl_wrapper, new MyDetailsFragment()).addToBackStack(null).commit();
     }
 
     public void toMyRecipes(View view){
-        getSupportFragmentManager().beginTransaction().replace(R.id.fl_wrapper,new MyRecipesFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fl_wrapper,new MyRecipesFragment()).addToBackStack(null).commit();
     }
 
     public void toAddToPantry(View view){
-        getSupportFragmentManager().beginTransaction().replace(R.id.fl_wrapper, new AddToPantryFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fl_wrapper, new AddToPantryFragment()).addToBackStack(null).commit();
     }
 
 }

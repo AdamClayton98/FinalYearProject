@@ -318,7 +318,7 @@ public class AddRecipeFragment extends Fragment {
         uploadImage();
         databaseMethods.uploadRecipeImageUrl(recipeName, imageuuid);
 
-        getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, new MyRecipesFragment()).commit();
+        getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, new MyRecipesFragment()).addToBackStack(null).commit();
     }
 
     public void uploadImage(){

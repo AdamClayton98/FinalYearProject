@@ -50,5 +50,14 @@
     <string name="clockicon">ClockIcon</string>
     <string name="ingredients">Ingredients</string>
     <string name="steps">Steps</string>
+    <string name="comment">Comment</string>
+    <string name="rate_this_recipe">Rate This Recipe:</string>
+    <string name="star1buttonicon">star1buttonicon</string>
+    <string name="star2buttonicon">star2buttonicon</string>
+    <string name="star3buttonicon">star3buttonicon</string>
+    <string name="star4buttonicon">star4buttonicon</string>
+    <string name="star5buttonicon">star5buttonicon</string>
+    <string name="rate">RATE</string>
+    <string name="cancel">Cancel</string>
 
 </resources>

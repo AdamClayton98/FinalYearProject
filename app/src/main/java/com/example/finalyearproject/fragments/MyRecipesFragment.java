@@ -80,7 +80,7 @@ public class MyRecipesFragment extends Fragment {
         toAddRecipeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getFragmentManager().beginTransaction().replace(R.id.fl_wrapper,new AddRecipeFragment()).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fl_wrapper,new AddRecipeFragment()).addToBackStack(null).commit();
             }
         });
     }
@@ -98,10 +98,10 @@ public class MyRecipesFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Bundle b = new Bundle();
-                b.putSerializable("recipeId", String.valueOf(adapter.getItem(position).getId()));
+                b.putString("recipeId", String.valueOf(adapter.getItem(position).getId()));
                 Fragment viewRecipeFragment = new ViewRecipeFragment();
                 viewRecipeFragment.setArguments(b);
-                getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, viewRecipeFragment).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, viewRecipeFragment).addToBackStack(null).commit();
             }
         });
 

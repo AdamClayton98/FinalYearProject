@@ -164,7 +164,7 @@ public class AddToPantryFragment extends Fragment {
 
                 Toast.makeText(getContext(), "Added " + ingredient + " to pantry.", Toast.LENGTH_SHORT).show();
 
-                getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, new PantryFragment()).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, new PantryFragment()).addToBackStack(null).commit();
             }
         });
 
