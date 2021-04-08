@@ -33,7 +33,7 @@
                 android:id="@+id/cardRecipeRating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18dp"/>
+                android:textSize="18sp"/>
 
             <ImageView
                 android:id="@+id/cardRecipeStarImage"

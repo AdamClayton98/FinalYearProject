@@ -98,7 +98,7 @@ public class MyRecipesFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Bundle b = new Bundle();
-                b.putString("recipeId", String.valueOf(adapter.getItem(position).getId()));
+                b.putSerializable("recipeId", String.valueOf(adapter.getItem(position).getId()));
                 Fragment viewRecipeFragment = new ViewRecipeFragment();
                 viewRecipeFragment.setArguments(b);
                 getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, viewRecipeFragment).commit();

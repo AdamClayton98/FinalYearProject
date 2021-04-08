@@ -1,8 +1,9 @@
 package com.example.finalyearproject.Models;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class RecipeModel {
+public class RecipeModel implements Serializable {
 
     int id;
     String recipeName;

@@ -1,15 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.ViewRecipeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <ImageView
+        android:id="@+id/viewRecipeImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/recipe_image"
+        android:scaleType="fitCenter" />
+
+
+    <LinearLayout
+        android:id="@+id/viewRecipeDetailsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/viewRecipeImage"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30sp">
+
+            <ImageView
+                android:id="@+id/viewRecipeClock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/clockicon"
+                android:src="@drawable/ic_clock_24" />
+
+            <TextView
+                android:id="@+id/viewRecipeCookingTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50sp"
+            android:layout_marginEnd="50sp">
+
+            <ImageView
+                android:id="@+id/viewRecipeServeImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/peopleicon"
+                android:src="@drawable/ic_baseline_people_24" />
+
+            <TextView
+                android:id="@+id/viewRecipeServing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/viewRecipeStarImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/staricon"
+                android:src="@drawable/ic_baseline_star_black_24" />
+
+            <TextView
+                android:id="@+id/viewRecipeRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="30sp"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </LinearLayout>
+
     <TextView
         android:id="@+id/viewRecipeName"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/viewRecipeDetailsLayout"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp"
+        android:textSize="20sp" />
 
+    <ScrollView
+        android:id="@+id/viewRecipeScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/viewRecipeName">
 
-</FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/recipeIngredientsHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:text="@string/ingredients"/>
+            <LinearLayout
+                android:id="@+id/viewRecipeIngredientsLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="10sp"/>
+
+            <TextView
+                android:id="@+id/recipeStepsHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:text="@string/steps"/>
+            <LinearLayout
+                android:id="@+id/viewRecipeStepsLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

@@ -4,9 +4,12 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.finalyearproject.DatabaseMethods;
@@ -14,6 +17,8 @@ import com.example.finalyearproject.Models.RecipeModel;
 import com.example.finalyearproject.R;
 
 import org.w3c.dom.Text;
+
+import java.util.zip.Inflater;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,7 +30,12 @@ public class ViewRecipeFragment extends Fragment {
     private String recipeId;
     View view;
     DatabaseMethods databaseMethods;
+    ImageView recipeImage;
     TextView recipeName;
+    TextView recipeCookingTime;
+    TextView recipeServing;
+    TextView recipeRating;
+
 
     public ViewRecipeFragment() {
         // Required empty public constructor
@@ -63,8 +73,35 @@ public class ViewRecipeFragment extends Fragment {
         databaseMethods=new DatabaseMethods(getContext());
         int recipeIdAsInt = Integer.parseInt(recipeId);
         RecipeModel recipeModel = databaseMethods.getIndividualRecipe(recipeIdAsInt);
+
         recipeName = view.findViewById(R.id.viewRecipeName);
+        recipeImage = view.findViewById(R.id.viewRecipeImage);
+        recipeCookingTime = view.findViewById(R.id.viewRecipeCookingTime);
+        recipeServing = view.findViewById(R.id.viewRecipeServing);
+        recipeRating = view.findViewById(R.id.viewRecipeRating);
+
+        databaseMethods.setRecipeImage(recipeImage, recipeModel);
         recipeName.setText(recipeModel.getRecipeName());
+        recipeCookingTime.setText(recipeModel.getCookingTime());
+        recipeServing.setText(recipeModel.getServes());
+        recipeRating.setText(String.valueOf(recipeModel.getRating()));
+        LayoutInflater textInflater = LayoutInflater.from(getContext());
+
+        LinearLayout ingredientsLayout = view.findViewById(R.id.viewRecipeIngredientsLayout);
+        for (String ingredient:recipeModel.getIngredients()) {
+            View view = textInflater.inflate(android.R.layout.simple_list_item_1, ingredientsLayout, false);
+            TextView textView = view.findViewById(android.R.id.text1);
+            textView.setText(ingredient);
+            ingredientsLayout.addView(view);
+        }
+
+        LinearLayout stepsLayout = view.findViewById(R.id.viewRecipeStepsLayout);
+        for(String step:recipeModel.getSteps()){
+            View view = textInflater.inflate(android.R.layout.simple_list_item_1, stepsLayout, false);
+            TextView textView = view.findViewById(android.R.id.text1);
+            textView.setText(step);
+            stepsLayout.addView(view);
+        }
 
 
         return view;

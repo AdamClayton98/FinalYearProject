@@ -5,7 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -17,6 +20,9 @@ import com.example.finalyearproject.Models.RecipeModel;
 import com.example.finalyearproject.Models.UserModel;
 import com.example.finalyearproject.fragments.AllergiesFragment;
 import com.google.android.gms.common.internal.Objects;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -315,7 +321,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
             do {
                 int id = cursor.getInt(0);
                 String recipeName = cursor.getString(2);
-                List<String> ingredients = stringToArrayFromDb(cursor.getString(3));
+                List<String> ingredients = stringToArrayFromDb(cursor.getString(3).replace(","," - "));
                 List<String> steps = stringToArrayFromDb(cursor.getString(4));
                 String cookingTime = cursor.getString(5);
                 String serves = cursor.getString(6);
@@ -402,7 +408,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         if(cursor.moveToFirst()){
             int id = cursor.getInt(0);
             String recipeName = cursor.getString(2);
-            List<String> ingredients = stringToArrayFromDb(cursor.getString(3));
+            List<String> ingredients = stringToArrayFromDb(cursor.getString(3).replace(",", " - "));
             List<String> steps = stringToArrayFromDb(cursor.getString(4));
             String cookingTime = cursor.getString(5);
             String serves = cursor.getString(6);
@@ -413,6 +419,20 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         }
         return recipeModel;
     }
+
+    public void setRecipeImage(ImageView imageView, RecipeModel recipeModel){
+        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+        StorageReference storageReference = firebaseStorage.getReference();
+        final long MB=1024*1024;
+        storageReference.child("images/" + recipeModel.getUuid()).getBytes(MB).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                Bitmap imageBitmap= BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+                imageView.setImageBitmap(imageBitmap);
+            }
+        });
+    }
+
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
