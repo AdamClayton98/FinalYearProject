@@ -2,8 +2,8 @@
     <string name="app_name">Final Year Project</string>
     <string name="email_address">E-Mail Address</string>
     <string name="password">Password</string>
-    <string name="login">LOGIN</string>
-    <string name="register">REGISTER</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
     <string name="or">or</string>
     <string name="full_name">Full Name</string>
     <string name="username">Username</string>
@@ -16,7 +16,7 @@
     <string name="sign_out">Sign Out</string>
     <string name="profile_picture">Profile Picture</string>
     <string name="allergy">Allergy</string>
-    <string name="add">ADD</string>
+    <string name="add">Add</string>
     <string name="my_recipes">My Recipes</string>
     <string name="allergies">Allergies</string>
     <string name="my_rating">My Rating</string>
@@ -32,7 +32,7 @@
     <string name="measurement_type">Measurement Type</string>
     <string name="expiry_date">Expiry Date</string>
     <string name="items_will_be_removed_from_your_pantry_2_days_after_expiry_date">Items will be removed from your pantry 2 days after expiry date.</string>
-    <string name="remove">REMOVE</string>
+    <string name="remove">Remove</string>
     <string name="go_to_add_new_recipe">Go to add new recipe</string>
     <string name="recipe_name">Recipe Name</string>
     <string name="cooking_time">Cooking Time</string>
@@ -42,7 +42,7 @@
     <string name="add_step">add step</string>
     <string name="serves">Serves</string>
     <string name="upload_recipe">Upload Recipe</string>
-    <string name="add_image">ADD IMAGE</string>
+    <string name="add_image">Add Image</string>
     <string name="uploadimageplaceholder">uploadImagePlaceholder</string>
     <string name="recipe_image">Recipe Image</string>
     <string name="staricon">StarIcon</string>
@@ -57,7 +57,12 @@
     <string name="star3buttonicon">star3buttonicon</string>
     <string name="star4buttonicon">star4buttonicon</string>
     <string name="star5buttonicon">star5buttonicon</string>
-    <string name="rate">RATE</string>
+    <string name="rate">Rate</string>
     <string name="cancel">Cancel</string>
+    <string name="add_comment">Add Comment</string>
+    <string name="comments">Comments</string>
+    <string name="report">Report</string>
+    <string name="comment_on_this_recipe">Comment on this recipe:</string>
+    <string name="type_your_comment_here">Type your comment here...</string>
 
 </resources>

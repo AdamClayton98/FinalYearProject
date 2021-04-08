@@ -16,6 +16,7 @@ import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.finalyearproject.Models.AllergyModel;
+import com.example.finalyearproject.Models.CommentModel;
 import com.example.finalyearproject.Models.PantryIngredientModel;
 import com.example.finalyearproject.Models.RecipeModel;
 import com.example.finalyearproject.Models.UserModel;
@@ -57,12 +58,17 @@ public class DatabaseMethods extends SQLiteOpenHelper {
     public static final String COLUMN_COOKING_TIME = "COOKING_TIME";
     public static final String COLUMN_SERVES = "SERVES";
     public static final String COLUMN_NUM_OF_VIEWS = "NUM_OF_VIEWS";
-    public static final String COLUMN_NUM_OF_FAVOURITES = "NUM_OF_FAVOURITES";
+    public static final String TABLE_FAVOURITES = "FAVOURITES";
+    public static final String COLUMN_NUM_OF_FAVOURITES = "NUM_OF_" + TABLE_FAVOURITES;
     public static final String COLUMN_RECIPE_ID = "RECIPE_ID";
     public static final String COLUMN_RATING = "RATING";
     public static final String TABLE_RATINGS = "RATINGS";
     public static final String COLUMN_IMAGE_URL = "IMAGE_URL";
     public static final String TABLE_IMAGES = "IMAGES";
+    public static final String TABLE_COMMENTS = "COMMENTS";
+    public static final String COLUMN_COMMENT_TEXT = "COMMENT_TEXT";
+    public static final String COLUMN_MEAL_NUMBER = "MEAL_NUMBER";
+    public static final String COLUMN_DATE_OF_PLAN = "DATE_OF_PLAN";
 
     public DatabaseMethods(@Nullable Context context) {
         super(context, "project.db", null, 1);
@@ -76,6 +82,9 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         createRecipesTable(db);
         createRatingsTable(db);
         createImagesTable(db);
+        createCommentsTable(db);
+        createFavouritesTable(db);
+        createPlansTable(db);
     }
 
     private void createUserTable(SQLiteDatabase db) {
@@ -107,6 +116,21 @@ public class DatabaseMethods extends SQLiteOpenHelper {
 
     private void createImagesTable(SQLiteDatabase db){
         String createTableStatement = "CREATE TABLE IF NOT EXISTS " + TABLE_IMAGES + " (" + COLUMN_RECIPE_ID + " INTEGER, " + COLUMN_IMAGE_URL + " TEXT)";
+        db.execSQL(createTableStatement);
+    }
+
+    private void createCommentsTable(SQLiteDatabase db){
+        String createTableStatement = "CREATE TABLE IF NOT EXISTS " + TABLE_COMMENTS + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_RECIPE_ID + " INTEGER, " + COLUMN_USERID + " TEXT, " + COLUMN_COMMENT_TEXT + " TEXT)";
+        db.execSQL(createTableStatement);
+    }
+
+    private void createFavouritesTable(SQLiteDatabase db){
+        String createTableStatement = "CREATE TABLE IF NOT EXISTS " + TABLE_FAVOURITES + " (" + COLUMN_USERID + " TEXT, " + COLUMN_RECIPE_ID + " INTEGER)";
+        db.execSQL(createTableStatement);
+    }
+
+    private void createPlansTable(SQLiteDatabase db){
+        String createTableStatement = "CREATE TABLE IF NOT EXISTS PLANS (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_USERID + " TEXT, " + COLUMN_RECIPE_ID + " INTEGER, " + COLUMN_MEAL_NUMBER + " INTEGER, " + COLUMN_DATE_OF_PLAN + " TEXT)";
         db.execSQL(createTableStatement);
     }
 
@@ -456,6 +480,54 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         Cursor cursor=db.rawQuery(query,null);
         return cursor.moveToFirst();
 
+    }
+
+    public void addComment(String recipeId, String commentText){
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(COLUMN_RECIPE_ID, recipeId);
+        contentValues.put(COLUMN_USERID, MainActivity.uid);
+        contentValues.put(COLUMN_COMMENT_TEXT, commentText);
+        db.insert(TABLE_COMMENTS, null, contentValues);
+    }
+
+    public ArrayList<CommentModel> getComments(String recipeId){
+        ArrayList<CommentModel> comments = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        int recipeIdInt = Integer.parseInt(recipeId);
+        String query = "SELECT * FROM " + TABLE_COMMENTS + " WHERE " + COLUMN_RECIPE_ID + " = " + recipeIdInt;
+        Cursor cursor = db.rawQuery(query,null);
+        if(cursor.moveToFirst()){
+            do {
+                int id = cursor.getInt(0);
+                String uid = cursor.getString(2);
+                String user = getUsernameOfUser(uid);
+                String comment = cursor.getString(3);
+                CommentModel commentModel = new CommentModel(id,user,comment,uid, Integer.parseInt(recipeId));
+                comments.add(commentModel);
+
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+        return comments;
+    }
+
+    public void deleteComment(int commentId){
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "DELETE FROM " + TABLE_COMMENTS + " WHERE " + COLUMN_ID + " = '" + commentId + "'";
+        db.execSQL(query);
+    }
+
+    public String getUsernameOfUser(String uid){
+        SQLiteDatabase db = getReadableDatabase();
+        String username = null;
+        String query = "SELECT " + COLUMN_USERNAME + " FROM " + USERS_TABLE + " WHERE " + COLUMN_ID + " = '" + uid + "'";
+        Cursor cursor = db.rawQuery(query, null);
+        if(cursor.moveToFirst()){
+            username=cursor.getString(0);
+        }
+        return username;
     }
 
 

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/cardview_light_background"
+    android:padding="5dp">
+
+    <TextView
+        android:id="@+id/commentDialogHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/comment_on_this_recipe"
+        android:textSize="25sp"/>
+
+    <EditText
+        android:id="@+id/commentDialogInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/type_your_comment_here"
+        android:inputType="textLongMessage"
+        android:layout_below="@+id/commentDialogHeader"/>
+
+</RelativeLayout>

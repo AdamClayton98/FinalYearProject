@@ -2,13 +2,21 @@ package com.example.finalyearproject.fragments;
 
 import android.os.Bundle;
 
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ListView;
 
+import com.example.finalyearproject.CustomAdapters.CommentListAdapter;
+import com.example.finalyearproject.DatabaseMethods;
+import com.example.finalyearproject.Models.CommentModel;
 import com.example.finalyearproject.R;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,6 +27,8 @@ public class CommentsFragment extends Fragment {
 
 
     String recipeId;
+    View view;
+    DatabaseMethods databaseMethods;
 
     public CommentsFragment() {
         // Required empty public constructor
@@ -52,6 +62,28 @@ public class CommentsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_comments, container, false);
+        view= inflater.inflate(R.layout.fragment_comments, container, false);
+
+        databaseMethods = new DatabaseMethods(getContext());
+
+        Button addCommentButton = view.findViewById(R.id.addCommentButton);
+        ArrayList<CommentModel>  comments = databaseMethods.getComments(String.valueOf(recipeId));
+        CommentListAdapter commentListAdapter = new CommentListAdapter(getContext(), comments, getFragmentManager());
+        ListView commentList = view.findViewById(R.id.commentListLayout);
+        commentList.setAdapter(commentListAdapter);
+
+        addCommentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment dialogFragment = new CommentDialogFragment();
+                Bundle b = new Bundle();
+                b.putString("recipeId", String.valueOf(recipeId));
+                dialogFragment.setArguments(b);
+                dialogFragment.show(getFragmentManager(), "commentsFragment");
+            }
+        });
+
+
+        return view;
     }
 }

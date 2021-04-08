@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/commentPublisher"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"/>
+
+    <TextView
+        android:id="@+id/commentText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/commentPublisher"
+        android:textSize="14sp"/>
+
+    <RelativeLayout
+        android:id="@+id/commentButtonLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/commentText">
+
+        <TextView
+            android:id="@+id/commentRemoveText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10sp"
+            android:layout_toStartOf="@id/commentReportText"
+            android:text="@string/remove"
+            android:textSize="10sp"
+            android:visibility="invisible"
+            tools:ignore="SmallSp" />
+
+        <TextView
+            android:id="@+id/commentReportText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="10sp"
+            android:text="@string/report"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10sp"
+            tools:ignore="SmallSp" />
+    </RelativeLayout>
+</RelativeLayout>
