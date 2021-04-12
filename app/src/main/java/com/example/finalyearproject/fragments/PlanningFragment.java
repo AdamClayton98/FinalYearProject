@@ -1,5 +1,6 @@
 package com.example.finalyearproject.fragments;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,8 +8,13 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.TextView;
 
 import com.example.finalyearproject.R;
+
+import java.util.Calendar;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,33 +23,28 @@ import com.example.finalyearproject.R;
  */
 public class PlanningFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    View view;
+    DatePickerDialog datePickerDialog;
+    TextView dateHeader;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    Button addButton1;
+    Button addButton2;
+    Button addButton3;
+    Button removeButton1;
+    Button removeButton2;
+    Button removeButton3;
+    Button changeButton1;
+    Button changeButton2;
+    Button changeButton3;
 
     public PlanningFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment PlanningFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static PlanningFragment newInstance(String param1, String param2) {
+
+    public static PlanningFragment newInstance() {
         PlanningFragment fragment = new PlanningFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -51,16 +52,51 @@ public class PlanningFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_planning, container, false);
+        view = inflater.inflate(R.layout.fragment_planning, container, false);
+
+        dateHeader=view.findViewById(R.id.planningDateSelected);
+        openDatePicker();
+
+        dateHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDatePicker();
+            }
+        });
+
+        return view;
+    }
+
+    public void openDatePicker(){
+        final Calendar c = Calendar.getInstance();
+
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+        datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                String dayString = String.valueOf(dayOfMonth);
+                String monthString = String.valueOf(month+1);
+
+                if(dayString.length()==1){
+                    dayString="0"+dayString;
+                }
+
+                if(monthString.length()==1){
+                    monthString="0"+monthString;
+                }
+
+                dateHeader.setText(dayString+"/"+monthString+"/"+year);
+            }
+        }, year,month,day);
+
+        datePickerDialog.show();
     }
 }

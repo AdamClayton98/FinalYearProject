@@ -609,9 +609,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         if(cursor.moveToFirst()){
             numOfFaves = cursor.getInt(0);
         }
-        System.out.println(numOfFaves);
         numOfFaves = numOfFaves + 1;
-        System.out.println(numOfFaves);
         query = "UPDATE " + TABLE_RECIPES + " SET " + COLUMN_NUM_OF_FAVOURITES + " = " + numOfFaves + " WHERE " + COLUMN_ID + " = '" +recipeId + "'";
         db.execSQL(query);
         db.close();

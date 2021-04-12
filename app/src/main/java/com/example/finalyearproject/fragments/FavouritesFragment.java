@@ -61,8 +61,7 @@ public class FavouritesFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_favourites, container, false);
         databaseMethods=new DatabaseMethods(getContext());
-
-
+        getAndDisplayRecipes();
         return view;
     }
 

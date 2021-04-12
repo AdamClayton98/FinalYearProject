@@ -81,6 +81,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="20sp"
+        android:gravity="center"
         android:text="@string/your_rating_is_an_average_of_all_scores_taken_from_your_uploaded_recipes"
         android:textSize="16sp" />
 

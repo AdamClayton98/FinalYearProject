@@ -68,4 +68,11 @@
     <string name="favourite_button">Favourite Button</string>
     <string name="you_currently_do_not_have_any_ratings">You currently do not have any ratings</string>
     <string name="your_rating_is_an_average_of_all_scores_taken_from_your_uploaded_recipes">Your rating is an average of all scores taken from your uploaded recipes</string>
+    <string name="meal_1">Meal 1</string>
+    <string name="empty">empty</string>
+    <string name="change">Change</string>
+    <string name="meal_2">Meal 2</string>
+    <string name="meal_3">Meal 3</string>
+    <string name="cooking_a_planned_meal_will_remove_the_ingredients_from_your_pantry">Cooking a planned meal will remove the ingredients from your pantry.</string>
+    <string name="to_add_a_meal_to_your_plan_it_must_be_in_your_favourites_first">To add a meal to your plan it must be in your favourites first.</string>
 </resources>

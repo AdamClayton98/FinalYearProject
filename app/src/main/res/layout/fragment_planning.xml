@@ -5,10 +5,210 @@
     android:layout_height="match_parent"
     tools:context=".fragments.PlanningFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/planningDateSelected"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10sp"
+        android:layout_marginEnd="10dp"
+        android:textSize="50sp" />
+
+    <RelativeLayout
+        android:id="@+id/planningMealLayout1"
+        android:layout_below="@id/planningDateSelected"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40sp">
+
+        <TextView
+            android:id="@+id/planningMealOneTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/meal_1"
+            android:textSize="25sp"
+            android:layout_marginStart="10sp"/>
+
+        <TextView
+            android:id="@+id/planningMealOneRecipe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/planningMealOneTitle"
+            android:layout_marginStart="10sp"
+            android:text="@string/empty"/>
+
+        <LinearLayout
+            android:id="@+id/planningButtonLayout1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40sp"
+            android:layout_toEndOf="@id/planningMealOneTitle">
+
+            <Button
+                android:id="@+id/planningAddButton1"
+                android:layout_width="65sp"
+                android:layout_height="40sp"
+                android:text="@string/add"
+                android:layout_marginEnd="10sp"/>
+
+            <Button
+                android:id="@+id/planningRemoveButton1"
+                android:layout_width="90sp"
+                android:layout_height="40sp"
+                android:text="@string/remove"
+                android:textSize="12sp"
+                android:layout_marginEnd="10sp"
+                android:visibility="invisible"
+                />
+
+            <Button
+                android:id="@+id/planningChangeButton1"
+                android:layout_width="90sp"
+                android:layout_height="40sp"
+                android:text="@string/change"
+                android:textSize="12sp"
+                android:visibility="invisible"/>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/planningMealLayout2"
+        android:layout_below="@id/planningMealLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40sp">
+
+        <TextView
+            android:id="@+id/planningMealTwoTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/meal_2"
+            android:textSize="25sp"
+            android:layout_marginStart="10sp"/>
+
+        <TextView
+            android:id="@+id/planningMealTwoRecipe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/planningMealTwoTitle"
+            android:layout_marginStart="10sp"
+            android:text="@string/empty"/>
+
+        <LinearLayout
+            android:id="@+id/planningButtonLayout2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40sp"
+            android:layout_toEndOf="@id/planningMealTwoTitle">
+
+            <Button
+                android:id="@+id/planningAddButton2"
+                android:layout_width="65sp"
+                android:layout_height="40sp"
+                android:text="@string/add"
+                android:layout_marginEnd="10sp"/>
+
+            <Button
+                android:id="@+id/planningRemoveButton2"
+                android:layout_width="90sp"
+                android:layout_height="40sp"
+                android:text="@string/remove"
+                android:textSize="12sp"
+                android:layout_marginEnd="10sp"
+                android:visibility="invisible"
+                />
+
+            <Button
+                android:id="@+id/planningChangeButton2"
+                android:layout_width="90sp"
+                android:layout_height="40sp"
+                android:text="@string/change"
+                android:textSize="12sp"
+                android:visibility="invisible"/>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/planningMealLayout3"
+        android:layout_below="@id/planningMealLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40sp">
+
+        <TextView
+            android:id="@+id/planningMealThreeTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/meal_3"
+            android:textSize="25sp"
+            android:layout_marginStart="10sp"/>
+
+        <TextView
+            android:id="@+id/planningMealThreeRecipe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/planningMealThreeTitle"
+            android:layout_marginStart="10sp"
+            android:text="@string/empty"/>
+
+        <LinearLayout
+            android:id="@+id/planningButtonLayout3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40sp"
+            android:layout_toEndOf="@id/planningMealThreeTitle">
+
+            <Button
+                android:id="@+id/planningAddButton3"
+                android:layout_width="65sp"
+                android:layout_height="40sp"
+                android:text="@string/add"
+                android:layout_marginEnd="10sp"/>
+
+            <Button
+                android:id="@+id/planningRemoveButton3"
+                android:layout_width="90sp"
+                android:layout_height="40sp"
+                android:text="@string/remove"
+                android:textSize="12sp"
+                android:layout_marginEnd="10sp"
+                android:visibility="invisible"
+                />
+
+            <Button
+                android:id="@+id/planningChangeButton3"
+                android:layout_width="90sp"
+                android:layout_height="40sp"
+                android:text="@string/change"
+                android:textSize="12sp"
+                android:visibility="invisible"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/planningHint1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/planningMealLayout3"
+        android:layout_marginTop="20sp"
+        android:gravity="center"
+        android:text="@string/to_add_a_meal_to_your_plan_it_must_be_in_your_favourites_first"/>
+
+    <TextView
+        android:id="@+id/planningHint2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20sp"
+        android:gravity="center"
+        android:text="@string/cooking_a_planned_meal_will_remove_the_ingredients_from_your_pantry" />
+
 
 </RelativeLayout>
+
+
