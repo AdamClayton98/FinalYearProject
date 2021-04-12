@@ -5,12 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,18 +26,19 @@ import com.example.finalyearproject.fragments.MyDetailsFragment;
 import com.example.finalyearproject.fragments.MyRatingFragment;
 import com.example.finalyearproject.fragments.MyRecipesFragment;
 import com.example.finalyearproject.fragments.PantryFragment;
+import com.example.finalyearproject.fragments.PlanningDateSelectionFragment;
 import com.example.finalyearproject.fragments.PlanningFragment;
 import com.example.finalyearproject.fragments.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView signoutText;
-
     EditText allergyInput;
+    Fragment selectedFragment = null;
 
     Button addAllergyButton;
 
@@ -57,14 +60,13 @@ public class MainActivity extends AppCompatActivity {
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    Fragment selectedFragment = null;
 
                     switch (item.getItemId()) {
                         case R.id.ic_home:
                             selectedFragment = new HomeFragment();
                             break;
                         case R.id.ic_plan:
-                            selectedFragment = new PlanningFragment();
+                            selectedFragment = new PlanningDateSelectionFragment();
                             break;
                         case R.id.ic_fave:
                             selectedFragment = new FavouritesFragment();
@@ -124,5 +126,6 @@ public class MainActivity extends AppCompatActivity {
     public void toMyRating(View view){
         getSupportFragmentManager().beginTransaction().replace(R.id.fl_wrapper, new MyRatingFragment()).addToBackStack(null).commit();
     }
+
 
 }

@@ -12,8 +12,11 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
+import com.example.finalyearproject.DatabaseMethods;
+import com.example.finalyearproject.Models.PlanModel;
 import com.example.finalyearproject.R;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -26,6 +29,14 @@ public class PlanningFragment extends Fragment {
     View view;
     DatePickerDialog datePickerDialog;
     TextView dateHeader;
+    String selectedDate;
+    DatabaseMethods databaseMethods;
+    int recipeId1;
+    int recipeId2;
+    int recipeId3;
+    int planId1;
+    int planId2;
+    int planId3;
 
     Button addButton1;
     Button addButton2;
@@ -33,9 +44,9 @@ public class PlanningFragment extends Fragment {
     Button removeButton1;
     Button removeButton2;
     Button removeButton3;
-    Button changeButton1;
-    Button changeButton2;
-    Button changeButton3;
+    TextView mealSubtitle1;
+    TextView mealSubtitle2;
+    TextView mealSubtitle3;
 
     public PlanningFragment() {
         // Required empty public constructor
@@ -52,6 +63,7 @@ public class PlanningFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        selectedDate=getArguments().getString("selectedDate");
     }
 
     @Override
@@ -60,8 +72,46 @@ public class PlanningFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_planning, container, false);
 
+        addButton1=view.findViewById(R.id.planningAddButton1);
+        addButton2=view.findViewById(R.id.planningAddButton2);
+        addButton3=view.findViewById(R.id.planningAddButton3);
+        removeButton1=view.findViewById(R.id.planningRemoveButton1);
+        removeButton2=view.findViewById(R.id.planningRemoveButton2);
+        removeButton3=view.findViewById(R.id.planningRemoveButton3);
+        mealSubtitle1=view.findViewById(R.id.planningMealOneRecipe);
+        mealSubtitle2=view.findViewById(R.id.planningMealTwoRecipe);
+        mealSubtitle3=view.findViewById(R.id.planningMealThreeRecipe);
+
         dateHeader=view.findViewById(R.id.planningDateSelected);
-        openDatePicker();
+        dateHeader.setText(selectedDate);
+
+        databaseMethods = new DatabaseMethods(getContext());
+
+        ArrayList<PlanModel> plansForSelectedDate = databaseMethods.getPlanOnDate(selectedDate);
+
+        for(PlanModel plan:plansForSelectedDate){
+            if(plan.getMealNumber() == 1){
+                addButton1.setVisibility(View.INVISIBLE);
+                removeButton1.setVisibility(View.VISIBLE);
+                recipeId1=plan.getRecipeId();
+                planId1=plan.getId();
+                mealSubtitle1.setText(databaseMethods.getIndividualRecipe(recipeId1).getRecipeName());
+            }else if(plan.getMealNumber() == 2){
+                addButton2.setVisibility(View.INVISIBLE);
+                removeButton2.setVisibility(View.VISIBLE);
+                recipeId2=plan.getRecipeId();
+                planId2=plan.getId();
+                mealSubtitle2.setText(databaseMethods.getIndividualRecipe(recipeId2).getRecipeName());
+            }else if(plan.getMealNumber() == 3){
+                addButton3.setVisibility(View.INVISIBLE);
+                removeButton3.setVisibility(View.VISIBLE);
+                recipeId3=plan.getRecipeId();
+                planId3=plan.getId();
+                mealSubtitle3.setText(databaseMethods.getIndividualRecipe(recipeId3).getRecipeName());
+            }
+        }
+
+        createButtonListeners();
 
         dateHeader.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,6 +121,83 @@ public class PlanningFragment extends Fragment {
         });
 
         return view;
+    }
+
+
+    public void createButtonListeners(){
+        addButton1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PlanningSelectionFragment fragment = new PlanningSelectionFragment();
+                Bundle b = new Bundle();
+                b.putInt("mealNumber", 1);
+                b.putString("selectedDate", selectedDate);
+                fragment.setArguments(b);
+                getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, fragment).commit();
+            }
+        });
+
+        addButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PlanningSelectionFragment fragment = new PlanningSelectionFragment();
+                Bundle b = new Bundle();
+                b.putInt("mealNumber", 2);
+                b.putString("selectedDate", selectedDate);
+                fragment.setArguments(b);
+                getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, fragment).commit();
+            }
+        });
+
+        addButton3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PlanningSelectionFragment fragment = new PlanningSelectionFragment();
+                Bundle b = new Bundle();
+                b.putInt("mealNumber", 3);
+                b.putString("selectedDate", selectedDate);
+                fragment.setArguments(b);
+                getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, fragment).commit();
+            }
+        });
+
+
+        removeButton1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                databaseMethods.removePlan(planId1);
+                Bundle b = new Bundle();
+                b.putString("selectedDate", selectedDate);
+                PlanningFragment planningFragment = new PlanningFragment();
+                planningFragment.setArguments(b);
+                getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, planningFragment).commit();
+            }
+        });
+
+        removeButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                databaseMethods.removePlan(planId2);
+                Bundle b = new Bundle();
+                b.putString("selectedDate", selectedDate);
+                PlanningFragment planningFragment = new PlanningFragment();
+                planningFragment.setArguments(b);
+                getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, planningFragment).commit();
+            }
+        });
+
+
+        removeButton3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                databaseMethods.removePlan(planId3);
+                Bundle b = new Bundle();
+                b.putString("selectedDate", selectedDate);
+                PlanningFragment planningFragment = new PlanningFragment();
+                planningFragment.setArguments(b);
+                getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, planningFragment).commit();
+            }
+        });
     }
 
     public void openDatePicker(){
@@ -92,8 +219,11 @@ public class PlanningFragment extends Fragment {
                 if(monthString.length()==1){
                     monthString="0"+monthString;
                 }
-
-                dateHeader.setText(dayString+"/"+monthString+"/"+year);
+                Bundle b = new Bundle();
+                b.putString("selectedDate", dayString+"/"+monthString+"/"+year);
+                PlanningFragment planningFragment = new PlanningFragment();
+                planningFragment.setArguments(b);
+                getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, planningFragment).commit();
             }
         }, year,month,day);
 

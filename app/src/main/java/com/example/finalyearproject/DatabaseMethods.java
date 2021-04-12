@@ -20,6 +20,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.example.finalyearproject.Models.AllergyModel;
 import com.example.finalyearproject.Models.CommentModel;
 import com.example.finalyearproject.Models.PantryIngredientModel;
+import com.example.finalyearproject.Models.PlanModel;
 import com.example.finalyearproject.Models.RecipeModel;
 import com.example.finalyearproject.Models.UserModel;
 import com.example.finalyearproject.fragments.AllergiesFragment;
@@ -74,6 +75,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
     public static final String COLUMN_COMMENT_TEXT = "COMMENT_TEXT";
     public static final String COLUMN_MEAL_NUMBER = "MEAL_NUMBER";
     public static final String COLUMN_DATE_OF_PLAN = "DATE_OF_PLAN";
+    public static final String TABLE_PLANS = "PLANS";
 
     public DatabaseMethods(@Nullable Context context) {
         super(context, "project.db", null, 1);
@@ -135,7 +137,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
     }
 
     private void createPlansTable(SQLiteDatabase db){
-        String createTableStatement = "CREATE TABLE IF NOT EXISTS PLANS (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_USERID + " TEXT, " + COLUMN_RECIPE_ID + " INTEGER, " + COLUMN_MEAL_NUMBER + " INTEGER, " + COLUMN_DATE_OF_PLAN + " TEXT)";
+        String createTableStatement = "CREATE TABLE IF NOT EXISTS " + TABLE_PLANS + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_USERID + " TEXT, " + COLUMN_RECIPE_ID + " INTEGER, " + COLUMN_MEAL_NUMBER + " INTEGER, " + COLUMN_DATE_OF_PLAN + " TEXT)";
         db.execSQL(createTableStatement);
     }
 
@@ -680,6 +682,40 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         }else {
             return 0;
         }
+    }
+
+    public void addPlan(String recipeId, int mealNumber, String dateOfPlan){
+        SQLiteDatabase db =getWritableDatabase();
+        ContentValues contentValues= new ContentValues();
+        contentValues.put(COLUMN_USERID, MainActivity.uid);
+        contentValues.put(COLUMN_RECIPE_ID, recipeId);
+        contentValues.put(COLUMN_MEAL_NUMBER, mealNumber);
+        contentValues.put(COLUMN_DATE_OF_PLAN, dateOfPlan);
+        db.insert(TABLE_PLANS, null, contentValues);
+
+    }
+
+    public ArrayList<PlanModel> getPlanOnDate(String dateOfPlan){
+        ArrayList<PlanModel> plansForSelectedDate=new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_PLANS + " WHERE " + COLUMN_USERID + " = '" + MainActivity.uid + "' AND " + COLUMN_DATE_OF_PLAN + " = '" + dateOfPlan + "'";
+        Cursor cursor = db.rawQuery(query,null);
+        if(cursor.moveToFirst()){
+            int id = cursor.getInt(0);
+            String uid = cursor.getString(1);
+            int recipeId = cursor.getInt(2);
+            int mealNumber = cursor.getInt(3);
+            PlanModel planModel = new PlanModel(id, uid, recipeId, mealNumber, dateOfPlan);
+            plansForSelectedDate.add(planModel);
+        }
+        return plansForSelectedDate;
+    }
+
+    public void removePlan(int planId){
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "DELETE FROM " + TABLE_PLANS + " WHERE " + COLUMN_ID + " = " +planId;
+        db.execSQL(query);
+        db.close();
     }
 
 
