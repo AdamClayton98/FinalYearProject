@@ -44,9 +44,13 @@ public class PlanningFragment extends Fragment {
     Button removeButton1;
     Button removeButton2;
     Button removeButton3;
+    Button viewButton1;
+    Button viewButton2;
+    Button viewButton3;
     TextView mealSubtitle1;
     TextView mealSubtitle2;
     TextView mealSubtitle3;
+
 
     public PlanningFragment() {
         // Required empty public constructor
@@ -81,6 +85,9 @@ public class PlanningFragment extends Fragment {
         mealSubtitle1=view.findViewById(R.id.planningMealOneRecipe);
         mealSubtitle2=view.findViewById(R.id.planningMealTwoRecipe);
         mealSubtitle3=view.findViewById(R.id.planningMealThreeRecipe);
+        viewButton1=view.findViewById(R.id.planningViewButton1);
+        viewButton2=view.findViewById(R.id.planningViewButton2);
+        viewButton3=view.findViewById(R.id.planningViewButton3);
 
         dateHeader=view.findViewById(R.id.planningDateSelected);
         dateHeader.setText(selectedDate);
@@ -93,18 +100,21 @@ public class PlanningFragment extends Fragment {
             if(plan.getMealNumber() == 1){
                 addButton1.setVisibility(View.INVISIBLE);
                 removeButton1.setVisibility(View.VISIBLE);
+                viewButton1.setVisibility(View.VISIBLE);
                 recipeId1=plan.getRecipeId();
                 planId1=plan.getId();
                 mealSubtitle1.setText(databaseMethods.getIndividualRecipe(recipeId1).getRecipeName());
             }else if(plan.getMealNumber() == 2){
                 addButton2.setVisibility(View.INVISIBLE);
                 removeButton2.setVisibility(View.VISIBLE);
+                viewButton2.setVisibility(View.VISIBLE);
                 recipeId2=plan.getRecipeId();
                 planId2=plan.getId();
                 mealSubtitle2.setText(databaseMethods.getIndividualRecipe(recipeId2).getRecipeName());
             }else if(plan.getMealNumber() == 3){
                 addButton3.setVisibility(View.INVISIBLE);
                 removeButton3.setVisibility(View.VISIBLE);
+                viewButton3.setVisibility(View.VISIBLE);
                 recipeId3=plan.getRecipeId();
                 planId3=plan.getId();
                 mealSubtitle3.setText(databaseMethods.getIndividualRecipe(recipeId3).getRecipeName());
@@ -196,6 +206,39 @@ public class PlanningFragment extends Fragment {
                 PlanningFragment planningFragment = new PlanningFragment();
                 planningFragment.setArguments(b);
                 getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, planningFragment).commit();
+            }
+        });
+
+        viewButton1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ViewRecipeFragment viewRecipeFragment=new ViewRecipeFragment();
+                Bundle b = new Bundle();
+                b.putString("recipeId", String.valueOf(recipeId1));
+                viewRecipeFragment.setArguments(b);
+                getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, viewRecipeFragment).addToBackStack(null).commit();
+            }
+        });
+
+        viewButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ViewRecipeFragment viewRecipeFragment=new ViewRecipeFragment();
+                Bundle b = new Bundle();
+                b.putString("recipeId", String.valueOf(recipeId2));
+                viewRecipeFragment.setArguments(b);
+                getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, viewRecipeFragment).addToBackStack(null).commit();
+            }
+        });
+
+        viewButton3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ViewRecipeFragment viewRecipeFragment=new ViewRecipeFragment();
+                Bundle b = new Bundle();
+                b.putString("recipeId", String.valueOf(recipeId3));
+                viewRecipeFragment.setArguments(b);
+                getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, viewRecipeFragment).addToBackStack(null).commit();
             }
         });
     }

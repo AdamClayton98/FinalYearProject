@@ -64,6 +64,16 @@
                 android:visibility="invisible"
                 />
 
+            <Button
+                android:id="@+id/planningViewButton1"
+                android:layout_width="90sp"
+                android:layout_height="40sp"
+                android:text="@string/view"
+                android:textSize="12sp"
+                android:layout_marginEnd="10sp"
+                android:visibility="invisible"
+                />
+
         </LinearLayout>
     </RelativeLayout>
 
@@ -109,6 +119,16 @@
                 android:layout_width="90sp"
                 android:layout_height="40sp"
                 android:text="@string/remove"
+                android:textSize="12sp"
+                android:layout_marginEnd="10sp"
+                android:visibility="invisible"
+                />
+
+            <Button
+                android:id="@+id/planningViewButton2"
+                android:layout_width="90sp"
+                android:layout_height="40sp"
+                android:text="@string/view"
                 android:textSize="12sp"
                 android:layout_marginEnd="10sp"
                 android:visibility="invisible"
@@ -160,6 +180,16 @@
                 android:layout_width="90sp"
                 android:layout_height="40sp"
                 android:text="@string/remove"
+                android:textSize="12sp"
+                android:layout_marginEnd="10sp"
+                android:visibility="invisible"
+                />
+
+            <Button
+                android:id="@+id/planningViewButton3"
+                android:layout_width="90sp"
+                android:layout_height="40sp"
+                android:text="@string/view"
                 android:textSize="12sp"
                 android:layout_marginEnd="10sp"
                 android:visibility="invisible"
