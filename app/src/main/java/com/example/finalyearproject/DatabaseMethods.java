@@ -18,6 +18,7 @@ import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.finalyearproject.Models.AllergyModel;
+import com.example.finalyearproject.Models.BasicIngredientModel;
 import com.example.finalyearproject.Models.CommentModel;
 import com.example.finalyearproject.Models.PantryIngredientModel;
 import com.example.finalyearproject.Models.PlanModel;
@@ -280,6 +281,12 @@ public class DatabaseMethods extends SQLiteOpenHelper {
 
         Cursor cursor = db.rawQuery(query, null);
         return cursor.moveToFirst();
+    }
+
+    public void removeAmountOfIngredient(String ingredient, int amount, String expiry){
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "UPDATE " + TABLE_PANTRIES + " SET " + COLUMN_AMOUNT + " = " + amount + " WHERE " + COLUMN_INGREDIENT_NAME + " = '" + ingredient + " AND " + COLUMN_USERID + " = '" + MainActivity.uid + "' AND " + COLUMN_EXPIRY_DATE + " = '" + expiry + "'";
+        db.execSQL(query);
     }
 
     public boolean ingredientAndMeasurementTypeExists(String ingredient, String measurementType) {
@@ -715,6 +722,41 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         String query = "DELETE FROM " + TABLE_PLANS + " WHERE " + COLUMN_ID + " = " +planId;
         db.execSQL(query);
+        db.close();
+    }
+
+    public void cookRecipeAndRemoveFromPantry(int recipeId){
+        ArrayList<BasicIngredientModel> ingredients = new ArrayList<>();
+        String query = "SELECT " + COLUMN_INGREDIENTS + " FROM " + TABLE_RECIPES + " WHERE " + COLUMN_ID + " = '" + recipeId + "'";
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if(cursor.moveToFirst()){
+            List<String> ingredientsWithDetails = stringToArrayFromDb(cursor.getString(0));
+            for(String ingredientWithDetails:ingredientsWithDetails){
+                String[] ingredientsInParts = ingredientWithDetails.split(",");
+                BasicIngredientModel ingredientModel = new BasicIngredientModel(ingredientsInParts[0], ingredientsInParts[1]);
+                ingredients.add(ingredientModel);
+            }
+        }
+
+        SQLiteDatabase readDb = getReadableDatabase();
+        for(BasicIngredientModel ingredientModel:ingredients){
+            query = "SELECT * FROM " + TABLE_PANTRIES + " WHERE " + COLUMN_INGREDIENT_NAME + " = '" + ingredientModel.getIngredientName() + "' AND " + COLUMN_USERID + " = '" + MainActivity.uid + "' ORDER BY date(" + COLUMN_EXPIRY_DATE + ") DESC LIMIT 1";
+            cursor = readDb.rawQuery(query, null);
+            int existingAmount = 0;
+            int amountToRemove = Integer.parseInt(ingredientModel.getAmount());
+            String mostRecentExpiry=null;
+            if (cursor.moveToNext()) {
+                existingAmount = cursor.getInt(3);
+                mostRecentExpiry=cursor.getString(5);
+                if(existingAmount-amountToRemove <= 0){
+                    removeIngredient(ingredientModel.getIngredientName());
+                }else {
+                    removeAmountOfIngredient(ingredientModel.getIngredientName(), (existingAmount - amountToRemove), mostRecentExpiry);
+                }
+            }
+        }
+        cursor.close();
         db.close();
     }
 

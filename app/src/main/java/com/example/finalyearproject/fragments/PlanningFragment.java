@@ -1,6 +1,8 @@
 package com.example.finalyearproject.fragments;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -44,12 +46,15 @@ public class PlanningFragment extends Fragment {
     Button removeButton1;
     Button removeButton2;
     Button removeButton3;
-    Button viewButton1;
-    Button viewButton2;
-    Button viewButton3;
+    Button cookButton1;
+    Button cookButton2;
+    Button cookButton3;
     TextView mealSubtitle1;
     TextView mealSubtitle2;
     TextView mealSubtitle3;
+    TextView mealTitle1;
+    TextView mealTitle2;
+    TextView mealTitle3;
 
 
     public PlanningFragment() {
@@ -85,9 +90,12 @@ public class PlanningFragment extends Fragment {
         mealSubtitle1=view.findViewById(R.id.planningMealOneRecipe);
         mealSubtitle2=view.findViewById(R.id.planningMealTwoRecipe);
         mealSubtitle3=view.findViewById(R.id.planningMealThreeRecipe);
-        viewButton1=view.findViewById(R.id.planningViewButton1);
-        viewButton2=view.findViewById(R.id.planningViewButton2);
-        viewButton3=view.findViewById(R.id.planningViewButton3);
+        cookButton1=view.findViewById(R.id.planningCookButton1);
+        cookButton2=view.findViewById(R.id.planningCookButton2);
+        cookButton3=view.findViewById(R.id.planningCookButton3);
+        mealTitle1=view.findViewById(R.id.planningMealOneTitle);
+        mealTitle2=view.findViewById(R.id.planningMealTwoTitle);
+        mealTitle3=view.findViewById(R.id.planningMealThreeTitle);
 
         dateHeader=view.findViewById(R.id.planningDateSelected);
         dateHeader.setText(selectedDate);
@@ -100,24 +108,54 @@ public class PlanningFragment extends Fragment {
             if(plan.getMealNumber() == 1){
                 addButton1.setVisibility(View.INVISIBLE);
                 removeButton1.setVisibility(View.VISIBLE);
-                viewButton1.setVisibility(View.VISIBLE);
+                cookButton1.setVisibility(View.VISIBLE);
                 recipeId1=plan.getRecipeId();
                 planId1=plan.getId();
                 mealSubtitle1.setText(databaseMethods.getIndividualRecipe(recipeId1).getRecipeName());
+                mealTitle1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ViewRecipeFragment viewRecipeFragment=new ViewRecipeFragment();
+                        Bundle b = new Bundle();
+                        b.putString("recipeId", String.valueOf(recipeId1));
+                        viewRecipeFragment.setArguments(b);
+                        getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, viewRecipeFragment).addToBackStack(null).commit();
+                    }
+                });
             }else if(plan.getMealNumber() == 2){
                 addButton2.setVisibility(View.INVISIBLE);
                 removeButton2.setVisibility(View.VISIBLE);
-                viewButton2.setVisibility(View.VISIBLE);
+                cookButton2.setVisibility(View.VISIBLE);
                 recipeId2=plan.getRecipeId();
                 planId2=plan.getId();
                 mealSubtitle2.setText(databaseMethods.getIndividualRecipe(recipeId2).getRecipeName());
+                mealTitle2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ViewRecipeFragment viewRecipeFragment=new ViewRecipeFragment();
+                        Bundle b = new Bundle();
+                        b.putString("recipeId", String.valueOf(recipeId2));
+                        viewRecipeFragment.setArguments(b);
+                        getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, viewRecipeFragment).addToBackStack(null).commit();
+                    }
+                });
             }else if(plan.getMealNumber() == 3){
                 addButton3.setVisibility(View.INVISIBLE);
                 removeButton3.setVisibility(View.VISIBLE);
-                viewButton3.setVisibility(View.VISIBLE);
+                cookButton3.setVisibility(View.VISIBLE);
                 recipeId3=plan.getRecipeId();
                 planId3=plan.getId();
                 mealSubtitle3.setText(databaseMethods.getIndividualRecipe(recipeId3).getRecipeName());
+                mealTitle3.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ViewRecipeFragment viewRecipeFragment=new ViewRecipeFragment();
+                        Bundle b = new Bundle();
+                        b.putString("recipeId", String.valueOf(recipeId3));
+                        viewRecipeFragment.setArguments(b);
+                        getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, viewRecipeFragment).addToBackStack(null).commit();
+                    }
+                });
             }
         }
 
@@ -209,36 +247,97 @@ public class PlanningFragment extends Fragment {
             }
         });
 
-        viewButton1.setOnClickListener(new View.OnClickListener() {
+        cookButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ViewRecipeFragment viewRecipeFragment=new ViewRecipeFragment();
-                Bundle b = new Bundle();
-                b.putString("recipeId", String.valueOf(recipeId1));
-                viewRecipeFragment.setArguments(b);
-                getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, viewRecipeFragment).addToBackStack(null).commit();
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setCancelable(true);
+                builder.setTitle("Ingredients will be removed from your pantry if cooked.");
+                builder.setMessage("Do you want to continue?");
+                builder.setPositiveButton("Confirm",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                databaseMethods.cookRecipeAndRemoveFromPantry(recipeId1);
+                                ViewRecipeFragment viewRecipeFragment=new ViewRecipeFragment();
+                                Bundle b = new Bundle();
+                                b.putString("recipeId", String.valueOf(recipeId1));
+                                viewRecipeFragment.setArguments(b);
+                                getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, viewRecipeFragment).addToBackStack(null).commit();
+                            }
+                        });
+                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
 
-        viewButton2.setOnClickListener(new View.OnClickListener() {
+
+        cookButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ViewRecipeFragment viewRecipeFragment=new ViewRecipeFragment();
-                Bundle b = new Bundle();
-                b.putString("recipeId", String.valueOf(recipeId2));
-                viewRecipeFragment.setArguments(b);
-                getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, viewRecipeFragment).addToBackStack(null).commit();
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setCancelable(true);
+                builder.setTitle("Ingredients will be removed from your pantry if cooked.");
+                builder.setMessage("Do you want to continue?");
+                builder.setPositiveButton("Confirm",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                databaseMethods.cookRecipeAndRemoveFromPantry(recipeId2);
+                                ViewRecipeFragment viewRecipeFragment=new ViewRecipeFragment();
+                                Bundle b = new Bundle();
+                                b.putString("recipeId", String.valueOf(recipeId2));
+                                viewRecipeFragment.setArguments(b);
+                                getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, viewRecipeFragment).addToBackStack(null).commit();
+                            }
+                        });
+                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
 
-        viewButton3.setOnClickListener(new View.OnClickListener() {
+        cookButton3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ViewRecipeFragment viewRecipeFragment=new ViewRecipeFragment();
-                Bundle b = new Bundle();
-                b.putString("recipeId", String.valueOf(recipeId3));
-                viewRecipeFragment.setArguments(b);
-                getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, viewRecipeFragment).addToBackStack(null).commit();
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setCancelable(true);
+                builder.setTitle("Ingredients will be removed from your pantry if cooked.");
+                builder.setMessage("Do you want to continue?");
+                builder.setPositiveButton("Confirm",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                databaseMethods.cookRecipeAndRemoveFromPantry(recipeId3);
+                                ViewRecipeFragment viewRecipeFragment=new ViewRecipeFragment();
+                                Bundle b = new Bundle();
+                                b.putString("recipeId", String.valueOf(recipeId3));
+                                viewRecipeFragment.setArguments(b);
+                                getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, viewRecipeFragment).addToBackStack(null).commit();
+                            }
+                        });
+                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
     }

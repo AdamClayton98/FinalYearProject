@@ -77,4 +77,5 @@
     <string name="to_add_a_meal_to_your_plan_it_must_be_in_your_favourites_first">To add a meal to your plan it must be in your favourites first.</string>
     <string name="click_to_choose_a_date">Click to choose a date...</string>
     <string name="view">View</string>
+    <string name="cook">Cook</string>
 </resources>
