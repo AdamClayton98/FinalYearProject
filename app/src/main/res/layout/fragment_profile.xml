@@ -63,6 +63,7 @@
             android:clickable="true"
             android:focusable="true"
             android:text="@string/my_rating"
+            android:onClick="toMyRating"
             android:textSize="24sp" />
 
         <TextView

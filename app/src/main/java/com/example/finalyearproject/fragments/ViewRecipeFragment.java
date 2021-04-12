@@ -42,6 +42,8 @@ public class ViewRecipeFragment extends Fragment {
     Button commentButton;
     Button removeButton;
     Button reportButton;
+    ImageView favouriteButton;
+    boolean isFavourite;
 
 
 
@@ -73,6 +75,7 @@ public class ViewRecipeFragment extends Fragment {
         databaseMethods=new DatabaseMethods(getContext());
         int recipeIdAsInt = Integer.parseInt(recipeId);
         RecipeModel recipeModel = databaseMethods.getIndividualRecipe(recipeIdAsInt);
+        databaseMethods.updateRecipeViews(recipeId);
 
         recipeName = view.findViewById(R.id.viewRecipeName);
         recipeImage = view.findViewById(R.id.viewRecipeImage);
@@ -83,6 +86,14 @@ public class ViewRecipeFragment extends Fragment {
         commentButton = view.findViewById(R.id.commentRecipeButton);
         removeButton = view.findViewById(R.id.removeRecipeButton);
         reportButton = view.findViewById(R.id.reportRecipeButton);
+        favouriteButton = view.findViewById(R.id.favouriteRecipeButton);
+        if(databaseMethods.isFavourite(recipeId)){
+            favouriteButton.setImageResource(R.drawable.ic_baseline_star_yellow_24);
+            isFavourite =true;
+        }else{
+            favouriteButton.setImageResource(R.drawable.ic_baseline_star_outline_yellow_24);
+            isFavourite = false;
+        }
 
         databaseMethods.setRecipeImage(recipeImage, recipeModel);
         recipeName.setText(recipeModel.getRecipeName());
@@ -159,6 +170,26 @@ public class ViewRecipeFragment extends Fragment {
             }
         });
 
+        favouriteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isFavourite){
+                    databaseMethods.removeFromFavourites(recipeId);
+                    ViewRecipeFragment viewRecipeFragment=new ViewRecipeFragment();
+                    Bundle b = new Bundle();
+                    b.putString("recipeId", recipeId);
+                    viewRecipeFragment.setArguments(b);
+                    getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, viewRecipeFragment).commit();
+                }else{
+                    databaseMethods.addToFavourites(recipeId);
+                    ViewRecipeFragment viewRecipeFragment=new ViewRecipeFragment();
+                    Bundle b = new Bundle();
+                    b.putString("recipeId", recipeId);
+                    viewRecipeFragment.setArguments(b);
+                    getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, viewRecipeFragment).commit();
+                }
+            }
+        });
     }
 
 

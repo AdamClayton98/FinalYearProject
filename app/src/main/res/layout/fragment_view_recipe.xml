@@ -85,21 +85,36 @@
         </LinearLayout>
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/viewRecipeName"
+    <LinearLayout
+        android:id="@+id/recipeTitleLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_below="@+id/viewRecipeDetailsLayout"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="10dp"
-        android:textSize="20sp" />
+        android:layout_alignParentStart="true">
+
+        <TextView
+            android:id="@+id/viewRecipeName"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/favouriteRecipeButton"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/favourite_button"
+            android:src="@drawable/ic_baseline_star_outline_yellow_24"
+            android:layout_width="wrap_content" />
+    </LinearLayout>
+
 
     <ScrollView
         android:id="@+id/viewRecipeScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/viewRecipeButtonLayout"
-        android:layout_below="@id/viewRecipeName"
+        android:layout_below="@id/recipeTitleLayout"
         android:layout_marginBottom="5dp">
 
         <LinearLayout

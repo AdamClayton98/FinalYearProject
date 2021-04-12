@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.MyRatingFragment">
+
+
+    <TextView
+        android:id="@+id/myRatingUsername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="150sp"
+        android:layout_marginEnd="2dp"
+        android:gravity="center"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/myRatingHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/myRatingUsername"
+        android:gravity="center"
+        android:text="@string/my_rating"
+        android:textSize="50sp" />
+
+    <LinearLayout
+        android:id="@+id/starRatingLayout"
+        android:layout_below="@id/myRatingHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/myRatingStar1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_large_outline_star"/>
+
+        <ImageView
+            android:id="@+id/myRatingStar2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_large_outline_star"/>
+
+        <ImageView
+            android:id="@+id/myRatingStar3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_large_outline_star"/>
+
+        <ImageView
+            android:id="@+id/myRatingStar4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_large_outline_star"/>
+
+        <ImageView
+            android:id="@+id/myRatingStar5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_large_outline_star"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/noRatingText"
+        android:layout_below="@id/starRatingLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:text="@string/you_currently_do_not_have_any_ratings"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:id="@+id/myRatingSubtext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20sp"
+        android:text="@string/your_rating_is_an_average_of_all_scores_taken_from_your_uploaded_recipes"
+        android:textSize="16sp" />
+
+</RelativeLayout>

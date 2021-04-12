@@ -21,6 +21,7 @@ import com.example.finalyearproject.fragments.AllergiesFragment;
 import com.example.finalyearproject.fragments.FavouritesFragment;
 import com.example.finalyearproject.fragments.HomeFragment;
 import com.example.finalyearproject.fragments.MyDetailsFragment;
+import com.example.finalyearproject.fragments.MyRatingFragment;
 import com.example.finalyearproject.fragments.MyRecipesFragment;
 import com.example.finalyearproject.fragments.PantryFragment;
 import com.example.finalyearproject.fragments.PlanningFragment;
@@ -118,6 +119,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void toAddToPantry(View view){
         getSupportFragmentManager().beginTransaction().replace(R.id.fl_wrapper, new AddToPantryFragment()).addToBackStack(null).commit();
+    }
+
+    public void toMyRating(View view){
+        getSupportFragmentManager().beginTransaction().replace(R.id.fl_wrapper, new MyRatingFragment()).addToBackStack(null).commit();
     }
 
 }

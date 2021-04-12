@@ -65,5 +65,7 @@
     <string name="type_your_comment_here">Type your comment here...</string>
     <string name="reason_for_reporting">Reason for reporting:</string>
     <string name="why_do_you_want_to_report_this">Why do you want to report this?</string>
-
+    <string name="favourite_button">Favourite Button</string>
+    <string name="you_currently_do_not_have_any_ratings">You currently do not have any ratings</string>
+    <string name="your_rating_is_an_average_of_all_scores_taken_from_your_uploaded_recipes">Your rating is an average of all scores taken from your uploaded recipes</string>
 </resources>

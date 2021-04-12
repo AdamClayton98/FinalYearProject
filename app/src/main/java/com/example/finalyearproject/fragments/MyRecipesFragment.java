@@ -104,7 +104,6 @@ public class MyRecipesFragment extends Fragment {
                 getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, viewRecipeFragment).addToBackStack(null).commit();
             }
         });
-
     }
 
 }

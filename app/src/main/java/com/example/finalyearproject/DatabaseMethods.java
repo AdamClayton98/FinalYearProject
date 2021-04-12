@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.media.DeniedByServerException;
 import android.os.Build;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -545,11 +546,22 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         }
     }
 
+    public boolean isFavourite(String recipeId){
+        SQLiteDatabase db = getReadableDatabase();
+        String query = "SELECT " + COLUMN_USERID + " FROM " + TABLE_FAVOURITES + " WHERE " + COLUMN_RECIPE_ID + " = '" + recipeId + "' AND " + COLUMN_USERID + " = '" +MainActivity.uid + "'";
+        Cursor cursor = db.rawQuery(query, null);
+        if(cursor.moveToFirst()){
+            return cursor.getString(0).equals(MainActivity.uid);
+        }else {
+            return false;
+        }
+    }
+
     public void removeRecipe(String recipeId){
         SQLiteDatabase db = getWritableDatabase();
-        String query = "DELETE FROM " + TABLE_RECIPES + " WHERE " + COLUMN_RECIPE_ID + " = '" + recipeId + "'";
+        String query = "DELETE FROM " + TABLE_RECIPES + " WHERE " + COLUMN_ID + " = '" + recipeId + "'";
         db.execSQL(query);
-        query = "DELETE FROM " + TABLE_FAVOURITES + " WHERE " + COLUMN_RECIPE_ID + " = " + recipeId + "'";
+        query = "DELETE FROM " + TABLE_FAVOURITES + " WHERE " + COLUMN_RECIPE_ID + " = " + recipeId;
         db.execSQL(query);
         query = "DELETE FROM " + TABLE_COMMENTS + " WHERE " + COLUMN_RECIPE_ID + " = '" + recipeId + "'";
         db.execSQL(query);
@@ -581,6 +593,94 @@ public class DatabaseMethods extends SQLiteOpenHelper {
             return cursor.getString(0);
         }else {
             return null;
+        }
+    }
+
+    public void addToFavourites(String recipeId){
+        SQLiteDatabase db =getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_RECIPE_ID, recipeId);
+        contentValues.put(COLUMN_USERID, MainActivity.uid);
+        db.insert(TABLE_FAVOURITES, null, contentValues);
+
+        int numOfFaves=0;
+        String query = "SELECT " + COLUMN_NUM_OF_FAVOURITES + " FROM " + TABLE_RECIPES + " WHERE " + COLUMN_ID + " = '" + recipeId + "'";
+        Cursor cursor = db.rawQuery(query, null);
+        if(cursor.moveToFirst()){
+            numOfFaves = cursor.getInt(0);
+        }
+        System.out.println(numOfFaves);
+        numOfFaves = numOfFaves + 1;
+        System.out.println(numOfFaves);
+        query = "UPDATE " + TABLE_RECIPES + " SET " + COLUMN_NUM_OF_FAVOURITES + " = " + numOfFaves + " WHERE " + COLUMN_ID + " = '" +recipeId + "'";
+        db.execSQL(query);
+        db.close();
+    }
+
+    public void removeFromFavourites(String recipeId){
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "DELETE FROM " + TABLE_FAVOURITES + " WHERE " + COLUMN_RECIPE_ID + " = '" + recipeId + "' AND " + COLUMN_USERID + " = '" + MainActivity.uid + "'";
+        db.execSQL(query);
+
+        int numOfFaves=0;
+        query = "SELECT " + COLUMN_NUM_OF_FAVOURITES + " FROM " + TABLE_RECIPES + " WHERE " + COLUMN_ID + " = '" + recipeId + "'";
+        Cursor cursor = db.rawQuery(query, null);
+        if(cursor.moveToFirst()){
+            numOfFaves = cursor.getInt(0) - 1;
+        }
+
+        query = "UPDATE " + TABLE_RECIPES + " SET " + COLUMN_NUM_OF_FAVOURITES + " = " + numOfFaves + " WHERE " + COLUMN_ID + " = '" +recipeId + "'";
+        db.execSQL(query);
+        db.close();
+    }
+    
+    public ArrayList<RecipeModel> getAllFavouritesForUser(){
+        SQLiteDatabase db = getReadableDatabase();
+        ArrayList<String> recipeIds = new ArrayList<>();
+        String query = "SELECT " + COLUMN_RECIPE_ID + " FROM " + TABLE_FAVOURITES + " WHERE " + COLUMN_USERID + " = '" + MainActivity.uid + "'";
+        Cursor cursor = db.rawQuery(query,null);
+        if(cursor.moveToFirst()){
+            do {
+                recipeIds.add(cursor.getString(0));
+            }while(cursor.moveToNext());
+        }
+        ArrayList<RecipeModel> favouriteRecipes = new ArrayList<>();
+
+        for(String recipeId:recipeIds){
+            favouriteRecipes.add(getIndividualRecipe(Integer.parseInt(recipeId)));
+        }
+        return favouriteRecipes;
+    }
+
+    public void updateRecipeViews(String recipeId){
+        SQLiteDatabase db = getWritableDatabase();
+        int numOfFaves=0;
+        String query = "SELECT " + COLUMN_NUM_OF_VIEWS + " FROM " + TABLE_RECIPES + " WHERE " + COLUMN_ID + " = '" + recipeId + "'";
+        Cursor cursor = db.rawQuery(query, null);
+        if(cursor.moveToFirst()){
+            numOfFaves = cursor.getInt(0) + 1;
+        }
+        query = "UPDATE " + TABLE_RECIPES + " SET " + COLUMN_NUM_OF_VIEWS + " = " + numOfFaves + " WHERE " + COLUMN_ID + " = '" +recipeId + "'";
+        db.execSQL(query);
+        db.close();
+    }
+
+    public int getMyRating(){
+        ArrayList<Integer> ratings = new ArrayList<>();
+        ArrayList<RecipeModel> userRecipes = getMyRecipes();
+        for(RecipeModel recipe:userRecipes){
+            ratings.add(recipe.getRating());
+        }
+        int overallrating=0;
+        int count=0;
+        for(int rating:ratings){
+            overallrating = overallrating+rating;
+            count++;
+        }
+        if(count!=0){
+            return overallrating/count;
+        }else {
+            return 0;
         }
     }
 
