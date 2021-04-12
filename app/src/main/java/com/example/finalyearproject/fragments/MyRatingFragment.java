@@ -53,11 +53,11 @@ public class MyRatingFragment extends Fragment {
         myRating = Math.round(myRating);
 
         TextView noRating = view.findViewById(R.id.noRatingText);
-        ImageView star1 = view.findViewById(R.id.rateStar1);
-        ImageView star2 = view.findViewById(R.id.rateStar2);
-        ImageView star3 = view.findViewById(R.id.rateStar3);
-        ImageView star4 = view.findViewById(R.id.rateStar4);
-        ImageView star5 = view.findViewById(R.id.rateStar5);
+        ImageView star1 = view.findViewById(R.id.myRatingStar1);
+        ImageView star2 = view.findViewById(R.id.myRatingStar2);
+        ImageView star3 = view.findViewById(R.id.myRatingStar3);
+        ImageView star4 = view.findViewById(R.id.myRatingStar4);
+        ImageView star5 = view.findViewById(R.id.myRatingStar5);
 
         if(myRating==0){
             noRating.setVisibility(View.VISIBLE);
