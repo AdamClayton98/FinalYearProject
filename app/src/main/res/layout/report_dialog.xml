@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/cardview_light_background"
+    android:padding="5dp">
+
+    <TextView
+        android:id="@+id/reportDialogHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/why_do_you_want_to_report_this"
+        android:textSize="25sp"/>
+
+    <EditText
+        android:id="@+id/reportDialogInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/reason_for_reporting"
+        android:inputType="textLongMessage"
+        android:layout_below="@+id/reportDialogHeader"/>
+
+</RelativeLayout>

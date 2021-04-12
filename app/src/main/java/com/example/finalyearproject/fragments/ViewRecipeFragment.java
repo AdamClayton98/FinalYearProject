@@ -1,5 +1,6 @@
 package com.example.finalyearproject.fragments;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
@@ -39,21 +40,16 @@ public class ViewRecipeFragment extends Fragment {
     TextView recipeRating;
     Button rateButton;
     Button commentButton;
+    Button removeButton;
+    Button reportButton;
+
 
 
     public ViewRecipeFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ViewRecipeFragment.
-     */
-    // TODO: Rename and change types and number of parameters
+
     public static ViewRecipeFragment newInstance(String param1, String param2) {
         ViewRecipeFragment fragment = new ViewRecipeFragment();
         Bundle args = new Bundle();
@@ -85,6 +81,8 @@ public class ViewRecipeFragment extends Fragment {
         recipeRating = view.findViewById(R.id.viewRecipeRating);
         rateButton = view.findViewById(R.id.rateRecipeButton);
         commentButton = view.findViewById(R.id.commentRecipeButton);
+        removeButton = view.findViewById(R.id.removeRecipeButton);
+        reportButton = view.findViewById(R.id.reportRecipeButton);
 
         databaseMethods.setRecipeImage(recipeImage, recipeModel);
         recipeName.setText(recipeModel.getRecipeName());
@@ -137,5 +135,31 @@ public class ViewRecipeFragment extends Fragment {
                 getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, commentsFragment).addToBackStack(null).commit();
             }
         });
+
+        if(databaseMethods.isLoggedInUsersRecipe(recipeId)){
+            removeButton.setVisibility(View.VISIBLE);
+        }
+
+        removeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                databaseMethods.removeRecipe(recipeId);
+            }
+        });
+
+        reportButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment dialogFragment = new ReportDialogFragment();
+                Bundle b = new Bundle();
+                b.putBoolean("isRecipe", true);
+                b.putString("Id", String.valueOf(recipeId));
+                dialogFragment.setArguments(b);
+                dialogFragment.show(getFragmentManager(), "recipeFragment");
+            }
+        });
+
     }
+
+
 }

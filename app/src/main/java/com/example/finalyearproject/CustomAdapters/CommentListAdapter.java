@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -24,6 +25,7 @@ import com.example.finalyearproject.Models.CommentModel;
 import com.example.finalyearproject.Models.RecipeModel;
 import com.example.finalyearproject.R;
 import com.example.finalyearproject.fragments.CommentsFragment;
+import com.example.finalyearproject.fragments.ReportDialogFragment;
 
 
 import java.util.ArrayList;
@@ -77,7 +79,12 @@ public class CommentListAdapter extends BaseAdapter {
             reportButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    DialogFragment dialogFragment = new ReportDialogFragment();
+                    Bundle b = new Bundle();
+                    b.putBoolean("isRecipe", false);
+                    b.putString("Id", String.valueOf(commentModel.getId()));
+                    dialogFragment.setArguments(b);
+                    dialogFragment.show(fragmentManager, "commentsFragment");
                 }
             });
 

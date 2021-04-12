@@ -148,14 +148,33 @@
             android:id="@+id/rateRecipeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="20sp"
+            android:layout_marginStart="5sp"
+            android:layout_marginEnd="5sp"
             android:text="@string/rate" />
 
         <Button
             android:id="@+id/commentRecipeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/comment" />
+            android:text="@string/comment"
+            android:layout_marginEnd="5sp"/>
+
+        <Button
+            android:id="@+id/removeRecipeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:text="@string/remove"
+            android:layout_marginEnd="5sp"/>
+
+
+        <Button
+            android:id="@+id/reportRecipeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/report"/>
+
+
     </LinearLayout>
 
 </RelativeLayout>

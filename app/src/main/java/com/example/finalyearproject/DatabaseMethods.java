@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.DeniedByServerException;
 import android.os.Build;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -23,6 +24,7 @@ import com.example.finalyearproject.Models.UserModel;
 import com.example.finalyearproject.fragments.AllergiesFragment;
 import com.google.android.gms.common.internal.Objects;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -35,7 +37,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class DatabaseMethods extends SQLiteOpenHelper {
@@ -528,6 +532,56 @@ public class DatabaseMethods extends SQLiteOpenHelper {
             username=cursor.getString(0);
         }
         return username;
+    }
+
+    public boolean isLoggedInUsersRecipe(String recipeId){
+        SQLiteDatabase db = getReadableDatabase();
+        String query = "SELECT " + COLUMN_USERID + " FROM " + TABLE_RECIPES + " WHERE " + COLUMN_ID + " = '" + recipeId + "'";
+        Cursor cursor = db.rawQuery(query, null);
+        if(cursor.moveToFirst()){
+            return cursor.getString(0).equals(MainActivity.uid);
+        }else {
+            return false;
+        }
+    }
+
+    public void removeRecipe(String recipeId){
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "DELETE FROM " + TABLE_RECIPES + " WHERE " + COLUMN_RECIPE_ID + " = '" + recipeId + "'";
+        db.execSQL(query);
+        query = "DELETE FROM " + TABLE_FAVOURITES + " WHERE " + COLUMN_RECIPE_ID + " = " + recipeId + "'";
+        db.execSQL(query);
+        query = "DELETE FROM " + TABLE_COMMENTS + " WHERE " + COLUMN_RECIPE_ID + " = '" + recipeId + "'";
+        db.execSQL(query);
+        query = "DELETE FROM " + TABLE_RATINGS + " WHERE " + COLUMN_RECIPE_ID + " = '" + recipeId + "'";
+        db.execSQL(query);
+    }
+
+    public void reportRecipe(String recipeId, String reason){
+        Map<String, Object> reportData = new HashMap<>();
+        reportData.put("ID", recipeId);
+        reportData.put("Type", "Recipe");
+        reportData.put("Reason", reason);
+        FirebaseFirestore.getInstance().collection("Reports").add(reportData);
+    }
+
+    public void reportComment(String commentId, String reason){
+        Map<String, Object> reportData = new HashMap<>();
+        reportData.put("ID", commentId);
+        reportData.put("Type", "Comment");
+        reportData.put("Reason", reason);
+        FirebaseFirestore.getInstance().collection("Reports").add(reportData);
+    }
+
+    public String getRecipeIdForCommentId(String commentId){
+        SQLiteDatabase db = getReadableDatabase();
+        String query = "SELECT " + COLUMN_RECIPE_ID + " FROM " + TABLE_COMMENTS + " WHERE " + COLUMN_ID + " = '" + commentId + "'";
+        Cursor cursor = db.rawQuery(query, null);
+        if(cursor.moveToFirst()){
+            return cursor.getString(0);
+        }else {
+            return null;
+        }
     }
 
 
