@@ -9,7 +9,9 @@
         android:id="@+id/homeWelcomeMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="30sp"/>
+        android:textSize="30sp"
+        android:layout_marginStart="10sp"
+        android:layout_marginTop="10sp"/>
 
     <TextView
         android:id="@+id/homeHeader1"
@@ -19,7 +21,8 @@
         android:textSize="20sp"
         android:layout_marginTop="20sp"
         android:layout_marginBottom="10sp"
-        android:layout_below="@id/homeWelcomeMessage"/>
+        android:layout_below="@id/homeWelcomeMessage"
+        android:layout_marginStart="5sp"/>
 
     <HorizontalScrollView
         android:id="@+id/homeScrollView1"
@@ -42,7 +45,8 @@
         android:text="@string/most_favourited_recipes"
         android:textSize="20sp"
         android:layout_below="@id/homeScrollView1"
-        android:layout_marginBottom="10sp"/>
+        android:layout_marginBottom="10sp"
+        android:layout_marginStart="5sp"/>
 
     <HorizontalScrollView
         android:id="@+id/homeScrollView2"
@@ -65,7 +69,8 @@
         android:text="@string/quick_recipes_in_under_20_minutes"
         android:textSize="20sp"
         android:layout_below="@id/homeScrollView2"
-        android:layout_marginBottom="10sp"/>
+        android:layout_marginBottom="10sp"
+        android:layout_marginStart="5sp"/>
 
     <HorizontalScrollView
         android:id="@+id/homeScrollView3"

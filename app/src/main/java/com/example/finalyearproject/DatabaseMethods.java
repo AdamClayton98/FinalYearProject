@@ -93,6 +93,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         createCommentsTable(db);
         createFavouritesTable(db);
         createPlansTable(db);
+        db.close();
     }
 
     private void createUserTable(SQLiteDatabase db) {
@@ -160,6 +161,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         String query = "DELETE FROM " + TABLE_ALLERGIES + " WHERE " + COLUMN_USERID + " = '" + MainActivity.uid + "' AND " + COLUMN_ALLERGY_NAME + " = '" + allergy + "'";
 
         Cursor cursor = db.rawQuery(query, null);
+        db.close();
         return cursor.moveToFirst();
     }
 
@@ -188,7 +190,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
                 allergies.add(allergyName);
             } while (cursor.moveToNext());
         }
-
+        db.close();
         cursor.close();
 
         return allergies;
@@ -204,6 +206,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         contentValues.put(COLUMN_USERNAME, userModel.getUsername());
 
         db.insert(USERS_TABLE, null, contentValues);
+        db.close();
     }
 
     public void updateUserInfo(String updateInfo, String updateColumn) {
@@ -415,6 +418,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         contentValues.put(COLUMN_IMAGE_URL, imageuuid);
 
         db.insert(TABLE_IMAGES, null, contentValues);
+        db.close();
     }
 
     public String getRecipeIdForUser(String recipeName){
@@ -485,6 +489,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
             contentValues.put(COLUMN_RATING, rating);
             db.insert(TABLE_RATINGS, null,contentValues);
         }
+        db.close();
     }
 
     public boolean checkRatingExists(String recipeId){
@@ -504,6 +509,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         contentValues.put(COLUMN_USERID, MainActivity.uid);
         contentValues.put(COLUMN_COMMENT_TEXT, commentText);
         db.insert(TABLE_COMMENTS, null, contentValues);
+        db.close();
     }
 
     public ArrayList<CommentModel> getComments(String recipeId){
@@ -524,6 +530,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
             }while(cursor.moveToNext());
         }
         cursor.close();
+        db.close();
         return comments;
     }
 
@@ -531,6 +538,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         String query = "DELETE FROM " + TABLE_COMMENTS + " WHERE " + COLUMN_ID + " = '" + commentId + "'";
         db.execSQL(query);
+        db.close();
     }
 
     public String getUsernameOfUser(String uid){
@@ -549,8 +557,10 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         String query = "SELECT " + COLUMN_USERID + " FROM " + TABLE_RECIPES + " WHERE " + COLUMN_ID + " = '" + recipeId + "'";
         Cursor cursor = db.rawQuery(query, null);
         if(cursor.moveToFirst()){
+            db.close();
             return cursor.getString(0).equals(MainActivity.uid);
         }else {
+            db.close();
             return false;
         }
     }
@@ -560,8 +570,10 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         String query = "SELECT " + COLUMN_USERID + " FROM " + TABLE_FAVOURITES + " WHERE " + COLUMN_RECIPE_ID + " = '" + recipeId + "' AND " + COLUMN_USERID + " = '" +MainActivity.uid + "'";
         Cursor cursor = db.rawQuery(query, null);
         if(cursor.moveToFirst()){
+            db.close();
             return cursor.getString(0).equals(MainActivity.uid);
         }else {
+            db.close();
             return false;
         }
     }
@@ -576,6 +588,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         db.execSQL(query);
         query = "DELETE FROM " + TABLE_RATINGS + " WHERE " + COLUMN_RECIPE_ID + " = '" + recipeId + "'";
         db.execSQL(query);
+        db.close();
     }
 
     public void reportRecipe(String recipeId, String reason){
@@ -599,10 +612,13 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         String query = "SELECT " + COLUMN_RECIPE_ID + " FROM " + TABLE_COMMENTS + " WHERE " + COLUMN_ID + " = '" + commentId + "'";
         Cursor cursor = db.rawQuery(query, null);
         if(cursor.moveToFirst()){
+            db.close();
             return cursor.getString(0);
         }else {
+            db.close();
             return null;
         }
+
     }
 
     public void addToFavourites(String recipeId){
@@ -656,6 +672,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         for(String recipeId:recipeIds){
             favouriteRecipes.add(getIndividualRecipe(Integer.parseInt(recipeId)));
         }
+        db.close();
         return favouriteRecipes;
     }
 
@@ -699,7 +716,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         contentValues.put(COLUMN_MEAL_NUMBER, mealNumber);
         contentValues.put(COLUMN_DATE_OF_PLAN, dateOfPlan);
         db.insert(TABLE_PLANS, null, contentValues);
-
+        db.close();
     }
 
     public ArrayList<PlanModel> getPlanOnDate(String dateOfPlan){
@@ -715,6 +732,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
             PlanModel planModel = new PlanModel(id, uid, recipeId, mealNumber, dateOfPlan);
             plansForSelectedDate.add(planModel);
         }
+        db.close();
         return plansForSelectedDate;
     }
 
