@@ -97,7 +97,7 @@ public class CommentListAdapter extends BaseAdapter {
                     b.putString("recipeId", String.valueOf(commentModel.getRecipeId()));
                     Fragment fragment = new CommentsFragment();
                     fragment.setArguments(b);
-                    fragmentManager.beginTransaction().replace(R.id.fl_wrapper, fragment).commit();
+                    fragmentManager.beginTransaction().replace(R.id.fl_wrapper, fragment).addToBackStack(null).commit();
                 }
             });
         }

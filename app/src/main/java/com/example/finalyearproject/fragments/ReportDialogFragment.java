@@ -46,14 +46,14 @@ public class ReportDialogFragment extends DialogFragment {
                     b.putString("recipeId", id);
                     Fragment viewRecipeFragment = new ViewRecipeFragment();
                     viewRecipeFragment.setArguments(b);
-                    getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, viewRecipeFragment).addToBackStack("recipeFragment").commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, viewRecipeFragment).addToBackStack("recipeFragment").addToBackStack(null).commit();
                 }else{
                     databaseMethods.reportComment(id,reportText);
                     Bundle b = new Bundle();
                     b.putString("recipeId", databaseMethods.getRecipeIdForCommentId(id));
                     CommentsFragment commentsFragment = new CommentsFragment();
                     commentsFragment.setArguments(b);
-                    getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, commentsFragment).addToBackStack("commentsFragment").commit();
+                    getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, commentsFragment).addToBackStack("commentsFragment").addToBackStack(null).commit();
                 }
             }
         }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

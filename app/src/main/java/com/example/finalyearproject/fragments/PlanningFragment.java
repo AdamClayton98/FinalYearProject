@@ -183,7 +183,7 @@ public class PlanningFragment extends Fragment {
                 b.putInt("mealNumber", 1);
                 b.putString("selectedDate", selectedDate);
                 fragment.setArguments(b);
-                getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, fragment).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, fragment).addToBackStack(null).commit();
             }
         });
 
@@ -195,7 +195,7 @@ public class PlanningFragment extends Fragment {
                 b.putInt("mealNumber", 2);
                 b.putString("selectedDate", selectedDate);
                 fragment.setArguments(b);
-                getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, fragment).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, fragment).addToBackStack(null).commit();
             }
         });
 
@@ -207,7 +207,7 @@ public class PlanningFragment extends Fragment {
                 b.putInt("mealNumber", 3);
                 b.putString("selectedDate", selectedDate);
                 fragment.setArguments(b);
-                getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, fragment).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, fragment).addToBackStack(null).commit();
             }
         });
 
@@ -220,7 +220,7 @@ public class PlanningFragment extends Fragment {
                 b.putString("selectedDate", selectedDate);
                 PlanningFragment planningFragment = new PlanningFragment();
                 planningFragment.setArguments(b);
-                getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, planningFragment).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, planningFragment).addToBackStack(null).commit();
             }
         });
 
@@ -232,7 +232,7 @@ public class PlanningFragment extends Fragment {
                 b.putString("selectedDate", selectedDate);
                 PlanningFragment planningFragment = new PlanningFragment();
                 planningFragment.setArguments(b);
-                getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, planningFragment).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, planningFragment).addToBackStack(null).commit();
             }
         });
 
@@ -245,7 +245,7 @@ public class PlanningFragment extends Fragment {
                 b.putString("selectedDate", selectedDate);
                 PlanningFragment planningFragment = new PlanningFragment();
                 planningFragment.setArguments(b);
-                getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, planningFragment).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, planningFragment).addToBackStack(null).commit();
             }
         });
 
@@ -367,7 +367,7 @@ public class PlanningFragment extends Fragment {
                 b.putString("selectedDate", dayString+"/"+monthString+"/"+year);
                 PlanningFragment planningFragment = new PlanningFragment();
                 planningFragment.setArguments(b);
-                getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, planningFragment).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, planningFragment).addToBackStack(null).commit();
             }
         }, year,month,day);
 

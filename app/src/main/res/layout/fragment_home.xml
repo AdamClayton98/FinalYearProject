@@ -3,4 +3,73 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.HomeFragment"/>
+    tools:context=".fragments.HomeFragment">
+
+    <TextView
+        android:id="@+id/homeHeader1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/most_viewed_recipes_of_all_time"
+        android:textSize="20sp"
+        android:layout_marginBottom="10sp"/>
+
+    <HorizontalScrollView
+        android:id="@+id/homeScrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/homeHeader1"
+        android:layout_marginBottom="30sp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/homeRecipeRecycler1"
+            android:layout_width="wrap_content"
+            android:layout_height="125dp"
+            android:scrollbarAlwaysDrawVerticalTrack="true"/>
+    </HorizontalScrollView>
+
+    <TextView
+        android:id="@+id/homeHeader2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/most_favourited_recipes"
+        android:textSize="20sp"
+        android:layout_below="@id/homeScrollView1"
+        android:layout_marginBottom="10sp"/>
+
+    <HorizontalScrollView
+        android:id="@+id/homeScrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/homeHeader2"
+        android:layout_marginBottom="30sp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/homeRecipeRecycler2"
+            android:layout_width="wrap_content"
+            android:layout_height="125dp"
+            android:scrollbarAlwaysDrawVerticalTrack="true"/>
+    </HorizontalScrollView>
+
+    <TextView
+        android:id="@+id/homeHeader3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/quick_recipes_in_under_20_minutes"
+        android:textSize="20sp"
+        android:layout_below="@id/homeScrollView2"
+        android:layout_marginBottom="10sp"/>
+
+    <HorizontalScrollView
+        android:id="@+id/homeScrollView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/homeHeader3"
+        android:layout_marginBottom="30sp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/homeRecipeRecycler3"
+            android:layout_width="wrap_content"
+            android:layout_height="125dp"
+            android:scrollbarAlwaysDrawVerticalTrack="true"/>
+    </HorizontalScrollView>
+</RelativeLayout>

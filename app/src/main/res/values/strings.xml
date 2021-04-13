@@ -79,4 +79,8 @@
     <string name="view">View</string>
     <string name="cook">Cook</string>
     <string name="search_image">Search Image</string>
+    <string name="most_viewed_recipes_of_all_time">Most Viewed Recipes Of All Time</string>
+    <string name="most_favourited_recipes">Most Favourited Recipes</string>
+    <string name="recipes_based_on_your_current_pantry">Recipes Based On Your Current Pantry</string>
+    <string name="quick_recipes_in_under_20_minutes">Quick Recipes In Under 20 Minutes</string>
 </resources>

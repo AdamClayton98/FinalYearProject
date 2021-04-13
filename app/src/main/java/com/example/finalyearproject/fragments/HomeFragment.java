@@ -4,17 +4,30 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
+import android.widget.RelativeLayout;
 
+import com.example.finalyearproject.CustomAdapters.RecipeGVAdapter;
+import com.example.finalyearproject.CustomAdapters.RecipeRecyclerAdapter;
+import com.example.finalyearproject.DatabaseMethods;
+import com.example.finalyearproject.Models.RecipeModel;
 import com.example.finalyearproject.R;
+
+import java.util.ArrayList;
 
 
 public class HomeFragment extends Fragment {
 
     View view;
+    DatabaseMethods databaseMethods;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -46,8 +59,18 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_home, container, false);
-
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Home");
+        databaseMethods=new DatabaseMethods(getContext());
+
+        ArrayList<RecipeModel> recipes = databaseMethods.getAllFavouritesForUser();
+
+        LinearLayoutManager layoutManager
+                = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+
+        RecyclerView recipeRecycler = view.findViewById(R.id.homeRecipeRecycler1);
+        recipeRecycler.setLayoutManager(layoutManager);
+        recipeRecycler.setAdapter(new RecipeRecyclerAdapter(getContext(), recipes));
+
 
 
         return view;

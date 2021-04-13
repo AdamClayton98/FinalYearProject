@@ -85,7 +85,7 @@ public class PlanningSelectionFragment extends Fragment {
                                 b.putString("selectedDate", selectedDate);
                                 PlanningFragment planningFragment = new PlanningFragment();
                                 planningFragment.setArguments(b);
-                                getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, planningFragment).commit();
+                                getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, planningFragment).addToBackStack(null).commit();
                             }
                         });
                 builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {

@@ -177,18 +177,13 @@ public class ViewRecipeFragment extends Fragment {
             public void onClick(View v) {
                 if(isFavourite){
                     databaseMethods.removeFromFavourites(recipeId);
-                    ViewRecipeFragment viewRecipeFragment=new ViewRecipeFragment();
-                    Bundle b = new Bundle();
-                    b.putString("recipeId", recipeId);
-                    viewRecipeFragment.setArguments(b);
-                    getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, viewRecipeFragment).commit();
+                    favouriteButton.setImageResource(R.drawable.ic_baseline_star_outline_yellow_24);
+                    isFavourite = false;
+
                 }else{
                     databaseMethods.addToFavourites(recipeId);
-                    ViewRecipeFragment viewRecipeFragment=new ViewRecipeFragment();
-                    Bundle b = new Bundle();
-                    b.putString("recipeId", recipeId);
-                    viewRecipeFragment.setArguments(b);
-                    getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, viewRecipeFragment).commit();
+                    favouriteButton.setImageResource(R.drawable.ic_baseline_star_yellow_24);
+                    isFavourite =true;
                 }
             }
         });
