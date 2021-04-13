@@ -14,10 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.example.finalyearproject.CustomAdapters.RecipeGVAdapter;
 import com.example.finalyearproject.CustomAdapters.RecipeRecyclerAdapter;
 import com.example.finalyearproject.DatabaseMethods;
+import com.example.finalyearproject.MainActivity;
 import com.example.finalyearproject.Models.RecipeModel;
 import com.example.finalyearproject.R;
 
@@ -61,6 +63,8 @@ public class HomeFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_home, container, false);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Home");
         databaseMethods=new DatabaseMethods(getContext());
+        TextView welcomeMessage = view.findViewById(R.id.homeWelcomeMessage);
+        welcomeMessage.setText("Welcome " + databaseMethods.getUsernameOfUser(MainActivity.uid) + "!");
 
         setRecipeRecycler(databaseMethods.getMostViewedRecipes(), R.id.homeRecipeRecycler1);
         setRecipeRecycler(databaseMethods.getMostFavouritedRecipes(), R.id.homeRecipeRecycler2);
