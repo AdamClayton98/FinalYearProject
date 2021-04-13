@@ -760,6 +760,116 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         db.close();
     }
 
+    public ArrayList<RecipeModel> getMostViewedRecipes(){
+        SQLiteDatabase db = getReadableDatabase();
+        ArrayList<RecipeModel> recipes = new ArrayList<>();
+
+        String query = "SELECT * FROM " + TABLE_RECIPES + " ORDER BY " + COLUMN_NUM_OF_VIEWS + " DESC";
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                int id = cursor.getInt(0);
+                String recipeName = cursor.getString(2);
+                List<String> ingredients = stringToArrayFromDb(cursor.getString(3).replace(","," - "));
+                List<String> steps = stringToArrayFromDb(cursor.getString(4));
+                String cookingTime = cursor.getString(5);
+                String serves = cursor.getString(6);
+                int rating = getRatingForRecipe(id);
+                String uuid = getRecipeImageUid(id);
+
+                RecipeModel recipe = new RecipeModel(id, recipeName, ingredients, steps, cookingTime, serves, rating, uuid);
+
+                recipes.add(recipe);
+
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+        cursor.close();
+
+        try{
+            return (ArrayList<RecipeModel>) recipes.subList(0,30);
+        }catch (IndexOutOfBoundsException e){
+            return recipes;
+        }
+    }
+
+    public ArrayList<RecipeModel> getMostFavouritedRecipes(){
+        SQLiteDatabase db = getReadableDatabase();
+        ArrayList<RecipeModel> recipes = new ArrayList<>();
+
+        String query = "SELECT * FROM " + TABLE_RECIPES + " ORDER BY " + COLUMN_NUM_OF_FAVOURITES + " DESC";
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                int id = cursor.getInt(0);
+                String recipeName = cursor.getString(2);
+                List<String> ingredients = stringToArrayFromDb(cursor.getString(3).replace(","," - "));
+                List<String> steps = stringToArrayFromDb(cursor.getString(4));
+                String cookingTime = cursor.getString(5);
+                String serves = cursor.getString(6);
+                int rating = getRatingForRecipe(id);
+                String uuid = getRecipeImageUid(id);
+
+                RecipeModel recipe = new RecipeModel(id, recipeName, ingredients, steps, cookingTime, serves, rating, uuid);
+
+                recipes.add(recipe);
+
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+        cursor.close();
+
+        try{
+            return (ArrayList<RecipeModel>) recipes.subList(0,30);
+        }catch (IndexOutOfBoundsException e){
+            return recipes;
+        }
+    }
+
+    public ArrayList<RecipeModel> getRecipesToMakeUnder20Minutes(){
+        SQLiteDatabase db = getReadableDatabase();
+        ArrayList<RecipeModel> recipes = new ArrayList<>();
+
+        String query = "SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_COOKING_TIME + " = '5 Minutes' OR " + COLUMN_COOKING_TIME + " = '10 Minutes' OR " + COLUMN_COOKING_TIME + " = '15 Minutes' OR " + COLUMN_COOKING_TIME + " = '20 Minutes'";
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                int id = cursor.getInt(0);
+                String recipeName = cursor.getString(2);
+                List<String> ingredients = stringToArrayFromDb(cursor.getString(3).replace(","," - "));
+                List<String> steps = stringToArrayFromDb(cursor.getString(4));
+                String cookingTime = cursor.getString(5);
+                String serves = cursor.getString(6);
+                int rating = getRatingForRecipe(id);
+                String uuid = getRecipeImageUid(id);
+
+                RecipeModel recipe = new RecipeModel(id, recipeName, ingredients, steps, cookingTime, serves, rating, uuid);
+
+                recipes.add(recipe);
+
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+        cursor.close();
+
+        try{
+            return (ArrayList<RecipeModel>) recipes.subList(0,30);
+        }catch (IndexOutOfBoundsException e){
+            return recipes;
+        }
+    }
+
+
+
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

@@ -62,17 +62,22 @@ public class HomeFragment extends Fragment {
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Home");
         databaseMethods=new DatabaseMethods(getContext());
 
-        ArrayList<RecipeModel> recipes = databaseMethods.getAllFavouritesForUser();
-
-        LinearLayoutManager layoutManager
-                = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-
-        RecyclerView recipeRecycler = view.findViewById(R.id.homeRecipeRecycler1);
-        recipeRecycler.setLayoutManager(layoutManager);
-        recipeRecycler.setAdapter(new RecipeRecyclerAdapter(getContext(), recipes));
-
+        setRecipeRecycler(databaseMethods.getMostViewedRecipes(), R.id.homeRecipeRecycler1);
+        setRecipeRecycler(databaseMethods.getMostFavouritedRecipes(), R.id.homeRecipeRecycler2);
+        setRecipeRecycler(databaseMethods.getRecipesToMakeUnder20Minutes(), R.id.homeRecipeRecycler3);
 
 
         return view;
     }
+
+    public void setRecipeRecycler(ArrayList<RecipeModel> recipes, int resourceId ){
+        LinearLayoutManager layoutManager
+                = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        RecipeRecyclerAdapter recipeRecyclerAdapter = new RecipeRecyclerAdapter(getContext(),recipes);
+        RecyclerView recipeRecycler = view.findViewById(resourceId);
+        recipeRecycler.setLayoutManager(layoutManager);
+        recipeRecycler.setAdapter(recipeRecyclerAdapter);
+
+    }
+
 }
