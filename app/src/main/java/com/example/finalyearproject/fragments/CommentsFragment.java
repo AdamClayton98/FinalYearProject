@@ -2,6 +2,7 @@ package com.example.finalyearproject.fragments;
 
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
@@ -63,6 +64,8 @@ public class CommentsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view= inflater.inflate(R.layout.fragment_comments, container, false);
+
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Comments");
 
         databaseMethods = new DatabaseMethods(getContext());
 

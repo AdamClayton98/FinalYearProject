@@ -4,6 +4,7 @@ import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -75,6 +76,8 @@ public class PantryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_pantry, container, false);
+
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Pantry");
 
         databaseMethods=new DatabaseMethods(getContext());
 

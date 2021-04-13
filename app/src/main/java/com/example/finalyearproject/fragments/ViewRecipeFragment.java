@@ -3,6 +3,7 @@ package com.example.finalyearproject.fragments;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
@@ -72,11 +73,11 @@ public class ViewRecipeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_view_recipe, container, false);
+
         databaseMethods=new DatabaseMethods(getContext());
         int recipeIdAsInt = Integer.parseInt(recipeId);
         RecipeModel recipeModel = databaseMethods.getIndividualRecipe(recipeIdAsInt);
         databaseMethods.updateRecipeViews(recipeId);
-
         recipeName = view.findViewById(R.id.viewRecipeName);
         recipeImage = view.findViewById(R.id.viewRecipeImage);
         recipeCookingTime = view.findViewById(R.id.viewRecipeCookingTime);
@@ -101,6 +102,7 @@ public class ViewRecipeFragment extends Fragment {
         recipeServing.setText(recipeModel.getServes());
         recipeRating.setText(String.valueOf(recipeModel.getRating()));
         LayoutInflater textInflater = LayoutInflater.from(getContext());
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(recipeModel.getRecipeName());
 
         LinearLayout ingredientsLayout = view.findViewById(R.id.viewRecipeIngredientsLayout);
         for (String ingredient:recipeModel.getIngredients()) {

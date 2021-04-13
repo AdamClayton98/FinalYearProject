@@ -3,6 +3,7 @@ package com.example.finalyearproject.fragments;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -49,6 +50,8 @@ public class PlanningDateSelectionFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_planning_date_selection, container, false);
+
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Planning");
 
         dateText=view.findViewById(R.id.planningDateSelectionText);
 

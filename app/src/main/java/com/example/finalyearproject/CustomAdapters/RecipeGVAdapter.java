@@ -6,7 +6,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -31,11 +33,13 @@ public class RecipeGVAdapter extends BaseAdapter {
 
     LayoutInflater layoutInflater;
     private ArrayList<RecipeModel> dataSet;
+    public boolean isItemSelected;
 
     public RecipeGVAdapter(@NonNull Context context, ArrayList<RecipeModel> recipeArrayList) {
         this.dataSet=recipeArrayList;
         this.layoutInflater= (LayoutInflater.from(context));
     }
+
 
     @Override
     public int getCount() {
@@ -69,10 +73,24 @@ public class RecipeGVAdapter extends BaseAdapter {
                     recipeImage.setImageBitmap(imageBitmap);
                 }
             });
-
             recipeName.setText(recipeModel.getRecipeName());
             rating.setText(String.valueOf(recipeModel.getRating()));
-
+            recipeImage.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        recipeName.setSelected(true);
+                        isItemSelected=true;
+                    } else if (event.getAction() == MotionEvent.ACTION_CANCEL) {
+                        recipeName.setSelected(false);
+                        isItemSelected=false;
+                    } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                        recipeName.setSelected(false);
+                        isItemSelected=false;
+                    }
+                    return true;
+                }
+            });
         }
 
         return convertView;

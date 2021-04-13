@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.provider.ContactsContract;
@@ -82,7 +83,8 @@ public class MyDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view= inflater.inflate(R.layout.fragment_my_details, container, false);
-        
+
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("My Details");
         updateName = view.findViewById(R.id.updateName);
         updateUsername=view.findViewById(R.id.updateUsername);
         updateEmail=view.findViewById(R.id.updateEmail);

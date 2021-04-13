@@ -3,6 +3,7 @@ package com.example.finalyearproject.fragments;
 import android.media.Image;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -49,6 +50,7 @@ public class MyRatingFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_my_rating, container, false);
         databaseMethods=new DatabaseMethods(getContext());
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("My Rating");
         myRating = databaseMethods.getMyRating();
         myRating = Math.round(myRating);
 

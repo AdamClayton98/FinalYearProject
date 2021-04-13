@@ -1,7 +1,10 @@
 package com.example.finalyearproject;
 
 import androidx.annotation.NonNull;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 
@@ -39,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
     EditText allergyInput;
     Fragment selectedFragment = null;
+    Toolbar toolbar;
 
     Button addAllergyButton;
 
@@ -48,6 +52,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        toolbar=findViewById(R.id.customToolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setTitleTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(navListener);

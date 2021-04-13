@@ -3,6 +3,7 @@ package com.example.finalyearproject.fragments;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -67,6 +68,7 @@ public class MyRecipesFragment extends Fragment {
                              Bundle savedInstanceState) {
         view= inflater.inflate(R.layout.fragment_my_recipes, container, false);
         databaseMethods = new DatabaseMethods(getContext());
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("My Recipes");
 
         setListenerToAddRecipeButton();
         getAndDisplayRecipes();
@@ -97,11 +99,13 @@ public class MyRecipesFragment extends Fragment {
         recipesGV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Bundle b = new Bundle();
-                b.putString("recipeId", String.valueOf(adapter.getItem(position).getId()));
-                Fragment viewRecipeFragment = new ViewRecipeFragment();
-                viewRecipeFragment.setArguments(b);
-                getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, viewRecipeFragment).addToBackStack(null).commit();
+                if(!adapter.isItemSelected){
+                    Bundle b = new Bundle();
+                    b.putString("recipeId", String.valueOf(adapter.getItem(position).getId()));
+                    Fragment viewRecipeFragment = new ViewRecipeFragment();
+                    viewRecipeFragment.setArguments(b);
+                    getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, viewRecipeFragment).addToBackStack(null).commit();
+                }
             }
         });
     }

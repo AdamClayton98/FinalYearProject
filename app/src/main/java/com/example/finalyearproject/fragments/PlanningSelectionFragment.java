@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -56,6 +57,8 @@ public class PlanningSelectionFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view =  inflater.inflate(R.layout.fragment_planning_selection, container, false);
+
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Planning");
 
         databaseMethods = new DatabaseMethods(getContext());
 

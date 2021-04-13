@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -82,6 +83,7 @@ public class AllergiesFragment extends Fragment {
 
         view = inflater.inflate(R.layout.fragment_allergies, container,false);
         refreshFragmentListView();
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Allergies");
         databaseMethods=new DatabaseMethods(getContext());
         allergyList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

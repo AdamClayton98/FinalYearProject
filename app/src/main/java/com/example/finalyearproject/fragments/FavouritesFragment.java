@@ -2,6 +2,7 @@ package com.example.finalyearproject.fragments;
 
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -60,6 +61,7 @@ public class FavouritesFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_favourites, container, false);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Favourites");
         databaseMethods=new DatabaseMethods(getContext());
         getAndDisplayRecipes();
         return view;

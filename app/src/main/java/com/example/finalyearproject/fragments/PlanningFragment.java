@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -80,6 +81,7 @@ public class PlanningFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_planning, container, false);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Planning");
 
         addButton1=view.findViewById(R.id.planningAddButton1);
         addButton2=view.findViewById(R.id.planningAddButton2);
