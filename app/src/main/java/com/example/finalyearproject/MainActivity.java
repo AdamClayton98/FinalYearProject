@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -32,6 +33,7 @@ import com.example.finalyearproject.fragments.PantryFragment;
 import com.example.finalyearproject.fragments.PlanningDateSelectionFragment;
 import com.example.finalyearproject.fragments.PlanningFragment;
 import com.example.finalyearproject.fragments.ProfileFragment;
+import com.example.finalyearproject.fragments.SearchFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -40,11 +42,10 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    EditText allergyInput;
+
     Fragment selectedFragment = null;
     Toolbar toolbar;
-
-    Button addAllergyButton;
+    ImageView searchButton;
 
     public static String uid = FirebaseAuth.getInstance().getUid();
 
@@ -55,7 +56,14 @@ public class MainActivity extends AppCompatActivity {
         toolbar=findViewById(R.id.customToolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
+        searchButton = findViewById(R.id.searchButton);
 
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.fl_wrapper, new SearchFragment()).addToBackStack(null).commit();
+            }
+        });
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
@@ -97,21 +105,6 @@ public class MainActivity extends AppCompatActivity {
         FirebaseAuth.getInstance().signOut();
         startActivity(new Intent(MainActivity.this,LoginActivity.class));
         finish();
-    }
-
-
-    public void addAllergy(View view){
-        allergyInput=findViewById(R.id.allergyInput);
-
-        addAllergyButton=findViewById(R.id.addButton);
-        String allergy = allergyInput.getText().toString();
-
-        DatabaseMethods databaseMethods=new DatabaseMethods(MainActivity.this);
-        databaseMethods.addAllergyToDb(allergy);
-
-        AllergiesFragment currentFragment = (AllergiesFragment) getSupportFragmentManager().getFragments().get(0);
-        currentFragment.refreshFragmentListView();
-
     }
 
     public void toAllergies(View view){

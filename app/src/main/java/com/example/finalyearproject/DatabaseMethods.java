@@ -320,7 +320,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
     public boolean checkDateIs2DaysAfterToday(String date) throws ParseException {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         LocalDate now = LocalDate.now();
-        now = now.plusDays(2);
+        now = now.minusDays(2);
         LocalDate expiryDate = simpleDateFormat.parse(date).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
         if (expiryDate.isBefore(now)) {

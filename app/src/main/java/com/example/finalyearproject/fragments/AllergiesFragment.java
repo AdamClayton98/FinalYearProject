@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -38,6 +40,8 @@ public class AllergiesFragment extends Fragment {
     View view;
     ListView allergyList;
     DatabaseMethods databaseMethods;
+    Button addAllergyButton;
+    EditText allergyInput;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -94,7 +98,18 @@ public class AllergiesFragment extends Fragment {
                 Toast.makeText(getContext(), "Deleted Allergy: " + clickedAllergy, Toast.LENGTH_SHORT).show();
             }
         });
-        // Inflate the layout for this fragment
+
+        addAllergyButton=view.findViewById(R.id.addButton);
+        allergyInput=view.findViewById(R.id.allergyInput);
+
+        addAllergyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addAllergy();
+            }
+        });
+
+
         return view;
     }
 
@@ -107,6 +122,20 @@ public class AllergiesFragment extends Fragment {
         allergyModelArrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, getAllergiesInFragment());
         allergyList= view.findViewById(R.id.allergyListView);
         allergyList.setAdapter(allergyModelArrayAdapter);
+    }
+
+    public void addAllergy(){
+        String allergy = allergyInput.getText().toString();
+        if(allergy.isEmpty()){
+            Toast.makeText(getContext(), "Allergy cannot be empty", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        DatabaseMethods databaseMethods=new DatabaseMethods(getContext());
+        databaseMethods.addAllergyToDb(allergy);
+
+        refreshFragmentListView();
+
     }
 
 }

@@ -78,4 +78,5 @@
     <string name="click_to_choose_a_date">Click to choose a date...</string>
     <string name="view">View</string>
     <string name="cook">Cook</string>
+    <string name="search_image">Search Image</string>
 </resources>
