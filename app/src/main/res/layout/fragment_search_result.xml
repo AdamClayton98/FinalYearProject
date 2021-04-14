@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.SearchResultFragment">
+    
+    <TextView
+        android:id="@+id/searchHeader1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/most_relevant_recipes_to_your_search"
+        android:textSize="20sp"
+        android:layout_marginTop="20sp"
+        android:layout_marginBottom="10sp"
+        android:layout_marginStart="5sp"/>
+
+    <HorizontalScrollView
+        android:id="@+id/searchScrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/searchHeader1"
+        android:layout_marginBottom="30sp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/searchRecipeRecycler1"
+            android:layout_width="wrap_content"
+            android:layout_height="130sp"
+            android:scrollbarAlwaysDrawVerticalTrack="true"/>
+    </HorizontalScrollView>
+
+    <TextView
+        android:id="@+id/searchHeader2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/top_recipes_based_on_your_search"
+        android:textSize="20sp"
+        android:layout_below="@id/searchScrollView1"
+        android:layout_marginBottom="10sp"
+        android:layout_marginStart="5sp"/>
+
+    <HorizontalScrollView
+        android:id="@+id/searchScrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/searchHeader2"
+        android:layout_marginBottom="30sp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/searchRecipeRecycler2"
+            android:layout_width="wrap_content"
+            android:layout_height="130sp"
+            android:scrollbarAlwaysDrawVerticalTrack="true"/>
+    </HorizontalScrollView>
+
+    <TextView
+        android:id="@+id/searchHeader3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/your_favourites_you_can_cook_now"
+        android:textSize="20sp"
+        android:layout_below="@id/searchScrollView2"
+        android:layout_marginBottom="10sp"
+        android:layout_marginStart="5sp"/>
+
+    <HorizontalScrollView
+        android:id="@+id/searchScrollView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/searchHeader3"
+        android:layout_marginBottom="30sp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/searchRecipeRecycler3"
+            android:layout_width="wrap_content"
+            android:layout_height="130sp"
+            android:scrollbarAlwaysDrawVerticalTrack="true"/>
+    </HorizontalScrollView>
+
+
+</RelativeLayout>

@@ -93,4 +93,7 @@
     <string name="_5_minutes">5 Minutes</string>
     <string name="only_show_healthy_options">Only Show Healthy Options</string>
     <string name="is_this_recipe_healthy">Is this recipe Healthy?</string>
+    <string name="top_recipes_based_on_your_search">Top Recipes Based On Your Search</string>
+    <string name="most_relevant_recipes_to_your_search">Most Relevant Recipes To Your Search</string>
+    <string name="your_favourites_you_can_cook_now">Your Favourites You Can Cook Now</string>
 </resources>

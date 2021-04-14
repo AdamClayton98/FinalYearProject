@@ -95,9 +95,15 @@ public class SearchFragment extends Fragment {
 
         setOnSlideListeners();
 
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchClicked();
+            }
+        });
+
         return view;
     }
-
 
 
     private void setOnSlideListeners(){
@@ -164,4 +170,21 @@ public class SearchFragment extends Fragment {
             }
         });
     }
+
+
+    private void searchClicked(){
+        String servingAmount = servingText.getText().toString();
+        String cookingTime = cookingTimeText.getText().toString();
+        String recipeType = recipeTypeSpinner.getSelectedItem().toString();
+        boolean isHealthy = healthyCheckBox.isChecked();
+        int isHealthyInt = 0;
+        String keywords = keywordsInput.getText().toString();
+        boolean onlyPantryIngredients = onlyPantryIngredientsCheck.isChecked();
+        if(isHealthy){
+            isHealthyInt=1;
+        }
+
+
+    }
+
 }
