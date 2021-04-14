@@ -1,15 +1,28 @@
 package com.example.finalyearproject.fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.finalyearproject.R;
+import com.google.android.material.slider.Slider;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,6 +32,24 @@ import com.example.finalyearproject.R;
 public class SearchFragment extends Fragment {
 
     View view;
+
+    boolean isOnlyPantry;
+    boolean isHealthyOptions;
+    Button searchButton;
+
+    TextView servingText;
+    TextView cookingTimeText;
+    Slider servingSlider;
+    Spinner recipeTypeSpinner;
+    Slider cookingTimeSlider;
+    CheckBox healthyCheckBox;
+    EditText keywordsInput;
+    CheckBox onlyPantryIngredientsCheck;
+    String[] recipeTypes = {"All", "Vegetarian", "Vegan"};
+
+    ListView pantryIngredientList;
+
+
 
     public SearchFragment() {
         // Required empty public constructor
@@ -52,8 +83,85 @@ public class SearchFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_search, container, false);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Search");
 
+        servingText = view.findViewById(R.id.searchServingText);
+        cookingTimeText = view.findViewById(R.id.searchCookTimeText);
+        servingSlider = view.findViewById(R.id.searchServingSlider);
+        recipeTypeSpinner = view.findViewById(R.id.searchTypeSpinner);
+        cookingTimeSlider = view.findViewById(R.id.searchCookTimeSlider);
+        healthyCheckBox = view.findViewById(R.id.searchHealthyCheckbox);
+        keywordsInput = view.findViewById(R.id.searchKeywords);
+        onlyPantryIngredientsCheck = view.findViewById(R.id.searchPantryIngredientCheckbox);
+        recipeTypeSpinner.setAdapter(new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item, recipeTypes));
 
+        setOnSlideListeners();
 
         return view;
+    }
+
+
+
+    private void setOnSlideListeners(){
+        servingSlider.addOnChangeListener(new Slider.OnChangeListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
+                int valueOfFloat = ((int) value);
+                switch (valueOfFloat){
+                    case 1:
+                        servingText.setText("1 Person");
+                        break;
+                    case 2:
+                        servingText.setText("2 People");
+                        break;
+                    case 3:
+                        servingText.setText("1-2 People");
+                        break;
+                    case 4:
+                        servingText.setText("2-4 People");
+                        break;
+                    case 5:
+                        servingText.setText("4-6 People");
+                        break;
+                    case 6:
+                        servingText.setText("6+ People");
+                        break;
+                }
+            }
+        });
+//    "5 Minutes", "10 Minutes", "15 Minutes", "20 Minutes", "30 Minutes", "45 Minutes", "60 Minutes", "Over 60 Minutes"
+        cookingTimeSlider.addOnChangeListener(new Slider.OnChangeListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
+                String textToSet=null;
+                switch ((int)value){
+                    case 1:
+                        textToSet=("5 Minutes");
+                        break;
+                    case 2:
+                        textToSet=("10 Minutes");
+                        break;
+                    case 3:
+                        textToSet=("15 Minutes");
+                        break;
+                    case 4:
+                        textToSet=("20 Minutes");
+                        break;
+                    case 5:
+                        textToSet=("30 Minutes");
+                        break;
+                    case 6:
+                        textToSet=("45 Minutes");
+                        break;
+                    case 7:
+                        textToSet=("60 Minutes");
+                        break;
+                    case 8:
+                        textToSet=("Over 60 Minutes");
+                        break;
+                }
+                cookingTimeText.setText(textToSet);
+            }
+        });
     }
 }

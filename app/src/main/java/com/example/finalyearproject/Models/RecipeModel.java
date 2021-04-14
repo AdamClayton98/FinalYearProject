@@ -13,8 +13,10 @@ public class RecipeModel implements Serializable {
     String serves;
     int rating;
     String uuid;
+    boolean isHealthy;
+    String recipeType;
 
-    public RecipeModel(int id,String recipeName, List<String> ingredients, List<String> steps, String cookingTime, String serves, int rating, String uuid) {
+    public RecipeModel(int id,String recipeName, List<String> ingredients, List<String> steps, String cookingTime, String serves, int rating, String uuid, boolean isHealthy, String recipeType) {
         this.id = id;
         this.recipeName = recipeName;
         this.ingredients = ingredients;
@@ -23,6 +25,8 @@ public class RecipeModel implements Serializable {
         this.serves = serves;
         this.rating = rating;
         this.uuid=uuid;
+        this.isHealthy=isHealthy;
+        this.recipeType=recipeType;
     }
 
     public String getRecipeName() {
@@ -87,5 +91,21 @@ public class RecipeModel implements Serializable {
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
+    }
+
+    public boolean isHealthy() {
+        return isHealthy;
+    }
+
+    public void setHealthy(boolean healthy) {
+        isHealthy = healthy;
+    }
+
+    public String getRecipeType() {
+        return recipeType;
+    }
+
+    public void setRecipeType(String recipeType) {
+        this.recipeType = recipeType;
     }
 }

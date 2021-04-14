@@ -106,11 +106,40 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/serving_label" />
 
+        <TextView
+            android:id="@+id/recipeTypeTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20sp"
+            android:layout_marginStart="50sp"
+            android:layout_marginEnd="50sp"
+            app:layout_constraintTop_toBottomOf="@id/servingDropdown"
+            android:text="@string/recipe_type"/>
+
+        <Spinner
+            android:id="@+id/recipeTypeSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50sp"
+            android:layout_marginEnd="50sp"
+            app:layout_constraintTop_toBottomOf="@id/recipeTypeTitle"
+            android:layout_below="@id/recipeTypeTitle" />
+
+        <CheckBox
+            android:id="@+id/recipeIsHealthyCheckbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/recipeTypeSpinner"
+            android:text="@string/is_this_recipe_healthy"
+            android:layout_marginTop="10sp"
+            android:layout_marginStart="50sp"
+            android:layout_marginEnd="50sp"/>
+
         <RelativeLayout
             android:id="@+id/uploadImageLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/servingDropdown">
+            app:layout_constraintTop_toBottomOf="@+id/recipeIsHealthyCheckbox">
 
             <ImageView
                 android:id="@+id/recipeImagePlaceholder"

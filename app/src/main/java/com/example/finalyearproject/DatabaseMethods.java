@@ -77,6 +77,8 @@ public class DatabaseMethods extends SQLiteOpenHelper {
     public static final String COLUMN_MEAL_NUMBER = "MEAL_NUMBER";
     public static final String COLUMN_DATE_OF_PLAN = "DATE_OF_PLAN";
     public static final String TABLE_PLANS = "PLANS";
+    public static final String COLUMN_IS_HEALTHY = "IS_HEALTHY";
+    public static final String COLUMN_RECIPE_TYPE = "RECIPE_TYPE";
 
     public DatabaseMethods(@Nullable Context context) {
         super(context, "project.db", null, 1);
@@ -93,7 +95,6 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         createCommentsTable(db);
         createFavouritesTable(db);
         createPlansTable(db);
-        db.close();
     }
 
     private void createUserTable(SQLiteDatabase db) {
@@ -114,7 +115,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
     }
 
     private void createRecipesTable(SQLiteDatabase db){
-        String createTableStatement = "CREATE TABLE IF NOT EXISTS " + TABLE_RECIPES + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_USERID + " TEXT, " + COLUMN_RECIPE_NAME + " TEXT, " + COLUMN_INGREDIENTS + " TEXT, " + COLUMN_STEPS + " TEXT, " + COLUMN_COOKING_TIME + " TEXT, " + COLUMN_SERVES + " TEXT, " + COLUMN_NUM_OF_VIEWS + " INTEGER, " + COLUMN_NUM_OF_FAVOURITES + " INTEGER)";
+        String createTableStatement = "CREATE TABLE IF NOT EXISTS " + TABLE_RECIPES + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_USERID + " TEXT, " + COLUMN_RECIPE_NAME + " TEXT, " + COLUMN_INGREDIENTS + " TEXT, " + COLUMN_STEPS + " TEXT, " + COLUMN_COOKING_TIME + " TEXT, " + COLUMN_SERVES + " TEXT, " + COLUMN_NUM_OF_VIEWS + " INTEGER, " + COLUMN_NUM_OF_FAVOURITES + " INTEGER, " + COLUMN_IS_HEALTHY + " INTEGER, " + COLUMN_RECIPE_TYPE + " TEXT )";
         db.execSQL(createTableStatement);
     }
 
@@ -206,7 +207,6 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         contentValues.put(COLUMN_USERNAME, userModel.getUsername());
 
         db.insert(USERS_TABLE, null, contentValues);
-        db.close();
     }
 
     public void updateUserInfo(String updateInfo, String updateColumn) {
@@ -334,7 +334,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
     }
 
 
-    public void addRecipe(String recipeName, String cookingTime, String serves, String ingredients, String steps){
+    public void addRecipe(String recipeName, String cookingTime, String serves, String ingredients, String steps, boolean isHealthy, String recipeType){
         SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         recipeName = recipeName.toUpperCase();
@@ -346,6 +346,12 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         contentValues.put(COLUMN_SERVES, serves);
         contentValues.put(COLUMN_INGREDIENTS, ingredients);
         contentValues.put(COLUMN_STEPS, steps);
+        int isHealthyInt=0;
+        if(isHealthy){
+            isHealthyInt = 1;
+        }
+        contentValues.put(COLUMN_IS_HEALTHY, isHealthyInt);
+        contentValues.put(COLUMN_RECIPE_TYPE, recipeType);
 
         db.insert(TABLE_RECIPES, null, contentValues);
         db.close();
@@ -369,8 +375,16 @@ public class DatabaseMethods extends SQLiteOpenHelper {
                 String serves = cursor.getString(6);
                 int rating = getRatingForRecipe(id);
                 String uuid = getRecipeImageUid(id);
+                int isHealthyInt=cursor.getInt(7);
+                boolean isHealthy = false;
+                if(isHealthyInt==0){
+                    isHealthy=false;
+                }else if(isHealthyInt==1){
+                    isHealthy=true;
+                }
+                String recipeType = cursor.getString(8);
 
-                RecipeModel recipe = new RecipeModel(id, recipeName, ingredients, steps, cookingTime, serves, rating, uuid);
+                RecipeModel recipe = new RecipeModel(id, recipeName, ingredients, steps, cookingTime, serves, rating, uuid, isHealthy,recipeType);
 
                 recipes.add(recipe);
 
@@ -457,8 +471,16 @@ public class DatabaseMethods extends SQLiteOpenHelper {
             String serves = cursor.getString(6);
             int rating = getRatingForRecipe(recipeId);
             String uuid = getRecipeImageUid(recipeId);
+            int isHealthyInt=cursor.getInt(7);
+            boolean isHealthy = false;
+            if(isHealthyInt==0){
+                isHealthy=false;
+            }else if(isHealthyInt==1){
+                isHealthy=true;
+            }
+            String recipeType = cursor.getString(8);
 
-            recipeModel = new RecipeModel(id,recipeName,ingredients,steps,cookingTime,serves,rating,uuid);
+            RecipeModel recipe = new RecipeModel(id, recipeName, ingredients, steps, cookingTime, serves, rating, uuid, isHealthy,recipeType);
         }
         return recipeModel;
     }
@@ -544,7 +566,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
     public String getUsernameOfUser(String uid){
         SQLiteDatabase db = getReadableDatabase();
         String username = null;
-        String query = "SELECT " + COLUMN_USERNAME + " FROM " + USERS_TABLE + " WHERE " + COLUMN_ID + " = '" + uid + "'";
+        String query = "SELECT " + COLUMN_NAME + " FROM " + USERS_TABLE + " WHERE " + COLUMN_ID + " = '" + uid + "'";
         Cursor cursor = db.rawQuery(query, null);
         if(cursor.moveToFirst()){
             username=cursor.getString(0);
@@ -796,8 +818,16 @@ public class DatabaseMethods extends SQLiteOpenHelper {
                 String serves = cursor.getString(6);
                 int rating = getRatingForRecipe(id);
                 String uuid = getRecipeImageUid(id);
+                int isHealthyInt=cursor.getInt(7);
+                boolean isHealthy = false;
+                if(isHealthyInt==0){
+                    isHealthy=false;
+                }else if(isHealthyInt==1){
+                    isHealthy=true;
+                }
+                String recipeType = cursor.getString(8);
 
-                RecipeModel recipe = new RecipeModel(id, recipeName, ingredients, steps, cookingTime, serves, rating, uuid);
+                RecipeModel recipe = new RecipeModel(id, recipeName, ingredients, steps, cookingTime, serves, rating, uuid, isHealthy,recipeType);
 
                 recipes.add(recipe);
 
@@ -832,8 +862,16 @@ public class DatabaseMethods extends SQLiteOpenHelper {
                 String serves = cursor.getString(6);
                 int rating = getRatingForRecipe(id);
                 String uuid = getRecipeImageUid(id);
+                int isHealthyInt=cursor.getInt(7);
+                boolean isHealthy = false;
+                if(isHealthyInt==0){
+                    isHealthy=false;
+                }else if(isHealthyInt==1){
+                    isHealthy=true;
+                }
+                String recipeType = cursor.getString(8);
 
-                RecipeModel recipe = new RecipeModel(id, recipeName, ingredients, steps, cookingTime, serves, rating, uuid);
+                RecipeModel recipe = new RecipeModel(id, recipeName, ingredients, steps, cookingTime, serves, rating, uuid, isHealthy,recipeType);
 
                 recipes.add(recipe);
 
@@ -868,8 +906,16 @@ public class DatabaseMethods extends SQLiteOpenHelper {
                 String serves = cursor.getString(6);
                 int rating = getRatingForRecipe(id);
                 String uuid = getRecipeImageUid(id);
+                int isHealthyInt=cursor.getInt(7);
+                boolean isHealthy = false;
+                if(isHealthyInt==0){
+                    isHealthy=false;
+                }else if(isHealthyInt==1){
+                    isHealthy=true;
+                }
+                String recipeType = cursor.getString(8);
 
-                RecipeModel recipe = new RecipeModel(id, recipeName, ingredients, steps, cookingTime, serves, rating, uuid);
+                RecipeModel recipe = new RecipeModel(id, recipeName, ingredients, steps, cookingTime, serves, rating, uuid, isHealthy,recipeType);
 
                 recipes.add(recipe);
 

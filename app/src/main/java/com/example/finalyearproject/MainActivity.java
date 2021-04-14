@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar=findViewById(R.id.customToolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
-        searchButton = findViewById(R.id.searchButton);
+        searchButton = findViewById(R.id.searchActionBarButton);
 
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override

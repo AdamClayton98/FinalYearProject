@@ -83,4 +83,14 @@
     <string name="most_favourited_recipes">Most Favourited Recipes</string>
     <string name="recipes_based_on_your_current_pantry">Recipes Based On Your Current Pantry</string>
     <string name="quick_recipes_in_under_20_minutes">Quick Recipes In Under 20 Minutes</string>
+    <string name="search_for_recipes_that_use_only_ingredients_in_your_pantry">Search for recipes that use ONLY ingredients in your pantry</string>
+    <string name="keywords_separate_with_commas">Keywords: Separate with commas</string>
+    <string name="search">Search</string>
+    <string name="people_to_serve">People To Serve</string>
+    <string name="_1_person">1 Person</string>
+    <string name="recipe_type">Recipe Type</string>
+    <string name="max_cooking_time">Max Cooking Time</string>
+    <string name="_5_minutes">5 Minutes</string>
+    <string name="only_show_healthy_options">Only Show Healthy Options</string>
+    <string name="is_this_recipe_healthy">Is this recipe Healthy?</string>
 </resources>

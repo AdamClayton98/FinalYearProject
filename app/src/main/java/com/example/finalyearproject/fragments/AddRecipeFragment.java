@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -57,6 +58,7 @@ public class AddRecipeFragment extends Fragment {
     String[] measurementTypes = new String[]{"ML", "Grams", "Tbsp", "oz", "lb", "Unit(s)"};
     String[] cookingTimes = new String[]{"5 Minutes", "10 Minutes", "15 Minutes", "20 Minutes", "30 Minutes", "45 Minutes", "60 Minutes", "Over 60 Minutes"};
     String[] serves = new String[]{"1 Person", "2 People", "1-2 People", "2-4 People", "4-6 People", "6+ People"};
+    String[] recipeTypes = new String[]{"All", "Vegetarian", "Vegan"};
     Button addStepButton;
     LinearLayout stepListLayout;
     Button uploadRecipeButton;
@@ -64,6 +66,8 @@ public class AddRecipeFragment extends Fragment {
     Button addImageButton;
     ImageView recipeImagePlaceholder;
     String imageuuid;
+    CheckBox isHealthyCheckbox;
+    Spinner recipeTypeSpinner;
 
     private Uri filePath;
     private final int PICK_IMAGE_REQUEST=71;
@@ -131,6 +135,11 @@ public class AddRecipeFragment extends Fragment {
         cookingTimeDropdown = view.findViewById(R.id.cookingTimeSpinner);
         ArrayAdapter cookingTimeAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item, cookingTimes);
         cookingTimeDropdown.setAdapter(cookingTimeAdapter);
+
+        isHealthyCheckbox=view.findViewById(R.id.recipeIsHealthyCheckbox);
+
+        recipeTypeSpinner=view.findViewById(R.id.recipeTypeSpinner);
+        recipeTypeSpinner.setAdapter(new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item, recipeTypes));
 
         recipeImagePlaceholder = view.findViewById(R.id.recipeImagePlaceholder);
 
@@ -279,6 +288,8 @@ public class AddRecipeFragment extends Fragment {
         String recipeName = recipeNameInput.getText().toString().toUpperCase();
         String cookingTime = cookingTimeDropdown.getSelectedItem().toString();
         String serves = servingDropdown.getSelectedItem().toString();
+        String recipeType=recipeTypeSpinner.getSelectedItem().toString();
+        boolean isHealthy=isHealthyCheckbox.isChecked();
 
 
         if (ingredients.isEmpty()) {
@@ -317,7 +328,8 @@ public class AddRecipeFragment extends Fragment {
             }
         }
 
-        databaseMethods.addRecipe(recipeName, cookingTime, serves, ingredientsForDb, stepsForDb);
+
+        databaseMethods.addRecipe(recipeName, cookingTime, serves, ingredientsForDb, stepsForDb, isHealthy, recipeType);
         uploadImage();
         databaseMethods.uploadRecipeImageUrl(recipeName, imageuuid);
 
