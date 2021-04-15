@@ -200,13 +200,6 @@ public class SearchResultFragment extends Fragment {
 
 
 
-
-
-
-        return recipesToReturn;
-}
-
-
     private ArrayList<String> splitCommaSeparatedString(String csvString) {
         String[] csvStringArray = csvString.replace(" ,", "").replace(", ", ",").split(",");
         return new ArrayList<>(Arrays.asList(csvStringArray));
