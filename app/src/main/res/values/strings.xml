@@ -96,4 +96,5 @@
     <string name="top_recipes_based_on_your_search">Top Recipes Based On Your Search</string>
     <string name="most_relevant_recipes_to_your_search">Most Relevant Recipes To Your Search</string>
     <string name="your_favourites_you_can_cook_now">Your Favourites You Can Cook Now</string>
+    <string name="show_recipes_that_include_your_allergies_as_ingredients">Show Recipes That Include Your Allergies As Ingredients</string>
 </resources>

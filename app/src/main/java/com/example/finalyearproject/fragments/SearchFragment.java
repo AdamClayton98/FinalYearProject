@@ -33,10 +33,7 @@ public class SearchFragment extends Fragment {
 
     View view;
 
-    boolean isOnlyPantry;
-    boolean isHealthyOptions;
     Button searchButton;
-
     TextView servingText;
     TextView cookingTimeText;
     Slider servingSlider;
@@ -45,6 +42,7 @@ public class SearchFragment extends Fragment {
     CheckBox healthyCheckBox;
     EditText keywordsInput;
     CheckBox onlyPantryIngredientsCheck;
+    CheckBox allergyCheckbox;
     String[] recipeTypes = {"All", "Vegetarian", "Vegan"};
 
     ListView pantryIngredientList;
@@ -92,6 +90,7 @@ public class SearchFragment extends Fragment {
         keywordsInput = view.findViewById(R.id.searchKeywords);
         onlyPantryIngredientsCheck = view.findViewById(R.id.searchPantryIngredientCheckbox);
         recipeTypeSpinner.setAdapter(new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item, recipeTypes));
+        allergyCheckbox = view.findViewById(R.id.searchAllergyCheckbox);
 
         setOnSlideListeners();
 
@@ -134,7 +133,6 @@ public class SearchFragment extends Fragment {
                 }
             }
         });
-//    "5 Minutes", "10 Minutes", "15 Minutes", "20 Minutes", "30 Minutes", "45 Minutes", "60 Minutes", "Over 60 Minutes"
         cookingTimeSlider.addOnChangeListener(new Slider.OnChangeListener() {
             @SuppressLint("SetTextI18n")
             @Override
@@ -177,14 +175,22 @@ public class SearchFragment extends Fragment {
         String cookingTime = cookingTimeText.getText().toString();
         String recipeType = recipeTypeSpinner.getSelectedItem().toString();
         boolean isHealthy = healthyCheckBox.isChecked();
-        int isHealthyInt = 0;
         String keywords = keywordsInput.getText().toString();
         boolean onlyPantryIngredients = onlyPantryIngredientsCheck.isChecked();
-        if(isHealthy){
-            isHealthyInt=1;
-        }
+        boolean includeAllergies = allergyCheckbox.isChecked();
 
+        Bundle b = new Bundle();
+        b.putString("servingAmount", servingAmount);
+        b.putString("cookingTime", cookingTime);
+        b.putString("recipeType", recipeType);
+        b.putBoolean("isHealthy", isHealthy);
+        b.putString("keywords", keywords);
+        b.putBoolean("onlyPantryIngredients", onlyPantryIngredients);
+        b.putBoolean("includeAllergies", includeAllergies);
 
+        SearchResultFragment fragment = new SearchResultFragment();
+        fragment.setArguments(b);
+        getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, fragment).addToBackStack(null).commit();
     }
 
 }

@@ -15,6 +15,7 @@ public class RecipeModel implements Serializable {
     String uuid;
     boolean isHealthy;
     String recipeType;
+    int numOfKeywords;
 
     public RecipeModel(int id,String recipeName, List<String> ingredients, List<String> steps, String cookingTime, String serves, int rating, String uuid, boolean isHealthy, String recipeType) {
         this.id = id;
@@ -107,5 +108,13 @@ public class RecipeModel implements Serializable {
 
     public void setRecipeType(String recipeType) {
         this.recipeType = recipeType;
+    }
+
+    public int getNumOfKeywords() {
+        return numOfKeywords;
+    }
+
+    public void setNumOfKeywords(int numOfKeywords) {
+        this.numOfKeywords = numOfKeywords;
     }
 }

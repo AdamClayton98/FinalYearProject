@@ -55,7 +55,7 @@ public class AddRecipeFragment extends Fragment {
     Spinner servingDropdown;
     LinearLayout ingredientListLayout;
     Button addIngredientButton;
-    String[] measurementTypes = new String[]{"ML", "Grams", "Tbsp", "oz", "lb", "Unit(s)"};
+    String[] measurementTypes = new String[]{"ML", "Grams", "Tbsp", "oz", "lb", "Unit/Serving(s)"};
     String[] cookingTimes = new String[]{"5 Minutes", "10 Minutes", "15 Minutes", "20 Minutes", "30 Minutes", "45 Minutes", "60 Minutes", "Over 60 Minutes"};
     String[] serves = new String[]{"1 Person", "2 People", "1-2 People", "2-4 People", "4-6 People", "6+ People"};
     String[] recipeTypes = new String[]{"All", "Vegetarian", "Vegan"};

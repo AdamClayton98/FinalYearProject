@@ -93,7 +93,7 @@ public class AddToPantryFragment extends Fragment {
         expiryInput = view.findViewById(R.id.expiryDateInput);
         databaseMethods=new DatabaseMethods(getContext());
         measurementDropdown = view.findViewById(R.id.measurementTypeDropdownPantry);
-        String[] measurementTypes = new String[]{"ML", "Grams", "Tbsp", "oz", "lb", "Unit(s)"};
+        String[] measurementTypes = new String[]{"ML", "Grams", "Tbsp", "oz", "lb", "Unit/Serving(s)"};
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getContext(), R.layout.support_simple_spinner_dropdown_item, measurementTypes);
         measurementDropdown.setAdapter(arrayAdapter);
         addButton = view.findViewById(R.id.addToPantryAddButton);

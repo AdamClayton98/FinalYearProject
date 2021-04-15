@@ -1,143 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.SearchFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/searchServingTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/people_to_serve"
-        android:layout_marginStart="10sp"
-        android:layout_marginTop="30sp"
-        android:textSize="18sp"/>
+        <TextView
+            android:id="@+id/searchServingTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10sp"
+            android:layout_marginTop="30sp"
+            android:text="@string/people_to_serve"
+            android:textSize="18sp" />
 
-    <TextView
-        android:id="@+id/searchServingText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/searchServingTitle"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="0dp"
-        android:layout_marginStart="10sp"
-        android:text="@string/_1_person"
-        android:textSize="16sp" />
+        <TextView
+            android:id="@+id/searchServingText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/searchServingTitle"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="10sp"
+            android:layout_marginTop="0dp"
+            android:text="@string/_1_person"
+            android:textSize="16sp" />
 
-    <com.google.android.material.slider.Slider
-        android:id="@+id/searchServingSlider"
-        android:valueFrom="1.0"
-        android:valueTo="6.0"
-        android:stepSize="1.0"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/searchServingText"
-        android:layout_marginStart="10sp"
-        android:layout_marginEnd="10sp"
-        app:labelBehavior="gone"/>
-
-
-    <TextView
-        android:id="@+id/searchRecipeTypeTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20sp"
-        android:layout_marginStart="10sp"
-        android:layout_marginEnd="10sp"
-        android:layout_below="@id/searchServingSlider"
-        android:text="@string/recipe_type"/>
-
-    <Spinner
-        android:id="@+id/searchTypeSpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10sp"
-        android:layout_marginEnd="10sp"
-        android:layout_below="@id/searchRecipeTypeTitle" />
+        <com.google.android.material.slider.Slider
+            android:id="@+id/searchServingSlider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/searchServingText"
+            android:layout_marginStart="10sp"
+            android:layout_marginEnd="10sp"
+            android:stepSize="1.0"
+            android:valueFrom="1.0"
+            android:valueTo="6.0"
+            app:labelBehavior="gone" />
 
 
-    <CheckBox
-        android:id="@+id/searchHealthyCheckbox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10sp"
-        android:layout_marginEnd="10sp"
-        android:layout_marginTop="20sp"
-        android:layout_below="@id/searchTypeSpinner"
-        android:text="@string/only_show_healthy_options"/>
+        <TextView
+            android:id="@+id/searchRecipeTypeTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/searchServingSlider"
+            android:layout_marginStart="10sp"
+            android:layout_marginTop="20sp"
+            android:layout_marginEnd="10sp"
+            android:text="@string/recipe_type" />
 
-    <TextView
-        android:id="@+id/searchCookTimeTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/max_cooking_time"
-        android:layout_marginStart="10sp"
-        android:layout_marginTop="20sp"
-        android:layout_below="@id/searchHealthyCheckbox"
-        android:textSize="18sp"/>
-
-    <TextView
-        android:id="@+id/searchCookTimeText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/searchCookTimeTitle"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="0dp"
-        android:layout_marginStart="10sp"
-        android:text="@string/_5_minutes"
-        android:textSize="16sp" />
-
-    <com.google.android.material.slider.Slider
-        android:id="@+id/searchCookTimeSlider"
-        android:valueFrom="1.0"
-        android:valueTo="8.0"
-        android:stepSize="1.0"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/searchCookTimeText"
-        android:layout_marginStart="10sp"
-        android:layout_marginEnd="10sp"
-        app:labelBehavior="gone"/>
-
-    <CheckBox
-        android:id="@+id/searchPantryIngredientCheckbox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/searchCookTimeSlider"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="5sp"
-        android:layout_marginTop="30sp"
-        android:layout_marginEnd="5sp"
-        android:text="@string/search_for_recipes_that_use_only_ingredients_in_your_pantry" />
+        <Spinner
+            android:id="@+id/searchTypeSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/searchRecipeTypeTitle"
+            android:layout_marginStart="10sp"
+            android:layout_marginEnd="10sp" />
 
 
-    <EditText
-        android:id="@+id/searchKeywords"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/searchPantryIngredientCheckbox"
-        android:layout_marginTop="30sp"
-        android:layout_marginStart="10sp"
-        android:layout_marginEnd="10sp"
-        android:hint="@string/keywords_separate_with_commas"
-        android:inputType="text"
-        android:autofillHints="" />
+        <CheckBox
+            android:id="@+id/searchHealthyCheckbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/searchTypeSpinner"
+            android:layout_marginStart="10sp"
+            android:layout_marginTop="20sp"
+            android:layout_marginEnd="10sp"
+            android:text="@string/only_show_healthy_options" />
 
-    <Button
-        android:id="@+id/searchButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/searchKeywords"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="20sp"
-        android:layout_marginTop="30sp"
-        android:text="@string/search" />
+        <TextView
+            android:id="@+id/searchCookTimeTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/searchHealthyCheckbox"
+            android:layout_marginStart="10sp"
+            android:layout_marginTop="20sp"
+            android:text="@string/max_cooking_time"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/searchCookTimeText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/searchCookTimeTitle"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="10sp"
+            android:layout_marginTop="0dp"
+            android:text="@string/_5_minutes"
+            android:textSize="16sp" />
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/searchCookTimeSlider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/searchCookTimeText"
+            android:layout_marginStart="10sp"
+            android:layout_marginEnd="10sp"
+            android:stepSize="1.0"
+            android:valueFrom="1.0"
+            android:valueTo="8.0"
+            app:labelBehavior="gone" />
+
+        <CheckBox
+            android:id="@+id/searchPantryIngredientCheckbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/searchCookTimeSlider"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="5sp"
+            android:layout_marginTop="30sp"
+            android:layout_marginEnd="5sp"
+            android:text="@string/search_for_recipes_that_use_only_ingredients_in_your_pantry" />
+        
+
+        <CheckBox
+            android:id="@+id/searchAllergyCheckbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="5sp"
+            android:layout_marginTop="30sp"
+            android:layout_marginEnd="5sp"
+            android:text="@string/show_recipes_that_include_your_allergies_as_ingredients"
+            android:layout_below="@id/searchPantryIngredientCheckbox"/>
+        
+        <EditText
+            android:id="@+id/searchKeywords"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/searchAllergyCheckbox"
+            android:layout_marginStart="10sp"
+            android:layout_marginTop="30sp"
+            android:layout_marginEnd="10sp"
+            android:autofillHints=""
+            android:hint="@string/keywords_separate_with_commas"
+            android:inputType="text" />
+
+        <Button
+            android:id="@+id/searchButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/searchKeywords"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="30sp"
+            android:layout_marginEnd="20sp"
+            android:text="@string/search" />
     </RelativeLayout>
 </ScrollView>
