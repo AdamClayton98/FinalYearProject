@@ -134,7 +134,11 @@ public class SearchResultFragment extends Fragment {
 
         recipesToReturn.sort(new RelevanceSorter());
 
-        return recipesToReturn;
+        try {
+            return (ArrayList<RecipeModel>) recipesToReturn.subList(0, 30);
+        } catch (IndexOutOfBoundsException e) {
+            return recipesToReturn;
+        }
     }
 
     private ArrayList<RecipeModel> filterTopRecipesForSearch() {
@@ -166,7 +170,11 @@ public class SearchResultFragment extends Fragment {
 
         recipesToReturn.sort(new RatingSorter());
 
-        return recipesToReturn;
+        try {
+            return (ArrayList<RecipeModel>) recipesToReturn.subList(0, 30);
+        } catch (IndexOutOfBoundsException e) {
+            return recipesToReturn;
+        }
     }
 
     private ArrayList<RecipeModel> filterFavouritesYouCanCook() {
@@ -195,7 +203,11 @@ public class SearchResultFragment extends Fragment {
             }
         }
 
-        return recipesToReturn;
+        try {
+            return (ArrayList<RecipeModel>) recipesToReturn.subList(0, 30);
+        } catch (IndexOutOfBoundsException e) {
+            return recipesToReturn;
+        }
     }
 
 

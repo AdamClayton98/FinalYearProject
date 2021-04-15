@@ -80,8 +80,7 @@
                 android:id="@+id/viewRecipeRating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginEnd="30sp"
+                android:layout_marginEnd="10sp"
                 android:textSize="16sp" />
         </LinearLayout>
     </LinearLayout>
@@ -166,14 +165,16 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5sp"
             android:layout_marginEnd="5sp"
-            android:text="@string/rate" />
+            android:text="@string/rate"
+            android:textSize="12sp"/>
 
         <Button
             android:id="@+id/commentRecipeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/comment"
-            android:layout_marginEnd="5sp"/>
+            android:layout_marginEnd="5sp"
+            android:textSize="12sp"/>
 
         <Button
             android:id="@+id/removeRecipeButton"
@@ -181,16 +182,16 @@
             android:layout_height="wrap_content"
             android:visibility="invisible"
             android:text="@string/remove"
-            android:layout_marginEnd="5sp"/>
+            android:layout_marginEnd="5sp"
+            android:textSize="12sp"/>
 
 
         <Button
             android:id="@+id/reportRecipeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/report"/>
-
-
+            android:text="@string/report"
+            android:textSize="12sp"/>
     </LinearLayout>
 
 </RelativeLayout>

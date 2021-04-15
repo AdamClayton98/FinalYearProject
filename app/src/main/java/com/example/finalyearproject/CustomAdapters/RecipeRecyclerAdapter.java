@@ -55,7 +55,7 @@ public class RecipeRecyclerAdapter extends RecyclerView.Adapter<RecipeRecyclerAd
             FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
             StorageReference storageReference = firebaseStorage.getReference();
             final long MB=1024*1024;
-            storageReference.child("images/" + recipeModel.getUuid()).getBytes(MB).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            storageReference.child("images/" + recipeModel.getUrl()).getBytes(MB).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                 @Override
                 public void onSuccess(byte[] bytes) {
                     Bitmap imageBitmap= BitmapFactory.decodeByteArray(bytes,0,bytes.length);

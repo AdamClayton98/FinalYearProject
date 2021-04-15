@@ -375,7 +375,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
                 String cookingTime = cursor.getString(5);
                 String serves = cursor.getString(6);
                 int rating = getRatingForRecipe(id);
-                String uuid = getRecipeImageUid(id);
+                String url = getRecipeImageURL(id);
                 int isHealthyInt = cursor.getInt(7);
                 boolean isHealthy = false;
                 if (isHealthyInt == 0) {
@@ -385,7 +385,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
                 }
                 String recipeType = cursor.getString(8);
 
-                RecipeModel recipe = new RecipeModel(id, recipeName, ingredients, steps, cookingTime, serves, rating, uuid, isHealthy, recipeType);
+                RecipeModel recipe = new RecipeModel(id, recipeName, ingredients, steps, cookingTime, serves, rating, url, isHealthy, recipeType);
 
                 recipes.add(recipe);
 
@@ -447,7 +447,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         return recipeId;
     }
 
-    public String getRecipeImageUid(int recipeId) {
+    public String getRecipeImageURL(int recipeId) {
         String imageUid = null;
         String query = "SELECT " + COLUMN_IMAGE_URL + " FROM " + TABLE_IMAGES + " WHERE " + COLUMN_RECIPE_ID + " = '" + recipeId + "'";
         SQLiteDatabase db = getReadableDatabase();
@@ -471,7 +471,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
             String cookingTime = cursor.getString(5);
             String serves = cursor.getString(6);
             int rating = getRatingForRecipe(recipeId);
-            String uuid = getRecipeImageUid(recipeId);
+            String uuid = getRecipeImageURL(recipeId);
             int isHealthyInt = cursor.getInt(7);
             boolean isHealthy = false;
             if (isHealthyInt == 0) {
@@ -481,7 +481,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
             }
             String recipeType = cursor.getString(8);
 
-            RecipeModel recipe = new RecipeModel(id, recipeName, ingredients, steps, cookingTime, serves, rating, uuid, isHealthy, recipeType);
+            recipeModel = new RecipeModel(id, recipeName, ingredients, steps, cookingTime, serves, rating, uuid, isHealthy, recipeType);
         }
         return recipeModel;
     }
@@ -490,7 +490,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
         StorageReference storageReference = firebaseStorage.getReference();
         final long MB = 1024 * 1024;
-        storageReference.child("images/" + recipeModel.getUuid()).getBytes(MB).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+        storageReference.child("images/" + recipeModel.getUrl()).getBytes(MB).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
             public void onSuccess(byte[] bytes) {
                 Bitmap imageBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
@@ -818,7 +818,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
                 String cookingTime = cursor.getString(5);
                 String serves = cursor.getString(6);
                 int rating = getRatingForRecipe(id);
-                String uuid = getRecipeImageUid(id);
+                String uuid = getRecipeImageURL(id);
                 int isHealthyInt = cursor.getInt(7);
                 boolean isHealthy = false;
                 if (isHealthyInt == 0) {
@@ -862,7 +862,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
                 String cookingTime = cursor.getString(5);
                 String serves = cursor.getString(6);
                 int rating = getRatingForRecipe(id);
-                String uuid = getRecipeImageUid(id);
+                String uuid = getRecipeImageURL(id);
                 int isHealthyInt = cursor.getInt(7);
                 boolean isHealthy = false;
                 if (isHealthyInt == 0) {
@@ -906,7 +906,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
                 String cookingTime = cursor.getString(5);
                 String serves = cursor.getString(6);
                 int rating = getRatingForRecipe(id);
-                String uuid = getRecipeImageUid(id);
+                String uuid = getRecipeImageURL(id);
                 int isHealthyInt = cursor.getInt(7);
                 boolean isHealthy = false;
                 if (isHealthyInt == 0) {
@@ -1003,7 +1003,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
                 String cookingTimeForModel = cursor.getString(5);
                 String serves = cursor.getString(6);
                 int rating = getRatingForRecipe(id);
-                String uuid = getRecipeImageUid(id);
+                String uuid = getRecipeImageURL(id);
                 int isHealthyIntToConvert = cursor.getInt(7);
                 boolean isHealthyForModel = false;
                 if (isHealthyIntToConvert == 1) {

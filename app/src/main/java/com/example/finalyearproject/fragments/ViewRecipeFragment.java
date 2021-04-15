@@ -114,7 +114,7 @@ public class ViewRecipeFragment extends Fragment {
 
         LinearLayout stepsLayout = view.findViewById(R.id.viewRecipeStepsLayout);
         for(String step:recipeModel.getSteps()){
-            View view = textInflater.inflate(android.R.layout.simple_list_item_1, stepsLayout, false);
+            View view = textInflater.inflate(android.R.layout.simple_list_item_2, stepsLayout, false);
             TextView textView = view.findViewById(android.R.id.text1);
             textView.setText(step);
             stepsLayout.addView(view);

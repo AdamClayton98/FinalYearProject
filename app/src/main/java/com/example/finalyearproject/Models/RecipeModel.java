@@ -12,12 +12,12 @@ public class RecipeModel implements Serializable {
     String cookingTime;
     String serves;
     int rating;
-    String uuid;
+    String url;
     boolean isHealthy;
     String recipeType;
     int numOfKeywords;
 
-    public RecipeModel(int id,String recipeName, List<String> ingredients, List<String> steps, String cookingTime, String serves, int rating, String uuid, boolean isHealthy, String recipeType) {
+    public RecipeModel(int id,String recipeName, List<String> ingredients, List<String> steps, String cookingTime, String serves, int rating, String url, boolean isHealthy, String recipeType) {
         this.id = id;
         this.recipeName = recipeName;
         this.ingredients = ingredients;
@@ -25,7 +25,7 @@ public class RecipeModel implements Serializable {
         this.cookingTime = cookingTime;
         this.serves = serves;
         this.rating = rating;
-        this.uuid=uuid;
+        this.url=url;
         this.isHealthy=isHealthy;
         this.recipeType=recipeType;
     }
@@ -86,12 +86,12 @@ public class RecipeModel implements Serializable {
         this.rating = rating;
     }
 
-    public String getUuid() {
-        return uuid;
+    public String getUrl() {
+        return url;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public boolean isHealthy() {
