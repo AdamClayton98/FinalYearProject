@@ -95,23 +95,27 @@ public class SearchResultFragment extends Fragment {
         ArrayList<RecipeModel> filteredFavouriteRecipes = filterFavouritesYouCanCook();
 
 
-
         if(recipes.isEmpty() || noRecipesCount==3){
             getFragmentManager().popBackStack();
             Toast.makeText(getContext(), "There were no recipes that match your search requirements", Toast.LENGTH_SHORT).show();
         }else{
-            LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-            LinearLayoutManager layoutManager2 = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-            LinearLayoutManager layoutManager3 = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+            if(!filteredRelevantRecipes.isEmpty()){
+                LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+                mostRelevantRecycler.setAdapter(new RecipeRecyclerAdapter(getContext(), filteredRelevantRecipes));
+                mostRelevantRecycler.setLayoutManager(layoutManager);
+            }
 
+            if(!filteredTopRecipes.isEmpty()){
+                LinearLayoutManager layoutManager2 = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+                topRecipeRecycler.setAdapter(new RecipeRecyclerAdapter(getContext(), filteredTopRecipes));
+                topRecipeRecycler.setLayoutManager(layoutManager2);
+            }
 
-            mostRelevantRecycler.setAdapter(new RecipeRecyclerAdapter(getContext(), filteredRelevantRecipes));
-            topRecipeRecycler.setAdapter(new RecipeRecyclerAdapter(getContext(), filteredTopRecipes));
-            favouritesRecycler.setAdapter(new RecipeRecyclerAdapter(getContext(), filteredFavouriteRecipes));
-
-            mostRelevantRecycler.setLayoutManager(layoutManager);
-            topRecipeRecycler.setLayoutManager(layoutManager2);
-            favouritesRecycler.setLayoutManager(layoutManager3);
+            if(!filteredFavouriteRecipes.isEmpty()){
+                LinearLayoutManager layoutManager3 = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+                favouritesRecycler.setAdapter(new RecipeRecyclerAdapter(getContext(), filteredFavouriteRecipes));
+                favouritesRecycler.setLayoutManager(layoutManager3);
+            }
         }
 
         return view;
@@ -119,9 +123,6 @@ public class SearchResultFragment extends Fragment {
 
 
     private ArrayList<RecipeModel> filterMostRelevantRecipes() {
-        if(recipes.isEmpty()){
-            return null;
-        }
         ArrayList<RecipeModel> recipesToReturn = databaseMethods.getSearchResultRecipes(servingAmount, cookingTime, recipeType, isHealthy);;
         List<String> allergies = databaseMethods.getAllergiesForUser();
 
@@ -175,7 +176,6 @@ public class SearchResultFragment extends Fragment {
 
         if(recipesToReturn.isEmpty()){
             noRecipesCount++;
-            return null;
         }
 
         try {
@@ -186,9 +186,6 @@ public class SearchResultFragment extends Fragment {
     }
 
     private ArrayList<RecipeModel> filterTopRecipesForSearch() {
-        if(recipes.isEmpty()){
-            return null;
-        }
         ArrayList<RecipeModel> recipesToReturn = databaseMethods.getSearchResultRecipes(servingAmount, cookingTime, recipeType, isHealthy);;
         List<String> allergies = databaseMethods.getAllergiesForUser();
 
@@ -228,7 +225,6 @@ public class SearchResultFragment extends Fragment {
 
         if(recipesToReturn.isEmpty()){
             noRecipesCount++;
-            return null;
         }
 
         try {
@@ -239,9 +235,6 @@ public class SearchResultFragment extends Fragment {
     }
 
     private ArrayList<RecipeModel> filterFavouritesYouCanCook() {
-        if(recipes.isEmpty()){
-            return null;
-        }
         ArrayList<RecipeModel> recipesToReturn = databaseMethods.getSearchResultRecipes(servingAmount, cookingTime, recipeType, isHealthy);;
         List<String> allergies = databaseMethods.getAllergiesForUser();
 
@@ -283,7 +276,6 @@ public class SearchResultFragment extends Fragment {
 
         if(recipesToReturn.isEmpty()){
             noRecipesCount++;
-            return null;
         }
 
         try {

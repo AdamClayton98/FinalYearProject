@@ -25,11 +25,12 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class RecipeRecyclerAdapter extends RecyclerView.Adapter<RecipeRecyclerAdapter.RecipeHolder> {
 
-    private ArrayList<RecipeModel> dataSet;
+    private ArrayList<RecipeModel> dataSet = new ArrayList<>();
     private Context mContext;
     public boolean isItemSelected;
 
