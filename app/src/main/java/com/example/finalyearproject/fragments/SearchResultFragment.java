@@ -87,15 +87,12 @@ public class SearchResultFragment extends Fragment {
         topRecipeRecycler = view.findViewById(R.id.searchRecipeRecycler2);
         favouritesRecycler = view.findViewById(R.id.searchRecipeRecycler3);
 
-        recipes = databaseMethods.getSearchResultRecipes(servingAmount, cookingTime, recipeType, isHealthy);
-
-
         ArrayList<RecipeModel> filteredRelevantRecipes = filterMostRelevantRecipes();
         ArrayList<RecipeModel> filteredTopRecipes = filterTopRecipesForSearch();
         ArrayList<RecipeModel> filteredFavouriteRecipes = filterFavouritesYouCanCook();
 
 
-        if(recipes.isEmpty() || noRecipesCount==3){
+        if(noRecipesCount==3){
             getFragmentManager().popBackStack();
             Toast.makeText(getContext(), "There were no recipes that match your search requirements", Toast.LENGTH_SHORT).show();
         }else{
@@ -214,6 +211,7 @@ public class SearchResultFragment extends Fragment {
         }
 
         for (RecipeModel recipe : recipesToReturn) {
+            System.out.println(recipe.isHealthy());
             if (isHealthy) {
                 if (!recipe.isHealthy()) {
                     recipesToReturn.remove(recipe);

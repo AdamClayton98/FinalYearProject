@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(ContextCompat.getColor(getApplicationContext(),R.color.white));
         searchButton = findViewById(R.id.searchActionBarButton);
+        MainActivity.uid = FirebaseAuth.getInstance().getUid();
 
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override

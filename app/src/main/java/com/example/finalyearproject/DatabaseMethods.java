@@ -376,14 +376,14 @@ public class DatabaseMethods extends SQLiteOpenHelper {
                 String serves = cursor.getString(6);
                 int rating = getRatingForRecipe(id);
                 String url = getRecipeImageURL(id);
-                int isHealthyInt = cursor.getInt(7);
+                int isHealthyInt = cursor.getInt(9);
                 boolean isHealthy = false;
                 if (isHealthyInt == 0) {
                     isHealthy = false;
                 } else if (isHealthyInt == 1) {
                     isHealthy = true;
                 }
-                String recipeType = cursor.getString(8);
+                String recipeType = cursor.getString(10);
 
                 RecipeModel recipe = new RecipeModel(id, recipeName, ingredients, steps, cookingTime, serves, rating, url, isHealthy, recipeType);
 
@@ -472,14 +472,16 @@ public class DatabaseMethods extends SQLiteOpenHelper {
             String serves = cursor.getString(6);
             int rating = getRatingForRecipe(recipeId);
             String uuid = getRecipeImageURL(recipeId);
-            int isHealthyInt = cursor.getInt(7);
+            int isHealthyInt = cursor.getInt(9);
+            System.out.println(isHealthyInt);
             boolean isHealthy = false;
             if (isHealthyInt == 0) {
                 isHealthy = false;
             } else if (isHealthyInt == 1) {
                 isHealthy = true;
             }
-            String recipeType = cursor.getString(8);
+            System.out.println(isHealthy + " - ishealthy retrieved from db");
+            String recipeType = cursor.getString(10);
 
             recipeModel = new RecipeModel(id, recipeName, ingredients, steps, cookingTime, serves, rating, uuid, isHealthy, recipeType);
         }
@@ -819,14 +821,14 @@ public class DatabaseMethods extends SQLiteOpenHelper {
                 String serves = cursor.getString(6);
                 int rating = getRatingForRecipe(id);
                 String uuid = getRecipeImageURL(id);
-                int isHealthyInt = cursor.getInt(7);
+                int isHealthyInt = cursor.getInt(9);
                 boolean isHealthy = false;
                 if (isHealthyInt == 0) {
                     isHealthy = false;
                 } else if (isHealthyInt == 1) {
                     isHealthy = true;
                 }
-                String recipeType = cursor.getString(8);
+                String recipeType = cursor.getString(10);
 
                 RecipeModel recipe = new RecipeModel(id, recipeName, ingredients, steps, cookingTime, serves, rating, uuid, isHealthy, recipeType);
 
@@ -863,14 +865,14 @@ public class DatabaseMethods extends SQLiteOpenHelper {
                 String serves = cursor.getString(6);
                 int rating = getRatingForRecipe(id);
                 String uuid = getRecipeImageURL(id);
-                int isHealthyInt = cursor.getInt(7);
+                int isHealthyInt = cursor.getInt(9);
                 boolean isHealthy = false;
                 if (isHealthyInt == 0) {
                     isHealthy = false;
                 } else if (isHealthyInt == 1) {
                     isHealthy = true;
                 }
-                String recipeType = cursor.getString(8);
+                String recipeType = cursor.getString(10);
 
                 RecipeModel recipe = new RecipeModel(id, recipeName, ingredients, steps, cookingTime, serves, rating, uuid, isHealthy, recipeType);
 
@@ -1004,12 +1006,14 @@ public class DatabaseMethods extends SQLiteOpenHelper {
                 String serves = cursor.getString(6);
                 int rating = getRatingForRecipe(id);
                 String uuid = getRecipeImageURL(id);
-                int isHealthyIntToConvert = cursor.getInt(7);
+                int isHealthyIntToConvert = cursor.getInt(9);
+                System.out.println(isHealthyIntToConvert);
                 boolean isHealthyForModel = false;
                 if (isHealthyIntToConvert == 1) {
                     isHealthyForModel = true;
                 }
-                String recipeTypeForModel = cursor.getString(8);
+                System.out.println(isHealthyForModel);
+                String recipeTypeForModel = cursor.getString(10);
 
                 RecipeModel recipe = new RecipeModel(id, recipeName, ingredients, steps, cookingTimeForModel, serves, rating, uuid, isHealthyForModel, recipeTypeForModel);
 
