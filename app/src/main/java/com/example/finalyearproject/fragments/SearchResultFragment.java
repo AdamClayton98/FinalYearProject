@@ -130,7 +130,14 @@ public class SearchResultFragment extends Fragment {
                 }
             }
             recipe.setNumOfKeywords(numOfKeywords);
+
+            if (isHealthy) {
+                if (!recipe.isHealthy()) {
+                    recipes.remove(recipe);
+                }
+            }
         }
+
 
         recipesToReturn.sort(new RelevanceSorter());
 
@@ -168,6 +175,14 @@ public class SearchResultFragment extends Fragment {
             }
         }
 
+        for (RecipeModel recipe : recipesToReturn) {
+            if (isHealthy) {
+                if (!recipe.isHealthy()) {
+                    recipes.remove(recipe);
+                }
+            }
+        }
+
         recipesToReturn.sort(new RatingSorter());
 
         try {
@@ -201,7 +216,14 @@ public class SearchResultFragment extends Fragment {
                     recipes.remove(recipe);
                 }
             }
+
+            if (isHealthy) {
+                if (!recipe.isHealthy()) {
+                    recipes.remove(recipe);
+                }
+            }
         }
+
 
         try {
             return (ArrayList<RecipeModel>) recipesToReturn.subList(0, 30);
@@ -209,7 +231,6 @@ public class SearchResultFragment extends Fragment {
             return recipesToReturn;
         }
     }
-
 
 
     private ArrayList<String> splitCommaSeparatedString(String csvString) {

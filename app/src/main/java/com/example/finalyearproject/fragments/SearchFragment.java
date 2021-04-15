@@ -91,6 +91,7 @@ public class SearchFragment extends Fragment {
         onlyPantryIngredientsCheck = view.findViewById(R.id.searchPantryIngredientCheckbox);
         recipeTypeSpinner.setAdapter(new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item, recipeTypes));
         allergyCheckbox = view.findViewById(R.id.searchAllergyCheckbox);
+        searchButton=view.findViewById(R.id.searchButton);
 
         setOnSlideListeners();
 
