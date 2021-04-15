@@ -110,6 +110,7 @@ public class PlanningFragment extends Fragment {
             if(plan.getMealNumber() == 1){
                 addButton1.setVisibility(View.INVISIBLE);
                 removeButton1.setVisibility(View.VISIBLE);
+
                 cookButton1.setVisibility(View.VISIBLE);
                 recipeId1=plan.getRecipeId();
                 planId1=plan.getId();

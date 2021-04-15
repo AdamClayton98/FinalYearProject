@@ -289,7 +289,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
 
     public void removeAmountOfIngredient(String ingredient, int amount, String expiry) {
         SQLiteDatabase db = getWritableDatabase();
-        String query = "UPDATE " + TABLE_PANTRIES + " SET " + COLUMN_AMOUNT + " = " + amount + " WHERE " + COLUMN_INGREDIENT_NAME + " = '" + ingredient + " AND " + COLUMN_USERID + " = '" + MainActivity.uid + "' AND " + COLUMN_EXPIRY_DATE + " = '" + expiry + "'";
+        String query = "UPDATE " + TABLE_PANTRIES + " SET " + COLUMN_AMOUNT + " = " + amount + " WHERE " + COLUMN_INGREDIENT_NAME + " = '" + ingredient + "' AND " + COLUMN_USERID + " = '" + MainActivity.uid + "' AND " + COLUMN_EXPIRY_DATE + " = '" + expiry + "'";
         db.execSQL(query);
     }
 
