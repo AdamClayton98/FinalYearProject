@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">Final Year Project</string>
+    <string name="app_name">Cook Assistant</string>
     <string name="email_address">E-Mail Address</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
