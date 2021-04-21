@@ -6,12 +6,11 @@
     tools:context=".SplashActivity">
 
 
-    <TextView
-        android:id="@+id/textView"
+    <ImageView
+        android:id="@+id/splashLogo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/temporary_text_replace_with_image"
-        android:textSize="25sp"
+        android:src="@drawable/ic_logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
