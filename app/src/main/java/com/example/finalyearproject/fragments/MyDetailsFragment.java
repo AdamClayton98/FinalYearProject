@@ -21,7 +21,9 @@ import com.example.finalyearproject.Models.UserModel;
 import com.example.finalyearproject.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 
 /**
@@ -120,20 +122,15 @@ public class MyDetailsFragment extends Fragment {
                 }
                 //TODO Implement validation at some point - Above all statements that update if not empty
 
-                if(!email.isEmpty()){
-                    firebaseAuth.getCurrentUser().updateEmail(email);
-                }
-
-                if(!password.isEmpty()){
-                    firebaseAuth.getCurrentUser().updatePassword(password);
-                }
-
-                if(!name.isEmpty()){
-                    databaseMethods.updateUserInfo(name, "NAME");
-                }
-
-                if(!username.isEmpty()){
-                    databaseMethods.updateUserInfo(username, "USERNAME");
+                if(!email.isEmpty() || !password.isEmpty()){
+                    ReauthenticateDialogFragment reauthenticateDialogFragment = new ReauthenticateDialogFragment();
+                    Bundle b = new Bundle();
+                    b.putString("email", email);
+                    b.putString("password", password);
+                    b.putString("name", name);
+                    b.putString("username", username);
+                    reauthenticateDialogFragment.setArguments(b);
+                    reauthenticateDialogFragment.show(getFragmentManager(), "myDetailsFragment");
                 }
             }
         });

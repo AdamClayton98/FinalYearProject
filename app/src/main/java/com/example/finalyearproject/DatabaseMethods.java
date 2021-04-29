@@ -163,7 +163,6 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         String query = "DELETE FROM " + TABLE_ALLERGIES + " WHERE " + COLUMN_USERID + " = '" + MainActivity.uid + "' AND " + COLUMN_ALLERGY_NAME + " = '" + allergy + "'";
 
         Cursor cursor = db.rawQuery(query, null);
-        db.close();
         return cursor.moveToFirst();
     }
 
