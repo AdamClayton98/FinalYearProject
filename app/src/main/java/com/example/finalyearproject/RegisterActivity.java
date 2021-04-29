@@ -74,8 +74,15 @@ public class RegisterActivity extends AppCompatActivity {
                     return;
                 }
 
+                String emailRegex = ".{1,}@[^.]{1,}";
+
                 if(email.isEmpty()){
-                    registerName.setError("Email is required");
+                    registerEmail.setError("Email is required");
+                    return;
+                }
+
+                if(email.matches(emailRegex)){
+                    registerEmail.setError("Email not valid");
                     return;
                 }
 
@@ -88,8 +95,6 @@ public class RegisterActivity extends AppCompatActivity {
                     registerConfirmPass.setError("Password confirmation is required");
                     return;
                 }
-
-                //TODO Implement validation at some point
 
                 if(!password.equals(confirmPassword)){
                     registerConfirmPass.setError("Confirmation password does not match password");
