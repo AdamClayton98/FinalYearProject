@@ -371,7 +371,7 @@ public class PlanningFragment extends Fragment {
                 getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, planningFragment).addToBackStack(null).commit();
             }
         }, year,month,day);
-
+        datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
         datePickerDialog.show();
     }
 }

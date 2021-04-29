@@ -2,6 +2,7 @@ package com.example.finalyearproject.fragments;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -30,6 +31,7 @@ public class ReauthenticateDialogFragment extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
+        Context context = getContext();
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         DatabaseMethods databaseMethods=new DatabaseMethods(getContext());
@@ -43,7 +45,7 @@ public class ReauthenticateDialogFragment extends DialogFragment {
             public void onClick(DialogInterface dialog, int which) {
                 String passwordText = passwordInput.getText().toString();
                 if(passwordText.isEmpty()){
-                    Toast.makeText(getContext(), "Password cannot be empty", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Password cannot be empty", Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
                     return;
                 }
@@ -59,32 +61,28 @@ public class ReauthenticateDialogFragment extends DialogFragment {
                             FirebaseAuth.getInstance().getCurrentUser().updateEmail(newEmail).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    System.out.println("E-Mail Updated");
+                                    Toast.makeText(context,"E-Mail Updated",Toast.LENGTH_SHORT).show();
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    System.out.println("Email update failed");
+                                    Toast.makeText(context,"Email update failed",Toast.LENGTH_SHORT).show();
                                 }
                             });
-                        }else{
-                            newEmail=FirebaseAuth.getInstance().getCurrentUser().getEmail();
                         }
 
                         if(!newPassword.isEmpty()){
                             FirebaseAuth.getInstance().getCurrentUser().updatePassword(newPassword).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    System.out.println("Password updated");
+                                    Toast.makeText(context, "Password updated", Toast.LENGTH_SHORT).show();
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    System.out.println("Password failed to update");
+                                    Toast.makeText(context, "Password failed to update", Toast.LENGTH_SHORT).show();
                                 }
                             });
-                        }else{
-                            newPassword=passwordText;
                         }
 
                         if(!name.isEmpty()){
@@ -94,12 +92,12 @@ public class ReauthenticateDialogFragment extends DialogFragment {
                         if(!username.isEmpty()){
                             databaseMethods.updateUserInfo(username, "USERNAME");
                         }
-//
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         dialog.dismiss();
+                        Toast.makeText(context, "Password incorrect, could not re-authenticate", Toast.LENGTH_SHORT).show();
                     }
                 });
             }

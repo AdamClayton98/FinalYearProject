@@ -16,8 +16,12 @@
         android:id="@+id/reauthDialogInput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/reportDialogHeader"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
         android:hint="@string/password"
-        android:inputType="textPassword"
-        android:layout_below="@+id/reportDialogHeader"/>
+        android:inputType="textPassword" />
 
 </RelativeLayout>

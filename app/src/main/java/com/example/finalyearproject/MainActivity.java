@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void toMyDetails(View view){
-        getSupportFragmentManager().beginTransaction().replace(R.id.fl_wrapper, new MyDetailsFragment()).addToBackStack(null).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fl_wrapper, new MyDetailsFragment()).addToBackStack("myDetailsFragment").commit();
     }
 
     public void toMyRecipes(View view){
