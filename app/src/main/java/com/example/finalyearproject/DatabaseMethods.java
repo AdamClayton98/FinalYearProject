@@ -227,7 +227,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         contentValues.put(COLUMN_MEASUREMENT_TYPE, measurementType);
         contentValues.put(COLUMN_EXPIRY_DATE, expiryDate);
 
-        if (ingredientAndMeasurementTypeExists(ingredient, measurementType)) {
+        if (ingredientAndMeasurementTypeExists(ingredient, measurementType,expiryDate)) {
             int existingAmount = getExistingAmountOfIngredient(ingredient, measurementType, expiryDate);
             amount = amount + existingAmount;
             String query = "UPDATE " + TABLE_PANTRIES + " SET " + COLUMN_AMOUNT + " = " + amount + " WHERE " + COLUMN_INGREDIENT_NAME + " = '" + ingredient + "' AND " + COLUMN_USERID + " = '" + MainActivity.uid + "' AND " + COLUMN_MEASUREMENT_TYPE + " = '" + measurementType + "'";
@@ -257,7 +257,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
 
                 try {
                     if (checkDateIs2DaysAfterToday(expiryDate)) {
-                        removeIngredient(ingredientName);
+                        removeIngredient(ingredientName,expiryDate);
                         continue;
                     }
                 } catch (ParseException e) {
@@ -278,9 +278,9 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         return ingredients;
     }
 
-    public boolean removeIngredient(String ingredient) {
+    public boolean removeIngredient(String ingredient, String expiryDate) {
         SQLiteDatabase db = getWritableDatabase();
-        String query = "DELETE FROM " + TABLE_PANTRIES + " WHERE " + COLUMN_USERID + " = '" + MainActivity.uid + "' AND " + COLUMN_INGREDIENT_NAME + " = '" + ingredient + "'";
+        String query = "DELETE FROM " + TABLE_PANTRIES + " WHERE " + COLUMN_USERID + " = '" + MainActivity.uid + "' AND " + COLUMN_INGREDIENT_NAME + " = '" + ingredient + "' AND " + COLUMN_EXPIRY_DATE + " = '" + expiryDate + "'";
 
         Cursor cursor = db.rawQuery(query, null);
         return cursor.moveToFirst();
@@ -292,9 +292,9 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         db.execSQL(query);
     }
 
-    public boolean ingredientAndMeasurementTypeExists(String ingredient, String measurementType) {
+    public boolean ingredientAndMeasurementTypeExists(String ingredient, String measurementType, String expiryDate) {
         SQLiteDatabase readDb = this.getReadableDatabase();
-        String query = "SELECT " + COLUMN_MEASUREMENT_TYPE + " FROM " + TABLE_PANTRIES + " WHERE " + COLUMN_INGREDIENT_NAME + " = '" + ingredient + "' AND " + COLUMN_USERID + " = '" + MainActivity.uid + "'";
+        String query = "SELECT " + COLUMN_MEASUREMENT_TYPE + " FROM " + TABLE_PANTRIES + " WHERE " + COLUMN_INGREDIENT_NAME + " = '" + ingredient + "' AND " + COLUMN_USERID + " = '" + MainActivity.uid + "' AND " + COLUMN_EXPIRY_DATE + " = '" + expiryDate + "'";
         Cursor cursor = readDb.rawQuery(query, null);
         if (cursor.moveToFirst()) {
             do {
@@ -472,14 +472,12 @@ public class DatabaseMethods extends SQLiteOpenHelper {
             int rating = getRatingForRecipe(recipeId);
             String uuid = getRecipeImageURL(recipeId);
             int isHealthyInt = cursor.getInt(9);
-            System.out.println(isHealthyInt);
             boolean isHealthy = false;
             if (isHealthyInt == 0) {
                 isHealthy = false;
             } else if (isHealthyInt == 1) {
                 isHealthy = true;
             }
-            System.out.println(isHealthy + " - ishealthy retrieved from db");
             String recipeType = cursor.getString(10);
 
             recipeModel = new RecipeModel(id, recipeName, ingredients, steps, cookingTime, serves, rating, uuid, isHealthy, recipeType);
@@ -792,7 +790,7 @@ public class DatabaseMethods extends SQLiteOpenHelper {
                 existingAmount = cursor.getInt(3);
                 mostRecentExpiry = cursor.getString(5);
                 if (existingAmount - amountToRemove <= 0) {
-                    removeIngredient(ingredientModel.getIngredientName());
+                    removeIngredient(ingredientModel.getIngredientName(),mostRecentExpiry);
                 } else {
                     removeAmountOfIngredient(ingredientModel.getIngredientName(), (existingAmount - amountToRemove), mostRecentExpiry);
                 }
@@ -934,65 +932,111 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         }
     }
 
-    private String getCorrectQuery(String serving, String cookingTime, String recipeType, int isHealthyInt) {
+    private String getCorrectQuery(String serving, String cookingTime, String recipeType) {
         String query = null;
-        switch (cookingTime) {
-            case "5 Minutes":
-                query = "SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "5 Minutes'";
-                break;
-            case "10 Minutes":
-                query = "SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "5 Minutes'";
-                query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "10 Minutes'";
-                break;
-            case "15 Minutes":
-                query = "SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "5 Minutes'";
-                query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "10 Minutes'";
-                query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "15 Minutes'";
-                break;
-            case "20 Minutes":
-                query = "SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "5 Minutes'";
-                query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "10 Minutes'";
-                query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "15 Minutes'";
-                query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "20 Minutes'";
-                break;
-            case "30 Minutes":
-                query = "SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "5 Minutes'";
-                query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "10 Minutes'";
-                query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "15 Minutes'";
-                query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "20 Minutes'";
-                query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "30 Minutes'";
-                break;
-            case "45 Minutes":
-                query = "SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "5 Minutes'";
-                query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "10 Minutes'";
-                query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "15 Minutes'";
-                query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "20 Minutes'";
-                query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "30 Minutes'";
-                query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "45 Minutes'";
-                break;
-            case "60 Minutes":
-                query = "SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "5 Minutes'";
-                query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "10 Minutes'";
-                query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "15 Minutes'";
-                query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "20 Minutes'";
-                query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "30 Minutes'";
-                query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "45 Minutes'";
-                query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "60 Minutes'";
-                break;
-            default:
-                query = "SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "'";
+        if(recipeType.equals("All")){
+            switch (cookingTime) {
+                case "5 Minutes":
+                    query = "SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_COOKING_TIME + " = '" + "5 Minutes'";
+                    break;
+                case "10 Minutes":
+                    query = "SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_COOKING_TIME + " = '" + "5 Minutes'";
+                    query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_COOKING_TIME + " = '" + "10 Minutes'";
+                    break;
+                case "15 Minutes":
+                    query = "SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_COOKING_TIME + " = '" + "5 Minutes'";
+                    query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_COOKING_TIME + " = '" + "10 Minutes'";
+                    query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_COOKING_TIME + " = '" + "15 Minutes'";
+                    break;
+                case "20 Minutes":
+                    query = "SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_COOKING_TIME + " = '" + "5 Minutes'";
+                    query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_COOKING_TIME + " = '" + "10 Minutes'";
+                    query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_COOKING_TIME + " = '" + "15 Minutes'";
+                    query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_COOKING_TIME + " = '" + "20 Minutes'";
+                    break;
+                case "30 Minutes":
+                    query = "SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_COOKING_TIME + " = '" + "5 Minutes'";
+                    query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_COOKING_TIME + " = '" + "10 Minutes'";
+                    query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_COOKING_TIME + " = '" + "15 Minutes'";
+                    query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_COOKING_TIME + " = '" + "20 Minutes'";
+                    query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_COOKING_TIME + " = '" + "30 Minutes'";
+                    break;
+                case "45 Minutes":
+                    query = "SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_COOKING_TIME + " = '" + "5 Minutes'";
+                    query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_COOKING_TIME + " = '" + "10 Minutes'";
+                    query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_COOKING_TIME + " = '" + "15 Minutes'";
+                    query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_COOKING_TIME + " = '" + "20 Minutes'";
+                    query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_COOKING_TIME + " = '" + "30 Minutes'";
+                    query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_COOKING_TIME + " = '" + "45 Minutes'";
+                    break;
+                case "60 Minutes":
+                    query = "SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_COOKING_TIME + " = '" + "5 Minutes'";
+                    query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_COOKING_TIME + " = '" + "10 Minutes'";
+                    query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_COOKING_TIME + " = '" + "15 Minutes'";
+                    query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_COOKING_TIME + " = '" + "20 Minutes'";
+                    query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_COOKING_TIME + " = '" + "30 Minutes'";
+                    query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_COOKING_TIME + " = '" + "45 Minutes'";
+                    query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_COOKING_TIME + " = '" + "60 Minutes'";
+                    break;
+                default:
+                    query = "SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "'";
+            }
+        }else{
+            switch (cookingTime) {
+                case "5 Minutes":
+                    query = "SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "5 Minutes'";
+                    break;
+                case "10 Minutes":
+                    query = "SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "5 Minutes'";
+                    query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "10 Minutes'";
+                    break;
+                case "15 Minutes":
+                    query = "SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "5 Minutes'";
+                    query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "10 Minutes'";
+                    query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "15 Minutes'";
+                    break;
+                case "20 Minutes":
+                    query = "SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "5 Minutes'";
+                    query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "10 Minutes'";
+                    query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "15 Minutes'";
+                    query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "20 Minutes'";
+                    break;
+                case "30 Minutes":
+                    query = "SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "5 Minutes'";
+                    query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "10 Minutes'";
+                    query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "15 Minutes'";
+                    query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "20 Minutes'";
+                    query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "30 Minutes'";
+                    break;
+                case "45 Minutes":
+                    query = "SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "5 Minutes'";
+                    query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "10 Minutes'";
+                    query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "15 Minutes'";
+                    query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "20 Minutes'";
+                    query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "30 Minutes'";
+                    query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "45 Minutes'";
+                    break;
+                case "60 Minutes":
+                    query = "SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "5 Minutes'";
+                    query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "10 Minutes'";
+                    query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "15 Minutes'";
+                    query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "20 Minutes'";
+                    query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "30 Minutes'";
+                    query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "45 Minutes'";
+                    query = query + " UNION SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "' AND " + COLUMN_COOKING_TIME + " = '" + "60 Minutes'";
+                    break;
+                default:
+                    query = "SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_SERVES + " = '" + serving + "' AND " + COLUMN_RECIPE_TYPE + " = '" + recipeType + "'";
+            }
         }
+        
 
         return query;
     }
 
-    public ArrayList<RecipeModel> getSearchResultRecipes(String serving, String cookingTime, String recipeType, boolean isHealthy) {
+    public ArrayList<RecipeModel> getSearchResultRecipes(String serving, String cookingTime, String recipeType) {
         SQLiteDatabase db = getWritableDatabase();
-        int isHealthyInt = 0;
-        if (isHealthy) {
-            isHealthyInt = 1;
-        }
-        String query = getCorrectQuery(serving, cookingTime, recipeType, isHealthyInt);
+        String query = getCorrectQuery(serving, cookingTime, recipeType);
         ArrayList<RecipeModel> recipes = new ArrayList<>();
         Cursor cursor = db.rawQuery(query, null);
         if (cursor.moveToFirst()) {
@@ -1006,12 +1050,10 @@ public class DatabaseMethods extends SQLiteOpenHelper {
                 int rating = getRatingForRecipe(id);
                 String uuid = getRecipeImageURL(id);
                 int isHealthyIntToConvert = cursor.getInt(9);
-                System.out.println(isHealthyIntToConvert);
                 boolean isHealthyForModel = false;
                 if (isHealthyIntToConvert == 1) {
                     isHealthyForModel = true;
                 }
-                System.out.println(isHealthyForModel);
                 String recipeTypeForModel = cursor.getString(10);
 
                 RecipeModel recipe = new RecipeModel(id, recipeName, ingredients, steps, cookingTimeForModel, serves, rating, uuid, isHealthyForModel, recipeTypeForModel);

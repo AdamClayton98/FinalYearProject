@@ -222,11 +222,9 @@ public class AddRecipeFragment extends Fragment {
             String amount = amountInput.getText().toString();
             String measurementType = measurementTypeDropdown.getSelectedItem().toString();
             if (ingredient.isEmpty()) {
-                Toast.makeText(getContext(), "You cannot leave any fields blank", Toast.LENGTH_SHORT).show();
-                return null;
+                return ingredients;
             } else if (amount.isEmpty() || amount.equals("0")) {
-                Toast.makeText(getContext(), "You cannot leave any fields blank", Toast.LENGTH_SHORT).show();
-                return null;
+                return ingredients;
             }
             ingredients.add(ingredient + "," + amount + "," + measurementType);
         }
@@ -238,6 +236,9 @@ public class AddRecipeFragment extends Fragment {
         for (int i = 0; i < stepListLayout.getChildCount(); i++) {
             EditText stepInput = stepListLayout.getChildAt(i).findViewById(R.id.stepInput);
             String step = stepInput.getText().toString();
+            if(step.isEmpty()){
+                return steps;
+            }
             steps.add(step);
         }
         return steps;
@@ -272,6 +273,18 @@ public class AddRecipeFragment extends Fragment {
 
 
     private void uploadRecipe() {
+        String recipeName = recipeNameInput.getText().toString().toUpperCase();
+        String cookingTime = cookingTimeDropdown.getSelectedItem().toString();
+        String serves = servingDropdown.getSelectedItem().toString();
+        String recipeType=recipeTypeSpinner.getSelectedItem().toString();
+        boolean isHealthy=isHealthyCheckbox.isChecked();
+
+        if (recipeName.isEmpty()) {
+            Toast.makeText(getContext(), "You must add a recipe name", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
         if (ingredientListLayout.getChildCount() == 0) {
             Toast.makeText(getContext(), "You must add at least 1 ingredient", Toast.LENGTH_SHORT).show();
             return;
@@ -285,12 +298,15 @@ public class AddRecipeFragment extends Fragment {
         ArrayList<String> ingredients = getAllIngredients();
         ArrayList<String> steps = getAllSteps();
 
-        String recipeName = recipeNameInput.getText().toString().toUpperCase();
-        String cookingTime = cookingTimeDropdown.getSelectedItem().toString();
-        String serves = servingDropdown.getSelectedItem().toString();
-        String recipeType=recipeTypeSpinner.getSelectedItem().toString();
-        boolean isHealthy=isHealthyCheckbox.isChecked();
+        if(ingredientListLayout.getChildCount() != ingredients.size()){
+            Toast.makeText(getContext(), "One or more ingredients is incomplete" , Toast.LENGTH_SHORT).show();
+            return;
+        }
 
+        if(stepListLayout.getChildCount() != steps.size()){
+            Toast.makeText(getContext(), "One or more steps is incomplete", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         if (ingredients.isEmpty()) {
             return;
@@ -298,10 +314,6 @@ public class AddRecipeFragment extends Fragment {
             return;
         }
 
-        if (recipeName.isEmpty()) {
-            Toast.makeText(getContext(), "You must add a recipe name", Toast.LENGTH_SHORT).show();
-            return;
-        }
 
         if(recipeImagePlaceholder.getDrawable()==null){
             Toast.makeText(getContext(), "You must upload a recipe image", Toast.LENGTH_SHORT).show();

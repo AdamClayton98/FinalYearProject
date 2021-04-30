@@ -120,18 +120,17 @@ public class SearchResultFragment extends Fragment {
 
 
     private ArrayList<RecipeModel> filterMostRelevantRecipes() {
-        ArrayList<RecipeModel> recipesToReturn = databaseMethods.getSearchResultRecipes(servingAmount, cookingTime, recipeType, isHealthy);;
+        ArrayList<RecipeModel> recipesToReturn = databaseMethods.getSearchResultRecipes(servingAmount, cookingTime, recipeType);;
         List<String> allergies = databaseMethods.getAllergiesForUser();
+        ArrayList<RecipeModel> toRemove=new ArrayList<>();
 
 
         if (!includeAllergies) {
             for (RecipeModel recipe : recipesToReturn) {
-                ArrayList<String> recipeIngredients=splitRecipeIngredientsFromDetails(recipesToReturn);
+                ArrayList<String> recipeIngredients=splitRecipeIngredientsFromDetails(recipe.getIngredients());
                 for (String allergy : allergies) {
-                    System.out.println(allergy);
-                    System.out.println(recipeIngredients);
                     if (recipeIngredients.contains(allergy)) {
-                        recipesToReturn.remove(recipe);
+                        toRemove.add(recipe);
                         break;
                     }
                 }
@@ -141,10 +140,10 @@ public class SearchResultFragment extends Fragment {
         if (onlyPantryIngredients) {
             ArrayList<String> pantryIngredients = splitPantryIngredients();
             for (RecipeModel recipe : recipesToReturn) {
-                ArrayList<String> recipeIngredients = splitRecipeIngredientsFromDetails(recipesToReturn);
+                ArrayList<String> recipeIngredients = splitRecipeIngredientsFromDetails(recipe.getIngredients());
                 for (String recipeIngredient : recipeIngredients) {
                     if (!pantryIngredients.contains(recipeIngredient)) {
-                        recipesToReturn.remove(recipe);
+                        toRemove.add(recipe);
                     }
                 }
             }
@@ -155,7 +154,7 @@ public class SearchResultFragment extends Fragment {
         for (RecipeModel recipe : recipesToReturn) {
             int numOfKeywords = 0;
             for (String keyword : keywordArray) {
-                if (recipe.getIngredients().contains(keyword)) {
+                if (splitRecipeIngredientsFromDetails(recipe.getIngredients()).contains(keyword.toUpperCase())) {
                     numOfKeywords++;
                 }
             }
@@ -163,11 +162,12 @@ public class SearchResultFragment extends Fragment {
 
             if (isHealthy) {
                 if (!recipe.isHealthy()) {
-                    recipesToReturn.remove(recipe);
+                    toRemove.add(recipe);
                 }
             }
         }
 
+        recipesToReturn.removeAll(toRemove);
 
         recipesToReturn.sort(new RelevanceSorter());
 
@@ -182,16 +182,26 @@ public class SearchResultFragment extends Fragment {
         }
     }
 
+    private ArrayList<String> splitRecipeIngredientsFromDetails(List<String> ingredients) {
+        ArrayList<String> recipeIngredients = new ArrayList<>();
+            for (String ingredient : ingredients) {
+                String[] splitIngredientDetails = ingredient.replace(" - ", "-").split("-");
+                recipeIngredients.add(splitIngredientDetails[0]);
+        }
+        return recipeIngredients;
+    }
+
     private ArrayList<RecipeModel> filterTopRecipesForSearch() {
-        ArrayList<RecipeModel> recipesToReturn = databaseMethods.getSearchResultRecipes(servingAmount, cookingTime, recipeType, isHealthy);;
+        ArrayList<RecipeModel> recipesToReturn = databaseMethods.getSearchResultRecipes(servingAmount, cookingTime, recipeType);
         List<String> allergies = databaseMethods.getAllergiesForUser();
+        ArrayList<RecipeModel> toRemove = new ArrayList<>();
 
         if (!includeAllergies) {
             for (RecipeModel recipe : recipesToReturn) {
-                ArrayList<String> recipeIngredients=splitRecipeIngredientsFromDetails(recipesToReturn);
+                ArrayList<String> recipeIngredients=splitRecipeIngredientsFromDetails(recipe.getIngredients());
                 for (String allergy : allergies) {
                     if (recipeIngredients.contains(allergy)) {
-                        recipesToReturn.remove(recipe);
+                        toRemove.add(recipe);
                         break;
                     }
                 }
@@ -201,23 +211,24 @@ public class SearchResultFragment extends Fragment {
         if (onlyPantryIngredients) {
             ArrayList<String> pantryIngredients = splitPantryIngredients();
             for (RecipeModel recipe : recipesToReturn) {
-                ArrayList<String> recipeIngredients = splitRecipeIngredientsFromDetails(recipesToReturn);
+                ArrayList<String> recipeIngredients = splitRecipeIngredientsFromDetails(recipe.getIngredients());
                 for (String recipeIngredient : recipeIngredients) {
                     if (!pantryIngredients.contains(recipeIngredient)) {
-                        recipesToReturn.remove(recipe);
+                        toRemove.add(recipe);
                     }
                 }
             }
         }
 
         for (RecipeModel recipe : recipesToReturn) {
-            System.out.println(recipe.isHealthy());
             if (isHealthy) {
                 if (!recipe.isHealthy()) {
-                    recipesToReturn.remove(recipe);
+                    toRemove.add(recipe);
                 }
             }
         }
+
+        recipesToReturn.removeAll(toRemove);
 
         recipesToReturn.sort(new RatingSorter());
 
@@ -233,15 +244,16 @@ public class SearchResultFragment extends Fragment {
     }
 
     private ArrayList<RecipeModel> filterFavouritesYouCanCook() {
-        ArrayList<RecipeModel> recipesToReturn = databaseMethods.getSearchResultRecipes(servingAmount, cookingTime, recipeType, isHealthy);;
+        ArrayList<RecipeModel> recipesToReturn = databaseMethods.getSearchResultRecipes(servingAmount, cookingTime, recipeType);
         List<String> allergies = databaseMethods.getAllergiesForUser();
+        ArrayList<RecipeModel> toRemove = new ArrayList<>();
 
         if (!includeAllergies) {
             for (RecipeModel recipe : recipesToReturn) {
-                ArrayList<String> recipeIngredients=splitRecipeIngredientsFromDetails(recipesToReturn);
+                ArrayList<String> recipeIngredients=splitRecipeIngredientsFromDetails(recipe.getIngredients());
                 for (String allergy : allergies) {
                     if (recipeIngredients.contains(allergy)) {
-                        recipesToReturn.remove(recipe);
+                        toRemove.add(recipe);
                         break;
                     }
                 }
@@ -251,30 +263,33 @@ public class SearchResultFragment extends Fragment {
 
         ArrayList<String> pantryIngredients = splitPantryIngredients();
         for (RecipeModel recipe : recipesToReturn) {
-            ArrayList<String> recipeIngredients = splitRecipeIngredientsFromDetails(recipesToReturn);
+            ArrayList<String> recipeIngredients = splitRecipeIngredientsFromDetails(recipe.getIngredients());
+            System.out.println(recipe.getRecipeName());
             for (String recipeIngredient : recipeIngredients) {
                 if (!pantryIngredients.contains(recipeIngredient)) {
-                    recipesToReturn.remove(recipe);
+                    toRemove.add(recipe);
                     break;
                 }
             }
 
             if (isHealthy) {
                 if (!recipe.isHealthy()) {
-                    recipesToReturn.remove(recipe);
+                    toRemove.add(recipe);
                 }
             }
         }
 
         for(RecipeModel recipeModel:recipesToReturn){
             if(!databaseMethods.isFavourite(String.valueOf(recipeModel.getId()))){
-                recipesToReturn.remove(recipeModel);
+                toRemove.add(recipeModel);
             }
         }
 
         if(recipesToReturn.isEmpty()){
             noRecipesCount++;
         }
+
+        recipesToReturn.removeAll(toRemove);
 
         try {
             return (ArrayList<RecipeModel>) recipesToReturn.subList(0, 30);
@@ -288,17 +303,6 @@ public class SearchResultFragment extends Fragment {
         String[] csvStringArray = csvString.replace(" ,", "").replace(", ", ",").split(",");
         return new ArrayList<>(Arrays.asList(csvStringArray));
 
-    }
-
-    private ArrayList<String> splitRecipeIngredientsFromDetails(ArrayList<RecipeModel> recipesToReturn) {
-        ArrayList<String> recipeIngredients = new ArrayList<>();
-        for (RecipeModel recipe : recipesToReturn) {
-            for (String ingredient : recipe.getIngredients()) {
-                String[] splitIngredientDetails = ingredient.replace(" - ", "-").split("-");
-                recipeIngredients.add(splitIngredientDetails[0]);
-            }
-        }
-        return recipeIngredients;
     }
 
     private ArrayList<String> splitPantryIngredients() {

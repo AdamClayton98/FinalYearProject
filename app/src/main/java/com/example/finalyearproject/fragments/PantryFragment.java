@@ -106,7 +106,8 @@ public class PantryFragment extends Fragment {
                 for(int i=0;i<pantryCustomAdapter.getCount();i++){
                     if(pantryCustomAdapter.isChecked(i)){
                         String ingredientName = pantryCustomAdapter.getItem(i).getIngredientName();
-                        databaseMethods.removeIngredient(ingredientName);
+                        String expiryDate = pantryCustomAdapter.getItem(i).getExpiryDate();
+                        databaseMethods.removeIngredient(ingredientName,expiryDate);
                         Toast.makeText(getContext(), ingredientName + " has been removed.", Toast.LENGTH_SHORT).show();
                     }
                 }

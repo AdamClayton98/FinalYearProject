@@ -156,7 +156,9 @@ public class ViewRecipeFragment extends Fragment {
         removeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                HomeFragment homeFragment = new HomeFragment();
                 databaseMethods.removeRecipe(recipeId);
+                getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, homeFragment).addToBackStack(null).commit();
             }
         });
 
