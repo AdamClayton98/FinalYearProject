@@ -64,10 +64,11 @@ public class CommentsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view= inflater.inflate(R.layout.fragment_comments, container, false);
-
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Comments");
-
         databaseMethods = new DatabaseMethods(getContext());
+
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(databaseMethods.getIndividualRecipe(Integer.parseInt(recipeId)).getRecipeName());
+
+
 
         Button addCommentButton = view.findViewById(R.id.addCommentButton);
         ArrayList<CommentModel>  comments = databaseMethods.getComments(String.valueOf(recipeId));

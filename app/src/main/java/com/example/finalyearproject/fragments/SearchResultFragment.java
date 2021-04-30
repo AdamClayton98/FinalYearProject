@@ -51,7 +51,7 @@ public class SearchResultFragment extends Fragment {
     boolean includeAllergies;
 
     public SearchResultFragment() {
-        // Required empty public constructor
+        // Required empty public constructorC
     }
 
 

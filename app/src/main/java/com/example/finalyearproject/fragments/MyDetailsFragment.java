@@ -128,16 +128,14 @@ public class MyDetailsFragment extends Fragment {
                     return;
                 }
 
-                if(!email.isEmpty() || !password.isEmpty()){
-                    ReauthenticateDialogFragment reauthenticateDialogFragment = new ReauthenticateDialogFragment();
-                    Bundle b = new Bundle();
-                    b.putString("email", email);
-                    b.putString("password", password);
-                    b.putString("name", name);
-                    b.putString("username", username);
-                    reauthenticateDialogFragment.setArguments(b);
-                    reauthenticateDialogFragment.show(getFragmentManager(), "reauthDialogFragment");
-                }
+                ReauthenticateDialogFragment reauthenticateDialogFragment = new ReauthenticateDialogFragment();
+                Bundle b = new Bundle();
+                b.putString("email", email);
+                b.putString("password", password);
+                b.putString("name", name);
+                b.putString("username", username);
+                reauthenticateDialogFragment.setArguments(b);
+                reauthenticateDialogFragment.show(getFragmentManager(), "reauthDialogFragment");
 
             }
         });
