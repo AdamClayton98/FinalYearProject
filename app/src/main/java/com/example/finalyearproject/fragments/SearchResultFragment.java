@@ -285,11 +285,13 @@ public class SearchResultFragment extends Fragment {
             }
         }
 
+        recipesToReturn.removeAll(toRemove);
+
         if(recipesToReturn.isEmpty()){
             noRecipesCount++;
         }
 
-        recipesToReturn.removeAll(toRemove);
+
 
         try {
             return (ArrayList<RecipeModel>) recipesToReturn.subList(0, 30);
