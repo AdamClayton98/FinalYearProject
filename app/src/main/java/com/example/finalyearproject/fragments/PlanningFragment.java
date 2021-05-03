@@ -125,7 +125,8 @@ public class PlanningFragment extends Fragment {
                         getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, viewRecipeFragment).addToBackStack(null).commit();
                     }
                 });
-            }else if(plan.getMealNumber() == 2){
+            }
+            if(plan.getMealNumber() == 2){
                 addButton2.setVisibility(View.INVISIBLE);
                 removeButton2.setVisibility(View.VISIBLE);
                 cookButton2.setVisibility(View.VISIBLE);
@@ -142,7 +143,8 @@ public class PlanningFragment extends Fragment {
                         getFragmentManager().beginTransaction().replace(R.id.fl_wrapper, viewRecipeFragment).addToBackStack(null).commit();
                     }
                 });
-            }else if(plan.getMealNumber() == 3){
+            }
+            if(plan.getMealNumber() == 3){
                 addButton3.setVisibility(View.INVISIBLE);
                 removeButton3.setVisibility(View.VISIBLE);
                 cookButton3.setVisibility(View.VISIBLE);

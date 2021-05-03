@@ -747,12 +747,14 @@ public class DatabaseMethods extends SQLiteOpenHelper {
         String query = "SELECT * FROM " + TABLE_PLANS + " WHERE " + COLUMN_USERID + " = '" + MainActivity.uid + "' AND " + COLUMN_DATE_OF_PLAN + " = '" + dateOfPlan + "'";
         Cursor cursor = db.rawQuery(query, null);
         if (cursor.moveToFirst()) {
-            int id = cursor.getInt(0);
-            String uid = cursor.getString(1);
-            int recipeId = cursor.getInt(2);
-            int mealNumber = cursor.getInt(3);
-            PlanModel planModel = new PlanModel(id, uid, recipeId, mealNumber, dateOfPlan);
-            plansForSelectedDate.add(planModel);
+            do {
+                int id = cursor.getInt(0);
+                String uid = cursor.getString(1);
+                int recipeId = cursor.getInt(2);
+                int mealNumber = cursor.getInt(3);
+                PlanModel planModel = new PlanModel(id, uid, recipeId, mealNumber, dateOfPlan);
+                plansForSelectedDate.add(planModel);
+            }while(cursor.moveToNext());
         }
         db.close();
         return plansForSelectedDate;
